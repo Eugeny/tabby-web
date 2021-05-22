@@ -1,0 +1,27 @@
+$font-family-sans-serif: "Source Sans Pro";
+$border-radius-lg: 0;
+$btn-border-width: 3px;
+
+// @import "node_modules/bootstrap/scss/bootstrap";
+
+
+
+.terminal {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 200px);
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 0 0 100px black;
+}
+
+iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
