@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/css/fontawesome.css';
 import 'source-code-pro/source-code-pro.css';
 import 'source-sans-pro/source-sans-pro.css';
 import { Duplex } from 'stream-browserify';
+import './terminal-styles.scss';
 export declare class Socket extends Duplex {
     webSocket: WebSocket;
     constructor();

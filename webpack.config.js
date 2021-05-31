@@ -33,9 +33,24 @@ module.exports = {
     extensions: ['.ts', '.js'],
     fallback: {
       stream: require.resolve('stream-browserify'),
-      assert: require.resolve('assert'),
-      util: require.resolve('util'),
+      assert: require.resolve('assert/'),
+      constants: require.resolve('constants-browserify'),
+      util: require.resolve('util/'),
+      zlib: require.resolve('browserify-zlib'),
     },
+  },
+  externals: {
+    'dns': 'commonjs dns',
+    'tls': 'commonjs tls',
+    'tty': 'commonjs tty',
+    'crypto': 'commonjs crypto',
+    'querystring': 'commonjs querystring',
+    'https': 'commonjs https',
+    'http': 'commonjs http',
+    'url': 'commonjs url',
+    'terminus-core': 'commonjs terminus-core',
+    'terminus-terminal': 'commonjs terminus-terminal',
+    'terminus-settings': 'commonjs terminus-settings',
   },
   module: {
     rules: [
@@ -49,7 +64,7 @@ module.exports = {
         },
       },
       { test: /terminus\/app\/dist/, use: ['script-loader'] },
-      { test: /dist\/index/, use: ['raw-loader'] },
+      // { test: /dist\/index/, use: ['raw-loader'] },
       {
         test: /\.(ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: {
@@ -72,4 +87,32 @@ module.exports = {
       }
     ],
   }
+}
+
+
+const externals = [
+  '@electron/remote',
+  'any-promise',
+  'child_process',
+  'electron-promise-ipc',
+  'electron',
+  'fontmanager-redux',
+  'fs',
+  'keytar',
+  'hterm-umdjs',
+  'macos-native-processlist',
+  'native-process-working-directory',
+  'net',
+  'os',
+  'path',
+  'readline',
+  'serialport',
+  'socksv5',
+  'windows-native-registry',
+  'windows-process-tree',
+  'windows-process-tree/build/Release/windows_process_tree.node',
+]
+
+for (const k of externals) {
+  module.exports.externals[k] = `commonjs ${k}`
 }

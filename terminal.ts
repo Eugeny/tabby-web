@@ -8,6 +8,7 @@ import * as yaml from 'js-yaml'
 import { Duplex } from 'stream-browserify'
 import { Buffer } from 'buffer'
 
+import './terminal-styles.scss'
 
 export class Socket extends Duplex {
     webSocket: WebSocket
@@ -22,10 +23,10 @@ export class Socket extends Duplex {
     connect () {
         this.webSocket = new WebSocket('ws://localhost:9001/')
         this.webSocket.onopen = event => {
-            this.emit('connect')
+            this['emit']('connect')
         }
         this.webSocket.onmessage = async event => {
-            this.emit('data', Buffer.from(await event.data.arrayBuffer()))
+            this['emit']('data', Buffer.from(await event.data.arrayBuffer()))
         }
     }
 
@@ -69,6 +70,8 @@ async function start () {
         terminal:
             font: "Source Code Pro"
             autoOpen: true
+            rightClick: menu
+            copyOnSelect: false
         appearance:
             vibrancy: false
         pluginBlacklist: []
@@ -94,20 +97,20 @@ async function start () {
             mkdirSync: path => {
                 console.warn('mock mkdirSync', path)
             },
-            stat: (path, cb) => {
-                if ([
-                    'resources/builtin-plugins',
-                    'resources/builtin-plugins/terminus-core/package.json',
-                    'resources/builtin-plugins/terminus-ssh/package.json',
-                    'resources/builtin-plugins/terminus-settings/package.json',
-                    'resources/builtin-plugins/terminus-terminal/package.json',
-                ].includes(path)) {
-                    cb(null, {})
-                } else {
-                    console.warn('mock stat', path)
-                    cb('ENOEXIST')
-                }
-            },
+            // stat: (path, cb) => {
+            //     if ([
+            //         'resources/builtin-plugins',
+            //         'resources/builtin-plugins/terminus-core/package.json',
+            //         'resources/builtin-plugins/terminus-ssh/package.json',
+            //         'resources/builtin-plugins/terminus-settings/package.json',
+            //         'resources/builtin-plugins/terminus-terminal/package.json',
+            //     ].includes(path)) {
+            //         cb(null, {})
+            //     } else {
+            //         console.warn('mock stat', path)
+            //         cb('ENOEXIST')
+            //     }
+            // },
             writeFileSync: () => null,
             readFileSync: (path) => {
                 if (path === 'app-path/config.yaml') {
@@ -116,31 +119,22 @@ async function start () {
                 return ''
             },
             readFile: (path, enc, cb) => {
-                if ([
-                    'resources/builtin-plugins/terminus-core/package.json',
-                    'resources/builtin-plugins/terminus-ssh/package.json',
-                    'resources/builtin-plugins/terminus-terminal/package.json',
-                    'resources/builtin-plugins/terminus-settings/package.json',
-                ].includes(path)) {
-                    cb(null, '{ "keywords": ["terminus-builtin-plugin"], "author": "" }')
-                } else {
-                    console.warn('mock readFile', path)
-                    cb('UNKNOWN', null)
-                }
+                console.warn('mock readFile', path)
+                cb('UNKNOWN', null)
             },
-            readdir: (path, cb) => {
-                if (path === 'resources/builtin-plugins') {
-                    cb(null, [
-                        'terminus-core',
-                        'terminus-ssh',
-                        'terminus-settings',
-                        'terminus-terminal',
-                    ])
-                } else {
-                    console.warn('mock readdir', path)
-                    cb(null, [])
-                }
-            },
+            // readdir: (path, cb) => {
+            //     if (path === 'resources/builtin-plugins') {
+            //         cb(null, [
+            //             'terminus-core',
+            //             'terminus-ssh',
+            //             'terminus-settings',
+            //             'terminus-terminal',
+            //         ])
+            //     } else {
+            //         console.warn('mock readdir', path)
+            //         cb(null, [])
+            //     }
+            // },
             constants: {},
         },
         '@electron/remote': {
@@ -149,6 +143,7 @@ async function start () {
                 getPath: () => 'app-path',
                 getWindow: () => ({
                     reload: () => null,
+                    setTrafficLightPosition: () => null,
                 }),
             },
             screen: {
@@ -221,10 +216,6 @@ async function start () {
             clearLine: stream => stream.write('\r'),
         },
         zlib: require('browserify-zlib'),
-        util: {
-            ...require('util'),
-            promisify: () => null,
-        },
         'any-promise': Promise,
         net: {
             Socket,
@@ -256,7 +247,7 @@ async function start () {
         },
         'readable-stream': {},
         os: {
-            platform: () => 'linux',
+            platform: () => 'web',
             homedir: () => '/home',
         },
         'mz/child_process': {
@@ -287,6 +278,7 @@ async function start () {
             },
         },
         dns: {},
+        util: require('util'),
         keytar: {
             getPassword: () => null,
         },
@@ -316,17 +308,18 @@ async function start () {
     Object.assign(window, {
         require: (path) => {
             if (mocks[path]) {
+                console.warn('requiring mock', path)
                 return mocks[path]
             }
             if (builtins[path]) {
                 return builtins[path]
             }
-            console.warn('requiring', path)
+            console.error('requiring real module', path)
         },
         process: {
             env: { XWEB: 1, LOGNAME: 'root' },
             argv: ['terminus'],
-            platform: 'linux',
+            platform: 'darwin',
             on: () => null,
             stdout: {},
             stderr: {},
@@ -351,29 +344,58 @@ async function start () {
     window['__dirname'] = '__dirname'
     window['setImmediate'] = setTimeout
     mocks.module['prototype'] = { require: window['require'] }
+    window['terminusConfig'] = configContent
 
-    let pluginCode = {
-        core: await import(/* webpackChunkName: "app" */ '../terminus/terminus-core/dist/index.js'),
-        ssh: await import(/* webpackChunkName: "app" */ '../terminus/terminus-ssh/dist/index.js'),
-        settings: await import(/* webpackChunkName: "app" */ '../terminus/terminus-settings/dist/index.js'),
-        terminal: await import(/* webpackChunkName: "app" */ '../terminus/terminus-terminal/dist/index.js'),
-    }
+    require('util').promisify = () => null
 
-    function loadPlugin (name) {
-        let code = `(function (exports, require, module) { \n${pluginCode[name].default}\n })`
+    // let plugins: Record<string, any> = {}
+    // plugins.core = builtins['terminus-core'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-core/dist/index.js')
+    // plugins.settings = builtins['terminus-settings'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-settings/dist/index.js')
+    // plugins.terminal = builtins['terminus-terminal'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-terminal/dist/index.js')
+    // plugins['community-color-schemes'] = builtins['terminus-community-color-schemes'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-community-color-schemes/dist/index.js')
+    // plugins.ssh = builtins['terminus-ssh'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-ssh/dist/index.js')
+    // plugins.web = builtins['terminus-web'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-web/dist/index.js')
+
+    async function loadPlugin (name, file = 'index.js') {
+        let code = await (await fetch(`../app-dist/${name}/dist/${file}`)).text()
+        code = `(function (exports, require, module) { \n${code}\n })`
         let m = eval(code)
         let module = { exports: {} }
         m(module.exports, window['require'], module)
         return module.exports
     }
 
-    for (const plugin of ['core', 'settings', 'terminal', 'ssh']) {
-        builtins[`resources/builtin-plugins/terminus-${plugin}`] = builtins[`terminus-${plugin}`] = loadPlugin(plugin)
+    const pluginModules = []
+    for (const plugin of [
+        'terminus-core',
+        'terminus-settings',
+        'terminus-terminal',
+        'terminus-ssh',
+        'terminus-community-color-schemes',
+        'terminus-web',
+    ]) {
+        console.log(`Loading ${plugin}`)
+        const mod = await loadPlugin(plugin)
+        builtins[`resources/builtin-plugins/${plugin}`] = builtins[plugin] = mod
+        pluginModules.push(mod)
+        console.log(mod)
     }
 
-    await import(/* webpackChunkName: "app" */ '../terminus/app/dist/preload.js')
+    // for (const name of ['core', 'settings', 'terminal', 'ssh', 'community-color-schemes', 'web']) {
+    //     plugins[name].pluginName = name
+    //     builtins[`resources/builtin-plugins/terminus-${name}`] = plugins[name]
+    // }
+
+    // await import(/* webpackChunkName: "app" */ '../terminus/app/dist/preload.js')
+    // document.querySelector('app-root')['style'].display = 'flex'
+
+    // await import(/* webpackChunkName: "app" */ '../terminus/app/dist/bundle-web.js')
+    // window['bootstrapTerminus'](Object.values(plugins), { config })
+
+    await loadPlugin('app', 'preload.js')
+    await loadPlugin('app', 'bundle-web.js')
     document.querySelector('app-root')['style'].display = 'flex'
-    await import(/* webpackChunkName: "app" */ '../terminus/app/dist/bundle.js')
+    window['bootstrapTerminus'](pluginModules, { config })
 }
 
 start()

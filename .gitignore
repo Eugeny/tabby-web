@@ -3,3 +3,4 @@ index.d.ts
 *.ignore.js
 *.ignore.js.map
 dist
+.mypy_cache
