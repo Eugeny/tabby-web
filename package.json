@@ -22,7 +22,7 @@
     "file-loader": "^1.1.11",
     "js-yaml": "^4.1.0",
     "node-sass": "^6.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-cli": "^1.0.0-alpha6",
     "pug-html-loader": "^1.1.5",
     "raw-loader": "^1.0.0",
