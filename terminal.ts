@@ -1,3 +1,21 @@
+Object.assign(window, {
+    process: {
+        env: { XWEB: 1, LOGNAME: 'root' },
+        argv: ['terminus'],
+        platform: 'darwin',
+        on: () => null,
+        stdout: {},
+        stderr: {},
+        resourcesPath: 'resources',
+        version: '14.0.0',
+        nextTick: (f, ...args) => setTimeout(() => f(...args)),
+        // cwd: () => '/',
+    },
+    global: window,
+})
+
+
+
 import 'core-js/proposals/reflect-metadata'
 import '@fortawesome/fontawesome-free/css/solid.css'
 import '@fortawesome/fontawesome-free/css/brands.css'
@@ -9,21 +27,26 @@ import { Duplex } from 'stream-browserify'
 import { Buffer } from 'buffer'
 
 import './terminal-styles.scss'
+import { base64Slice, latin1Slice, utf8Slice, utf8Write } from './polyfills'
 
 export class Socket extends Duplex {
     webSocket: WebSocket
+    initialBuffer: Buffer
 
     constructor () {
         console.warn('socket constr', arguments)
         super({
             allowHalfOpen: false,
         })
+        this.initialBuffer = Buffer.from('')
     }
 
     connect () {
-        this.webSocket = new WebSocket('ws://localhost:9001/')
+        this.webSocket = new WebSocket(`ws://${location.host}/api/1/gateway/tcp`)
         this.webSocket.onopen = event => {
             this['emit']('connect')
+            this.webSocket.send(this.initialBuffer)
+            this.initialBuffer = Buffer.from('')
         }
         this.webSocket.onmessage = async event => {
             this['emit']('data', Buffer.from(await event.data.arrayBuffer()))
@@ -39,12 +62,14 @@ export class Socket extends Duplex {
     }
 
     _read (size: number): void {
-        console.warn('socket read', size)
     }
 
     _write (chunk: Buffer, _encoding: string, callback: (error?: Error | null) => void): void {
-        console.warn('socket write', chunk)
-        this.webSocket.send(chunk)
+        if (!this.webSocket.readyState) {
+            this.initialBuffer = Buffer.concat([this.initialBuffer, chunk])
+        } else {
+            this.webSocket.send(chunk)
+        }
         callback()
     }
 
@@ -91,26 +116,14 @@ async function start () {
                 console.warn('mock existsSync', path)
                 return false
             },
+            readdir: () => null,
+            stat: () => null,
             mkdir: path => {
                 console.warn('mock mkdir', path)
             },
             mkdirSync: path => {
                 console.warn('mock mkdirSync', path)
             },
-            // stat: (path, cb) => {
-            //     if ([
-            //         'resources/builtin-plugins',
-            //         'resources/builtin-plugins/terminus-core/package.json',
-            //         'resources/builtin-plugins/terminus-ssh/package.json',
-            //         'resources/builtin-plugins/terminus-settings/package.json',
-            //         'resources/builtin-plugins/terminus-terminal/package.json',
-            //     ].includes(path)) {
-            //         cb(null, {})
-            //     } else {
-            //         console.warn('mock stat', path)
-            //         cb('ENOEXIST')
-            //     }
-            // },
             writeFileSync: () => null,
             readFileSync: (path) => {
                 if (path === 'app-path/config.yaml') {
@@ -207,19 +220,25 @@ async function start () {
             ...require('crypto-browserify'),
             getHashes () {
                 return ['sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'md5', 'rmd160']
-            }
+            },
+            timingSafeEqual (a, b) {
+                return a.equals(b)
+            },
         },
-        stream: require('stream-browserify'),
         events: require('events'),
         readline: {
             cursorTo: () => null,
             clearLine: stream => stream.write('\r'),
         },
-        zlib: require('browserify-zlib'),
+        zlib: {
+            ...require('browserify-zlib'),
+            constants: require('browserify-zlib'),
+        },
         'any-promise': Promise,
         net: {
             Socket,
         },
+        tls: { },
         module: {
             globalPaths: [],
         },
@@ -228,11 +247,11 @@ async function start () {
             parse: () => null,
         },
         http: {
-            Agent: { prototype: {} },
+            Agent: class {},
             request: {},
         },
         https: {
-            Agent: { prototype: {} },
+            Agent: class {},
             request: {},
         },
         querystring: {},
@@ -278,7 +297,7 @@ async function start () {
             },
         },
         dns: {},
-        util: require('util'),
+        util: require('util/'),
         keytar: {
             getPassword: () => null,
         },
@@ -316,19 +335,6 @@ async function start () {
             }
             console.error('requiring real module', path)
         },
-        process: {
-            env: { XWEB: 1, LOGNAME: 'root' },
-            argv: ['terminus'],
-            platform: 'darwin',
-            on: () => null,
-            stdout: {},
-            stderr: {},
-            resourcesPath: 'resources',
-            version: '14.0.0',
-            nextTick: (f, ...args) => setTimeout(() => f(...args)),
-            // cwd: () => '/',
-        },
-        global: window,
     })
 
     window['require'].main = {
@@ -346,23 +352,26 @@ async function start () {
     mocks.module['prototype'] = { require: window['require'] }
     window['terminusConfig'] = configContent
 
-    require('util').promisify = () => null
+    Buffer.prototype['latin1Slice'] = latin1Slice
+    Buffer.prototype['utf8Slice'] = utf8Slice
+    Buffer.prototype['base64Slice'] = base64Slice
+    Buffer.prototype['utf8Write'] = utf8Write
 
-    // let plugins: Record<string, any> = {}
-    // plugins.core = builtins['terminus-core'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-core/dist/index.js')
-    // plugins.settings = builtins['terminus-settings'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-settings/dist/index.js')
-    // plugins.terminal = builtins['terminus-terminal'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-terminal/dist/index.js')
-    // plugins['community-color-schemes'] = builtins['terminus-community-color-schemes'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-community-color-schemes/dist/index.js')
-    // plugins.ssh = builtins['terminus-ssh'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-ssh/dist/index.js')
-    // plugins.web = builtins['terminus-web'] = await import(/* webpackChunkName: "app" */ '../terminus/terminus-web/dist/index.js')
+    builtins['ssh2'] = require('ssh2')
+    builtins['ssh2/lib/protocol/constants'] = require('ssh2/lib/protocol/constants')
+    builtins['stream'] = require('stream-browserify')
 
     async function loadPlugin (name, file = 'index.js') {
-        let code = await (await fetch(`../app-dist/${name}/dist/${file}`)).text()
-        code = `(function (exports, require, module) { \n${code}\n })`
-        let m = eval(code)
-        let module = { exports: {} }
-        m(module.exports, window['require'], module)
-        return module.exports
+        const url = `../app-dist/${name}/dist/${file}`
+        const e = document.createElement('script')
+        window['module'] = { exports: {} }
+        window['exports'] = window['module'].exports
+        await new Promise(resolve => {
+            e.onload = resolve
+            e.src = url
+            document.querySelector('head').appendChild(e)
+        })
+        return window['module'].exports
     }
 
     const pluginModules = []
@@ -378,19 +387,7 @@ async function start () {
         const mod = await loadPlugin(plugin)
         builtins[`resources/builtin-plugins/${plugin}`] = builtins[plugin] = mod
         pluginModules.push(mod)
-        console.log(mod)
     }
-
-    // for (const name of ['core', 'settings', 'terminal', 'ssh', 'community-color-schemes', 'web']) {
-    //     plugins[name].pluginName = name
-    //     builtins[`resources/builtin-plugins/terminus-${name}`] = plugins[name]
-    // }
-
-    // await import(/* webpackChunkName: "app" */ '../terminus/app/dist/preload.js')
-    // document.querySelector('app-root')['style'].display = 'flex'
-
-    // await import(/* webpackChunkName: "app" */ '../terminus/app/dist/bundle-web.js')
-    // window['bootstrapTerminus'](Object.values(plugins), { config })
 
     await loadPlugin('app', 'preload.js')
     await loadPlugin('app', 'bundle-web.js')

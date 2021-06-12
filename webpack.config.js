@@ -36,7 +36,6 @@ module.exports = {
       assert: require.resolve('assert/'),
       constants: require.resolve('constants-browserify'),
       util: require.resolve('util/'),
-      zlib: require.resolve('browserify-zlib'),
     },
   },
   externals: {
@@ -48,6 +47,9 @@ module.exports = {
     'https': 'commonjs https',
     'http': 'commonjs http',
     'url': 'commonjs url',
+    'zlib': 'commonjs zlib',
+    '../build/Release/cpufeatures.node': 'commonjs ../build/Release/cpufeatures.node',
+    './crypto/build/Release/sshcrypto.node': 'commonjs ./crypto/build/Release/sshcrypto.node',
     'terminus-core': 'commonjs terminus-core',
     'terminus-terminal': 'commonjs terminus-terminal',
     'terminus-settings': 'commonjs terminus-settings',

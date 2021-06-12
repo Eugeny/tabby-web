@@ -9,6 +9,7 @@ import { Duplex } from 'stream-browserify';
 import './terminal-styles.scss';
 export declare class Socket extends Duplex {
     webSocket: WebSocket;
+    initialBuffer: Buffer;
     constructor();
     connect(): void;
     setNoDelay(): void;

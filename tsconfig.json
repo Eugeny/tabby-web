@@ -22,5 +22,6 @@
       "es6",
       "es7"
     ]
-  }
+  },
+  "exclude": ["app-dist"]
 }

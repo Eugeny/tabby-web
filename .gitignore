@@ -4,3 +4,8 @@ index.d.ts
 *.ignore.js.map
 dist
 .mypy_cache
+app-dist
+*.html
+db.sqlite3
+__pycache__
+.vscode
