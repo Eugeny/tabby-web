@@ -1,5 +1,4 @@
 node_modules
-index.d.ts
 *.ignore.js
 *.ignore.js.map
 dist
@@ -9,3 +8,5 @@ app-dist
 db.sqlite3
 __pycache__
 .vscode
+build
+*.d.ts

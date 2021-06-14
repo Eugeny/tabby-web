@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src/",
+    "module": "esNext",
+    "target": "es6",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "emitDeclarationOnly": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es6",
+      "es7"
+    ],
+    "paths": {
+      "*": ["src/*"]
+    }
+  },
+  "exclude": ["app-dist"]
+}

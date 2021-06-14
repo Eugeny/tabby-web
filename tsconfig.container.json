@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src/",
     "module": "esNext",
     "target": "es6",
     "moduleResolution": "node",
@@ -21,7 +22,10 @@
       "es5",
       "es6",
       "es7"
-    ]
+    ],
+    "paths": {
+      "*": ["src/*"]
+    }
   },
   "exclude": ["app-dist"]
 }

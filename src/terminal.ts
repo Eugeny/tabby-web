@@ -15,6 +15,17 @@ Object.assign(window, {
 })
 
 
+import * as angularCoreModule from '@angular/core'
+import * as angularCompilerModule from '@angular/compiler'
+import * as angularCommonModule from '@angular/common'
+import * as angularFormsModule from '@angular/forms'
+import * as angularPlatformBrowserModule from '@angular/platform-browser'
+import * as angularPlatformBrowserAnimationsModule from '@angular/platform-browser/animations'
+import * as angularPlatformBrowserDynamicModule from '@angular/platform-browser-dynamic'
+import * as angularAnimationsModule from '@angular/animations'
+import * as ngBootstrapModule from '@ng-bootstrap/ng-bootstrap'
+import * as ngxToastrModule from 'ngx-toastr'
+
 
 import 'core-js/proposals/reflect-metadata'
 import '@fortawesome/fontawesome-free/css/solid.css'
@@ -22,7 +33,6 @@ import '@fortawesome/fontawesome-free/css/brands.css'
 import '@fortawesome/fontawesome-free/css/fontawesome.css'
 import 'source-code-pro/source-code-pro.css'
 import 'source-sans-pro/source-sans-pro.css'
-import * as yaml from 'js-yaml'
 import { Duplex } from 'stream-browserify'
 import { Buffer } from 'buffer'
 
@@ -88,21 +98,6 @@ async function start () {
         }
     }
 
-    let windowReadyCallback
-    const configContent = `
-        enableAnalytics: false
-        enableWelcomeTab: false
-        terminal:
-            font: "Source Code Pro"
-            autoOpen: true
-            rightClick: menu
-            copyOnSelect: false
-        appearance:
-            vibrancy: false
-        pluginBlacklist: []
-    `
-    const config = yaml.load(configContent)
-
     const mocks = {
         fs: {
             realpathSync: path => {
@@ -110,9 +105,6 @@ async function start () {
                 return path
             },
             existsSync: path => {
-                if (path === 'app-path/config.yaml') {
-                    return true
-                }
                 console.warn('mock existsSync', path)
                 return false
             },
@@ -126,9 +118,6 @@ async function start () {
             },
             writeFileSync: () => null,
             readFileSync: (path) => {
-                if (path === 'app-path/config.yaml') {
-                    return configContent
-                }
                 return ''
             },
             readFile: (path, enc, cb) => {
@@ -186,19 +175,13 @@ async function start () {
         },
         electron: {
             ipcRenderer: {
-                on: () => null,
+                on: (e, c) => {
+                    console.log('[ipc listen]', e)
+                },
                 once: (e, c) => {
-                    if (e === 'start') {
-                        windowReadyCallback = c
-                    }
+                    console.log('[ipc listen once]', e)
                 },
                 send: msg => {
-                    if (msg === 'ready') {
-                        windowReadyCallback(null, {
-                            config,
-                            executable: '---',
-                        })
-                    }
                     console.log('[ipc]', msg)
                 }
             },
@@ -277,7 +260,7 @@ async function start () {
             exists: path => mocks.fs.existsSync(path),
             existsSync: path => mocks.fs.existsSync(path),
         },
-        constants: {},
+        constants: require('constants-browserify'),
         'hterm-umdjs': {
             hterm: {
                 PreferenceManager: class { set () {} },
@@ -307,16 +290,16 @@ async function start () {
     ;(mocks.assert as any).notStrictEqual = () => true
 
     let builtins = {
-        '@angular/core': require('@angular/core'),
-        '@angular/compiler': require('@angular/compiler'),
-        '@angular/common': require('@angular/common'),
-        '@angular/forms': require('@angular/forms'),
-        '@angular/platform-browser': require('@angular/platform-browser'),
-        '@angular/platform-browser/animations': require('@angular/platform-browser/animations'),
-        '@angular/platform-browser-dynamic': require('@angular/platform-browser-dynamic'),
-        '@angular/animations': require('@angular/animations'),
-        '@ng-bootstrap/ng-bootstrap': require('@ng-bootstrap/ng-bootstrap'),
-        'ngx-toastr': require('ngx-toastr'),
+        '@angular/core': angularCoreModule,
+        '@angular/compiler': angularCompilerModule,
+        '@angular/common': angularCommonModule,
+        '@angular/forms': angularFormsModule,
+        '@angular/platform-browser': angularPlatformBrowserModule,
+        '@angular/platform-browser/animations': angularPlatformBrowserAnimationsModule,
+        '@angular/platform-browser-dynamic': angularPlatformBrowserDynamicModule,
+        '@angular/animations': angularAnimationsModule,
+        '@ng-bootstrap/ng-bootstrap': ngBootstrapModule,
+        'ngx-toastr': ngxToastrModule,
         'deepmerge': require('deepmerge'),
         'rxjs': require('rxjs'),
         'rxjs/operators': require('rxjs/operators'),
@@ -339,18 +322,17 @@ async function start () {
 
     window['require'].main = {
         paths: []
-    }
+    } as any
 
     window['module'] = {
         paths: []
-    }
+    } as any
 
-    window['require'].resolve = path => null
+    window['require'].resolve = (path => null) as any
     window['Buffer'] = mocks.buffer.Buffer
     window['__dirname'] = '__dirname'
-    window['setImmediate'] = setTimeout
+    window['setImmediate'] = setTimeout as any
     mocks.module['prototype'] = { require: window['require'] }
-    window['terminusConfig'] = configContent
 
     Buffer.prototype['latin1Slice'] = latin1Slice
     Buffer.prototype['utf8Slice'] = utf8Slice
@@ -364,7 +346,7 @@ async function start () {
     async function loadPlugin (name, file = 'index.js') {
         const url = `../app-dist/${name}/dist/${file}`
         const e = document.createElement('script')
-        window['module'] = { exports: {} }
+        window['module'] = { exports: {} } as any
         window['exports'] = window['module'].exports
         await new Promise(resolve => {
             e.onload = resolve
@@ -392,6 +374,17 @@ async function start () {
     await loadPlugin('app', 'preload.js')
     await loadPlugin('app', 'bundle-web.js')
     document.querySelector('app-root')['style'].display = 'flex'
+
+    await new Promise<void>(resolve => {
+        window.addEventListener('message', event => {
+            if (event.data === 'connector-ready') {
+                resolve()
+            }
+        })
+        window.parent.postMessage('request-connector', '*')
+    })
+
+    const config = window['__connector__'].loadConfig()
     window['bootstrapTerminus'](pluginModules, { config })
 }
 

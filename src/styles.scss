@@ -1,0 +1,9 @@
+$font-family-sans-serif: "Source Sans Pro";
+$border-radius-lg: 0;
+$btn-border-width: 3px;
+
+body {
+    overscroll-behavior: none;
+}
+
+@import "node_modules/bootstrap/scss/bootstrap";

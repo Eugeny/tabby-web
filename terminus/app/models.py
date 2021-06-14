@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Config(models.Model):
@@ -19,4 +20,7 @@ class User(AbstractUser):
     modified_at = models.DateTimeField(auto_now=True)
 
 
-# @receiver
+# @receiver(user_logged_in)
+# def post_login(sender, user, request, **kwargs):
+#     if not user.active_config:
+#         user.active_config = Config.objects.filter()

@@ -1,0 +1,15 @@
+.sidebar
+    img.logo(src='{{_logo}}')
+
+    div(ngbDropdown)
+        button.btn.btn-secondary(ngbDropdownToggle) Cfg
+        //) !{require('../icons/download-solid.svg')}
+        div(ngbDropdownMenu)
+            a(
+                *ngFor='let config of configs',
+                ngbDropdownItem,
+                (click)='selectConfig(config)'
+            ) Config modified at {{config.modified_at}}
+
+.terminal([hidden]='!showApp')
+    iframe(#iframe)

@@ -7,7 +7,14 @@ from django.views import static
 
 class IndexView(APIView):
     def get(self, request, format=None):
-        return static.serve(request, 'terminal.html', document_root=str(settings.BASE_DIR / 'dist'))
+        return static.serve(request, 'index.html', document_root=str(settings.BASE_DIR / 'build'))
+
+
+class TerminalView(APIView):
+    def get(self, request, format=None):
+        response = static.serve(request, 'terminal.html', document_root=str(settings.BASE_DIR / 'build'))
+        response['X-Frame-Options'] = 'SAMEORIGIN'
+        return response
 
 
 class AppDistView(APIView):
@@ -15,6 +22,6 @@ class AppDistView(APIView):
         return static.serve(request, path, document_root=str(settings.BASE_DIR / 'app-dist'))
 
 
-class DistView(APIView):
+class BuildView(APIView):
     def get(self, request, path=None, format=None):
-        return static.serve(request, path, document_root=str(settings.BASE_DIR / 'dist'))
+        return static.serve(request, path, document_root=str(settings.BASE_DIR / 'build'))
