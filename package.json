@@ -16,20 +16,19 @@
     "@angular/forms": "^11.0.0",
     "@angular/platform-browser": "^11.0.0",
     "@angular/platform-browser-dynamic": "^11.0.0",
+    "@fortawesome/angular-fontawesome": "0.8",
     "@fortawesome/fontawesome-free": "^5.7.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@ng-bootstrap/ng-bootstrap": "11.0.0-beta.1",
     "@ngtools/webpack": "^12.0.4",
     "@terminus-term/to-string-loader": "^1.1.7-beta.1",
     "@types/node": "^11.9.5",
     "apply-loader": "^2.0.0",
-    "assert": "1.5.0",
     "awesome-typescript-loader": "^5.2.1",
     "bootstrap": "^5.0.1",
-    "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "constants-browserify": "^1.0.0",
     "core-js": "^3.14.0",
-    "crypto-browserify": "^3.12.0",
     "css-loader": "^2.1.0",
     "deepmerge": "^4.2.2",
     "file-loader": "^1.1.11",
@@ -44,6 +43,7 @@
     "rxjs": "^7.1.0",
     "sass-loader": "^11.1.1",
     "script-loader": "^0.7.2",
+    "semver": "^7.3.5",
     "setimmediate": "^1.0.5",
     "source-code-pro": "^2.30.1",
     "source-sans-pro": "^2.45.0",
@@ -56,11 +56,5 @@
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.2",
     "zone.js": "^0.11.4"
-  },
-  "resolutions": {
-    "**/util": "^0.12.0"
-  },
-  "dependencies": {
-    "events": "^3.3.0"
   }
 }

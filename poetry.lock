@@ -176,6 +176,19 @@ python-versions = ">=3.5"
 django = ">=2.2"
 
 [[package]]
+name = "djangorestframework-dataclasses"
+version = "0.9"
+description = "A dataclasses serializer for Django REST Framework"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+django = ">=2.0"
+djangorestframework = ">=3.9"
+typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
+
+[[package]]
 name = "flake8"
 version = "3.9.2"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -451,7 +464,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "aa3971fd65727a238ac017ea5ee2782d1d53934a08bc1848770cb84d89c01c63"
+content-hash = "3922460ced69b5e33ce174cf478542b18bf7bc793d32e262fe46a4b7d9a2a047"
 
 [metadata.files]
 asgiref = [
@@ -557,6 +570,10 @@ django-rest-framework = [
 djangorestframework = [
     {file = "djangorestframework-3.12.4-py3-none-any.whl", hash = "sha256:6d1d59f623a5ad0509fe0d6bfe93cbdfe17b8116ebc8eda86d45f6e16e819aaf"},
     {file = "djangorestframework-3.12.4.tar.gz", hash = "sha256:f747949a8ddac876e879190df194b925c177cdeb725a099db1460872f7c0a7f2"},
+]
+djangorestframework-dataclasses = [
+    {file = "djangorestframework-dataclasses-0.9.tar.gz", hash = "sha256:ad04e820ee3ce1ac44e38347a24f53c62b642f2a08d910e61c289d9d1a7a8b69"},
+    {file = "djangorestframework_dataclasses-0.9-py3-none-any.whl", hash = "sha256:2b05e08d3e9c52268d50a1b82ccafa52baac6b7df8ba08ce82b32e661c5a9434"},
 ]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},

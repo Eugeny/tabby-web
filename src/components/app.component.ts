@@ -1,6 +1,9 @@
+import * as semverGT from 'semver/functions/gt'
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { AppConnectorService } from '../services/appConnector.service'
+
+import { faCog, faUser, faCopy, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
     selector: 'app',
@@ -9,8 +12,15 @@ import { AppConnectorService } from '../services/appConnector.service'
 })
 export class AppComponent {
     _logo = require('../assets/logo.svg')
-    showApp = false
+    _cogIcon = faCog
+    _userIcon = faUser
+    _copyIcon = faCopy
+    _addIcon = faPlus
+    _deleteIcon = faTrash
+
     configs: any[] = []
+    versions: any[] = []
+    activeVersion?: any
     @ViewChild('iframe') iframe: ElementRef
 
     constructor (
@@ -27,24 +37,69 @@ export class AppComponent {
 
     async ngAfterViewInit () {
         this.configs = await this.http.get('/api/1/configs').toPromise()
+        this.versions = await this.http.get('/api/1/versions').toPromise()
+
+        this.versions.sort((a, b) => semverGT(a, b))
+
+        if (!this.configs.length) {
+            await this.createNewConfig()
+        }
+
         this.selectConfig(this.configs[0])
     }
 
+    async createNewConfig () {
+        this.configs.push(await this.http.post('/api/1/configs', {
+            content: '{}',
+            last_used_with_version: this.versions[0].version,
+        }).toPromise())
+    }
+
+    async duplicateConfig () {
+        const copy = {...this.appConnector.config, pk: undefined}
+        this.configs.push(await this.http.post('/api/1/configs', copy).toPromise())
+    }
+
     unloadApp () {
-        this.showApp = false
+        delete this.activeVersion
         this.iframe.nativeElement.src = 'about:blank'
     }
 
-    loadApp () {
-        this.iframe.nativeElement.src = '/terminal'
-        this.showApp = true
+    loadApp (version) {
+        this.iframe.nativeElement.src = `/terminal?${version.version}`
+        this.activeVersion = version
     }
 
-    selectConfig (config: any) {
-        this.appConnector.config = config
+    getActiveConfig () {
+        return this.appConnector.config
+    }
+
+    selectVersion (version: any) {
+        // TODO check config incompatibility
         this.unloadApp()
         setTimeout(() => {
-            this.loadApp()
+            this.loadApp(version)
         })
+    }
+
+    async selectConfig (config: any) {
+        let matchingVersion = this.versions.find(x => x.version === config.last_used_with_version)
+        if (!matchingVersion) {
+            // TODO ask to upgrade
+            matchingVersion = this.versions[0]
+        }
+
+        this.appConnector.config = config
+
+        const result = await this.http.patch(`/api/1/configs/${config.id}`, {
+            last_used_with_version: matchingVersion.version,
+        }).toPromise()
+        Object.assign(config, result)
+
+        this.selectVersion(matchingVersion)
+    }
+
+    async logout () {
+        await this.http.post('/api/1/auth/logout', null).toPromise()
     }
 }

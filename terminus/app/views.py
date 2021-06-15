@@ -1,8 +1,7 @@
+import os
 from django.conf import settings
-from django.contrib.staticfiles.views import serve
-from django.http.response import HttpResponse
-from rest_framework.views import APIView
 from django.views import static
+from rest_framework.views import APIView
 
 
 class IndexView(APIView):
@@ -18,8 +17,8 @@ class TerminalView(APIView):
 
 
 class AppDistView(APIView):
-    def get(self, request, path=None, format=None):
-        return static.serve(request, path, document_root=str(settings.BASE_DIR / 'app-dist'))
+    def get(self, request, version=None, path=None, format=None):
+        return static.serve(request, os.path.join(version, path), document_root=str(settings.APP_DIST_PATH))
 
 
 class BuildView(APIView):

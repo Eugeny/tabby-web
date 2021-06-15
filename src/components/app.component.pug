@@ -1,15 +1,55 @@
 .sidebar
     img.logo(src='{{_logo}}')
 
-    div(ngbDropdown)
-        button.btn.btn-secondary(ngbDropdownToggle) Cfg
-        //) !{require('../icons/download-solid.svg')}
-        div(ngbDropdownMenu)
-            a(
-                *ngFor='let config of configs',
-                ngbDropdownItem,
-                (click)='selectConfig(config)'
-            ) Config modified at {{config.modified_at}}
+    div(ngbDropdown, placement='bottom-right')
+        button.btn.btn-secondary(ngbDropdownToggle)
+            fa-icon([icon]='_cogIcon', [fixedWidth]='true')
 
-.terminal([hidden]='!showApp')
+        .config-menu(ngbDropdownMenu)
+            .header(*ngIf='getActiveConfig()')
+                .dropdown-header Active config
+                .title {{getActiveConfig().modified_at}}
+                div(*ngIf='activeVersion')
+                    div App version:
+                    div(ngbDropdown)
+                        button.btn.btn-secondary(ngbDropdownToggle) {{activeVersion.version}}
+                        div(ngbDropdownMenu)
+                            a(
+                                *ngFor='let version of versions',
+                                ngbDropdownItem,
+                                [class.active]='version == activeVersion',
+                                (click)='selectVersion(version)'
+                            ) {{version.version}}
+
+                    .btn-toolbar
+                        button.btn.btn-light.w-50((click)='duplicateConfig()')
+                            fa-icon([icon]='_copyIcon', [fixedWidth]='true')
+                            span Duplicate
+
+                        button.btn.btn-light.w-50((click)='deleteConfig()')
+                            fa-icon([icon]='_deleteIcon', [fixedWidth]='true')
+                            span Delete
+
+            div(*ngIf='configs.length > 1')
+                .dropdown-header All configs
+
+                ng-container(*ngFor='let config of configs')
+                    a(
+                        *ngIf='config !== getActiveConfig()',
+                        ngbDropdownItem,
+                        (click)='selectConfig(config)'
+                    ) Config modified at {{config.modified_at}}
+
+            button.btn.btn-light.w-100((click)='createNewConfig()')
+                fa-icon([icon]='_addIcon', [fixedWidth]='true')
+                span New config
+
+    div(ngbDropdown, placement='bottom-right')
+        button.btn.btn-secondary(ngbDropdownToggle)
+            fa-icon([icon]='_userIcon', [fixedWidth]='true')
+
+        div(ngbDropdownMenu)
+            a(ngbDropdownItem, (click)='logout()') Logout
+
+.terminal([hidden]='!activeVersion')
     iframe(#iframe)

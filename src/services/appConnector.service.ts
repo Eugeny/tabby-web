@@ -9,8 +9,9 @@ export class AppConnectorService {
     private configUpdate = new Subject<string>()
 
     constructor (private http: HttpClient) {
-        this.configUpdate.pipe(debounceTime(1000)).subscribe(content => {
-            this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
+        this.configUpdate.pipe(debounceTime(1000)).subscribe(async content => {
+            const result = await this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
+            Object.assign(this.config, result)
         })
     }
 
@@ -20,5 +21,6 @@ export class AppConnectorService {
 
     async saveConfig (content: string): Promise<void> {
         this.configUpdate.next(content)
+        this.config.content = content
     }
 }

@@ -20,39 +20,17 @@ module.exports = {
   resolve: {
     modules: [
       ...[
-        '../terminus/terminus-core/node_modules/',
-        '../terminus/terminus-settings/node_modules/',
-        '../terminus/terminus-terminal/node_modules/',
-        '../terminus/node_modules',
-        '../terminus/app/node_modules',
-        '../terminus/app/assets/',
+        // '../terminus/terminus-core/node_modules/',
+        // '../terminus/terminus-settings/node_modules/',
+        // '../terminus/terminus-terminal/node_modules/',
+        // '../terminus/node_modules',
+        // '../terminus/app/node_modules',
+        // '../terminus/app/assets/',
         'src',
       ].map(x => path.join(__dirname, x)),
       'node_modules/',
     ],
     extensions: ['.ts', '.js'],
-    fallback: {
-      stream: require.resolve('stream-browserify'),
-      assert: require.resolve('assert/'),
-      constants: require.resolve('constants-browserify'),
-      util: require.resolve('util/'),
-    },
-  },
-  externals: {
-    'dns': 'commonjs dns',
-    'tls': 'commonjs tls',
-    'tty': 'commonjs tty',
-    'crypto': 'commonjs crypto',
-    'querystring': 'commonjs querystring',
-    'https': 'commonjs https',
-    'http': 'commonjs http',
-    'url': 'commonjs url',
-    'zlib': 'commonjs zlib',
-    '../build/Release/cpufeatures.node': 'commonjs ../build/Release/cpufeatures.node',
-    './crypto/build/Release/sshcrypto.node': 'commonjs ./crypto/build/Release/sshcrypto.node',
-    'terminus-core': 'commonjs terminus-core',
-    'terminus-terminal': 'commonjs terminus-terminal',
-    'terminus-settings': 'commonjs terminus-settings',
   },
   module: {
     rules: [
@@ -91,32 +69,4 @@ module.exports = {
       }
     ],
   }
-}
-
-
-const externals = [
-  '@electron/remote',
-  'any-promise',
-  'child_process',
-  'electron-promise-ipc',
-  'electron',
-  'fontmanager-redux',
-  'fs',
-  'keytar',
-  'hterm-umdjs',
-  'macos-native-processlist',
-  'native-process-working-directory',
-  'net',
-  'os',
-  'path',
-  'readline',
-  'serialport',
-  'socksv5',
-  'windows-native-registry',
-  'windows-process-tree',
-  'windows-process-tree/build/Release/windows_process_tree.node',
-]
-
-for (const k of externals) {
-  module.exports.externals[k] = `commonjs ${k}`
 }
