@@ -2,15 +2,16 @@ import os
 from dataclasses import dataclass
 from django.conf import settings
 from django.contrib.auth import logout
+from rest_framework import fields
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Field
 from rest_framework_dataclasses.serializers import DataclassSerializer
 
-from .models import Config
+from .models import Config, User
 
 
 @dataclass
@@ -61,6 +62,26 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
         ).data)
 
 
+class UserSerializer(ModelSerializer):
+    id = fields.IntegerField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'active_config')
+        read_only_fields = ('id', 'username')
+
+
+class UserViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        if self.request.user.is_authenticated:
+            return self.request.user
+        return None
+
+
 class LogoutView(APIView):
     def post(self, request, format=None):
         logout(request)
+        return Response(None)

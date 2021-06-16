@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { AppComponent } from './components/app.component'
+import { MainComponent } from './components/main.component';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { AppComponent } from './components/app.component'
     ],
     declarations: [
         AppComponent,
+        MainComponent,
     ],
     bootstrap: [AppComponent]
 })

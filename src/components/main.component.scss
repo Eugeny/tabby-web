@@ -1,0 +1,61 @@
+@import "../theme/vars";
+
+:host {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.sidebar {
+    width: 64px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    .logo {
+        width: 32px;
+        height: 32px;
+        align-self: center;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    >button, >[ngbdropdown] > button {
+        width: 64px;
+        height: 64px;
+        background: transparent;
+        box-shadow: none;
+
+        &::after {
+            display: none;
+        }
+    }
+}
+
+.terminal {
+    flex: 1 1 0;
+    overflow: hidden;
+    position: relative;
+}
+
+iframe {
+    background: $body-bg;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+
+.config-menu {
+    .header {
+        border-bottom: 1px solid black;
+    }
+}
