@@ -1,2 +1,10 @@
 main(*ngIf='ready && user')
-login(*ngIf='ready && !user')
+.login-view(*ngIf='ready && !user')
+    .buttons
+        a.btn(
+            *ngFor='let provider of providers',
+            [class]='provider.cls',
+            href='/api/1/auth/social/login/{{provider.id}}'
+        )
+            fa-icon([icon]='provider.icon', [fixedWidth]='true')
+            span Log in with {{provider.name}}

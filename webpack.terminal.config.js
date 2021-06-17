@@ -8,7 +8,7 @@ module.exports = {
     'terminal.ignore': 'file-loader?name=terminal.html!pug-html-loader!' + path.resolve(__dirname, './src/terminal.pug'),
     terminal: path.resolve(__dirname, 'src/terminal.ts'),
   },
-  mode: process.env.TERMINUS_DEV ? 'development' : 'production',
+  mode: process.env.DEV ? 'development' : 'production',
   context: __dirname,
   devtool: 'cheap-module-source-map',
   output: {

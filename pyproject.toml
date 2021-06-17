@@ -12,6 +12,7 @@ channels = "^3.0.3"
 uvloop = "^0.15.2"
 djangorestframework-dataclasses = "^0.9"
 social-auth-app-django = "^4.0.0"
+python-dotenv = "^0.17.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

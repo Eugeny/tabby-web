@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress",
-    "watch": "TERMINUS_DEV=1 webpack --progress --watch"
+    "watch": "DEV=1 webpack --progress --watch",
+    "start": "./manage.py runserver"
   },
   "private": true,
   "devDependencies": {
@@ -19,6 +20,7 @@
     "@fortawesome/angular-fontawesome": "0.8",
     "@fortawesome/fontawesome-free": "^5.7.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@ng-bootstrap/ng-bootstrap": "11.0.0-beta.1",
     "@ngtools/webpack": "^12.0.4",

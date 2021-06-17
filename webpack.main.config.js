@@ -8,7 +8,7 @@ module.exports = {
     'index.ignore': 'file-loader?name=index.html!pug-html-loader!' + path.resolve(__dirname, './src/index.pug'),
     index: path.resolve(__dirname, 'src/index.ts'),
   },
-  mode: process.env.TERMINUS_DEV ? 'development' : 'production',
+  mode: process.env.DEV ? 'development' : 'production',
   context: __dirname,
   devtool: 'cheap-module-source-map',
   output: {

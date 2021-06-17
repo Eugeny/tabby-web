@@ -1,6 +1,8 @@
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
+import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons'
+
 @Component({
     selector: 'app',
     templateUrl: './app.component.pug',
@@ -9,6 +11,13 @@ import { HttpClient } from '@angular/common/http'
 export class AppComponent {
     user: any
     ready = false
+
+    providers = [
+        { name: 'GitHub', icon: faGithub, cls: 'btn-primary', id: 'github' },
+        { name: 'GitLab', icon: faGitlab, cls: 'btn-warning', id: 'gitlab' },
+        { name: 'Google', icon: faGoogle, cls: 'btn-secondary', id: 'google-oauth2' },
+        { name: 'Microsoft', icon: faMicrosoft, cls: 'btn-light', id: 'microsoft-graph' },
+    ]
 
     constructor (
         private http: HttpClient,

@@ -1,0 +1,25 @@
+:host {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.login-view {
+    margin: auto;
+    flex: none;
+}
+
+.buttons > * {
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    >span {
+        margin: auto;
+    }
+}
