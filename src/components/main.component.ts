@@ -66,7 +66,7 @@ export class MainComponent {
     }
 
     loadApp (version) {
-        this.iframe.nativeElement.src = `/terminal?${version.version}`
+        this.iframe.nativeElement.src = '/terminal'
         this.activeVersion = version
     }
 
@@ -78,6 +78,7 @@ export class MainComponent {
         // TODO check config incompatibility
         this.unloadApp()
         setTimeout(() => {
+            this.appConnector.version = version
             this.loadApp(version)
         })
     }

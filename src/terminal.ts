@@ -1,6 +1,10 @@
+import './terminal-styles.scss'
+
+
 Object.assign(window, {
+    // Buffer,
     process: {
-        env: { XWEB: 1, LOGNAME: 'root' },
+        env: { },
         argv: ['terminus'],
         platform: 'darwin',
         on: () => null,
@@ -15,155 +19,28 @@ Object.assign(window, {
 })
 
 
-import { Duplex } from 'stream-browserify'
-
-import 'core-js/proposals/reflect-metadata'
-import '@fortawesome/fontawesome-free/css/solid.css'
-import '@fortawesome/fontawesome-free/css/brands.css'
-import '@fortawesome/fontawesome-free/css/fontawesome.css'
-import 'source-code-pro/source-code-pro.css'
-import 'source-sans-pro/source-sans-pro.css'
-
-import './terminal-styles.scss'
-
-export class Socket extends Duplex {
-    webSocket: WebSocket
-    initialBuffer: Buffer
-
-    constructor () {
-        console.warn('socket constr', arguments)
-        super({
-            allowHalfOpen: false,
-        })
-        this.initialBuffer = Buffer.from('')
-    }
-
-    connect () {
-        this.webSocket = new WebSocket(`ws://${location.host}/api/1/gateway/tcp`)
-        this.webSocket.onopen = event => {
-            this['emit']('connect')
-            this.webSocket.send(this.initialBuffer)
-            this.initialBuffer = Buffer.from('')
-        }
-        this.webSocket.onmessage = async event => {
-            this['emit']('data', Buffer.from(await event.data.arrayBuffer()))
-        }
-    }
-
-    setNoDelay () {
-
-    }
-
-    setTimeout () {
-
-    }
-
-    _read (size: number): void {
-    }
-
-    _write (chunk: Buffer, _encoding: string, callback: (error?: Error | null) => void): void {
-        if (!this.webSocket.readyState) {
-            this.initialBuffer = Buffer.concat([this.initialBuffer, chunk])
-        } else {
-            this.webSocket.send(chunk)
-        }
-        callback()
-    }
-
-    _destroy (error: Error|null, callback: (error: Error|null) => void): void {
-        console.warn('socket destroy', error)
-        callback(error)
-    }
-}
-
 async function start () {
-    const mocks = {
-
-        '@electron/remote': {
-            app: {
-                getVersion: () => '1.0-web',
-                getPath: () => 'app-path',
-                getWindow: () => ({
-                    reload: () => null,
-                    setTrafficLightPosition: () => null,
-                }),
-            },
-            screen: {
-                on: () => null,
-                getAllDisplays: () => [],
-                getPrimaryDisplay: () => ({}),
-                getCursorScreenPoint: () => ({}),
-                getDisplayNearestPoint: () => null,
-            },
-            globalShortcut: {
-                unregisterAll: () => null,
-                register: () => null,
-            },
-            autoUpdater: {
-                on: () => null,
-                once: () => null,
-                setFeedURL: () => null,
-                checkForUpdates: () => null,
-            },
-            BrowserWindow: {
-                fromId: () => ({
-                    setOpacity: () => null,
-                    setProgressBar: () => null,
-                }),
-            },
-            getGlobal: () => window['process'],
-        },
-        electron: {
-            ipcRenderer: { // TODO remove
-                on: (e, c) => {
-                    console.log('[ipc listen]', e)
-                },
-                once: (e, c) => {
-                    console.log('[ipc listen once]', e)
-                },
-                send: msg => {
-                    console.log('[ipc]', msg)
-                }
-            },
-        },
-        net: {
-            Socket,
-        },
-
-        // winston: {
-        //     Logger,
-        //     transports: {
-        //         File: Object,
-        //         Console: Object,
-        //     }
-        // },
-        // 'mz/child_process': {
-        //     exec: (...x) => Promise.reject(),
-        // },
-        // 'mz/fs': {
-        //     readFile: path => mocks.fs.readFileSync(path),
-        //     exists: path => mocks.fs.existsSync(path),
-        //     existsSync: path => mocks.fs.existsSync(path),
-        // },
-    }
-
-    let builtins = {
-    }
+    const modules = { }
 
     Object.assign(window, {
         require: (path) => {
-            if (mocks[path]) {
-                console.warn('requiring mock', path)
-                return mocks[path]
-            }
-            if (builtins[path]) {
-                return builtins[path]
+            if (modules[path]) {
+                return modules[path]
             }
             console.error('requiring real module', path)
         },
     })
 
-    const appVersion = location.search.substring(1)
+    await new Promise<void>(resolve => {
+        window.addEventListener('message', event => {
+            if (event.data === 'connector-ready') {
+                resolve()
+            }
+        })
+        window.parent.postMessage('request-connector', '*')
+    })
+
+    const appVersion = window['__connector__'].getAppVersion()
 
     async function loadPlugin (name, file = 'index.js') {
         const url = `../app-dist/${appVersion}/${name}/dist/${file}`
@@ -192,23 +69,21 @@ async function start () {
         'terminus-web',
     ]) {
         const mod = await loadPlugin(plugin)
-        builtins[`resources/builtin-plugins/${plugin}`] = builtins[plugin] = mod
+        modules[`resources/builtin-plugins/${plugin}`] = modules[plugin] = mod
         pluginModules.push(mod)
     }
 
     document.querySelector('app-root')['style'].display = 'flex'
 
-    await new Promise<void>(resolve => {
-        window.addEventListener('message', event => {
-            if (event.data === 'connector-ready') {
-                resolve()
-            }
-        })
-        window.parent.postMessage('request-connector', '*')
-    })
-
     const config = window['__connector__'].loadConfig()
-    window['bootstrapTerminus'](pluginModules, { config })
+    window['bootstrapTerminus'](pluginModules, {
+        config,
+        executable: 'web',
+        isFirstWindow: true,
+        windowID: 1,
+        installedPlugins: [],
+        userPluginsPath: '/',
+    })
 }
 
 start()
