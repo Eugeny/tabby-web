@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, re_path, include
 from rest_framework import routers
 
 from . import api
@@ -22,5 +22,5 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-    path('api/1/gateway/tcp', consumers.TCPConsumer.as_asgi()),
+    re_path(r'^api/1/gateway/tcp/(?P<host>[^/]+):(?P<port>\d+)$', consumers.TCPConsumer.as_asgi()),
 ]

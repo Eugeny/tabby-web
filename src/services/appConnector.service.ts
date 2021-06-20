@@ -11,14 +11,13 @@ export class SocketProxy {
     webSocket: WebSocket
     initialBuffer: Buffer
 
-    constructor (...args) {
-        console.log('ws ctr', args)
+    constructor () {
         this.initialBuffer = Buffer.from('')
     }
 
-    connect (...args) {
-        console.log('ws connect', args)
-        this.webSocket = new WebSocket(`ws://${location.host}/api/1/gateway/tcp`)
+    connect (options) {
+        console.log('ws connect', options)
+        this.webSocket = new WebSocket(`ws://${location.host}/api/1/gateway/tcp/${options.host}:${options.port}`)
         this.webSocket.onopen = event => {
             this.connect$.next()
             this.connect$.complete()

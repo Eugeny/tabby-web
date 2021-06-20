@@ -149,5 +149,17 @@ for key in [
     'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET',
     'SOCIAL_AUTH_MICROSOFT_GRAPH_KEY',
     'SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET',
+    'CONNECTION_GATEWAY_AUTH_CA',
+    'CONNECTION_GATEWAY_AUTH_CERTIFICATE',
+    'CONNECTION_GATEWAY_AUTH_KEY',
 ]:
     globals()[key] = os.getenv(key)
+
+for key in [
+    'CONNECTION_GATEWAY_AUTH_CA',
+    'CONNECTION_GATEWAY_AUTH_CERTIFICATE',
+    'CONNECTION_GATEWAY_AUTH_KEY',
+]:
+    v = globals()[key]
+    if v and not os.path.exists(v):
+        raise ValueError(f'{v} does not exist')
