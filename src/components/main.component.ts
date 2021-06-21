@@ -3,7 +3,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { AppConnectorService } from '../services/appConnector.service'
 
-import { faCog, faUser, faCopy, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faUser, faCopy, faTrash, faPlus, faPlug } from '@fortawesome/free-solid-svg-icons'
+import { LoginService } from '../services/login.service'
 
 @Component({
     selector: 'main',
@@ -17,6 +18,7 @@ export class MainComponent {
     _copyIcon = faCopy
     _addIcon = faPlus
     _deleteIcon = faTrash
+    _connectionIcon = faPlug
 
     configs: any[] = []
     versions: any[] = []
@@ -26,6 +28,7 @@ export class MainComponent {
     constructor (
         private appConnector: AppConnectorService,
         private http: HttpClient,
+        public loginService: LoginService,
     ) {
         window.addEventListener('message', event => {
             if (event.data === 'request-connector') {

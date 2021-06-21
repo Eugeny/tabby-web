@@ -48,6 +48,15 @@
 
     div(ngbDropdown, placement='bottom-right')
         button.btn(ngbDropdownToggle)
+            fa-icon([icon]='_connectionIcon', [fixedWidth]='true')
+
+        div(ngbDropdownMenu)
+            .form-check.form-switch
+                input.form-check-input(type='checkbox', ngModel='!!loginService.user.custom_connection_gateway')
+                label(class='form-check-label') Use custom connection gateway
+
+    div(ngbDropdown, placement='bottom-right')
+        button.btn(ngbDropdownToggle)
             fa-icon([icon]='_userIcon', [fixedWidth]='true')
 
         div(ngbDropdownMenu)

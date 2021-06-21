@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { LoginService } from '../services/login.service'
 
 import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons'
 
@@ -9,7 +9,7 @@ import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-bra
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    user: any
+    loggedIn: any
     ready = false
 
     providers = [
@@ -20,14 +20,12 @@ export class AppComponent {
     ]
 
     constructor (
-        private http: HttpClient,
+        private loginService: LoginService,
     ) { }
 
     async ngOnInit () {
-        const user = await this.http.get('/api/1/user').toPromise()
-        if (user.id) {
-            this.user = user
-        }
+        await this.loginService.ready$.toPromise()
+        this.loggedIn = !!this.loginService.user
         this.ready = true
     }
 }

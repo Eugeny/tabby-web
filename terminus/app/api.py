@@ -67,7 +67,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'active_config')
+        fields = ('id', 'username', 'active_config', 'custom_connection_gateway', 'custom_connection_gateway_token')
         read_only_fields = ('id', 'username')
 
 

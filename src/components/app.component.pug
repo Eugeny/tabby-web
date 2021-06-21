@@ -1,5 +1,5 @@
-main(*ngIf='ready && user')
-.login-view(*ngIf='ready && !user')
+main(*ngIf='ready && loggedIn')
+.login-view(*ngIf='ready && !loggedIn')
     .buttons
         a.btn(
             *ngFor='let provider of providers',
