@@ -1,0 +1,40 @@
+.modal-body
+    .header(*ngIf='configService.activeConfig')
+        .d-flex.align-items-center.py-2.px-4
+            .me-auto
+                label Active config
+                .title {{configService.activeConfig.modified_at}}
+
+            button.btn.btn-semi.me-2((click)='configService.duplicateConfig()')
+                fa-icon([icon]='_copyIcon', [fixedWidth]='true')
+
+            button.btn.btn-semi((click)='deleteConfig()')
+                fa-icon([icon]='_deleteIcon', [fixedWidth]='true')
+
+        .d-flex.align-items-center.py-2.px-4(*ngIf='configService.activeVersion')
+            .me-auto App version:
+            div(ngbDropdown)
+                button.btn.btn-semi(ngbDropdownToggle) {{configService.activeVersion.version}}
+                div(ngbDropdownMenu)
+                    a(
+                        *ngFor='let version of versions',
+                        ngbDropdownItem,
+                        [class.active]='version == configService.activeVersion',
+                        (click)='selectVersion(version)'
+                    ) {{version.version}}
+
+    div(*ngIf='configService.configs.length > 1')
+        .dropdown-header All configs
+
+        ng-container(*ngFor='let config of configService.configs')
+            a(
+                *ngIf='config !== configService.activeConfig',
+                ngbDropdownItem,
+                (click)='selectConfig(config)',
+                href='#'
+            ) Config modified at {{config.modified_at}}
+
+    .p-3
+        button.btn.btn-semi.w-100((click)='configService.createNewConfig()')
+            fa-icon([icon]='_addIcon', [fixedWidth]='true')
+            span New config

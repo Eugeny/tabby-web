@@ -1,0 +1,32 @@
+.modal-header
+    h5.modal-title Settings
+.modal-body
+    .mb-3
+        .form-check.form-switch
+            input.form-check-input(
+                type='checkbox',
+                [(ngModel)]='customGatewayEnabled'
+            )
+            label(class='form-check-label') Use custom connection gateway
+
+    .mb-3(*ngIf='customGatewayEnabled')
+        .form-floating
+            input.form-control(
+                type='text',
+                [(ngModel)]='user.custom_connection_gateway',
+                placeholder='wss://1.2.3.4'
+            )
+            label Gateway address
+
+    .mb-3(*ngIf='customGatewayEnabled')
+        .form-floating
+            input.form-control(
+                type='password',
+                [(ngModel)]='user.custom_connection_gateway_token',
+                placeholder='123'
+            )
+            label Gateway authentication token
+
+.modal-footer
+    button.btn.btn-primary((click)='apply()') Apply
+    button.btn.btn-secondary((click)='cancel()') Cancel

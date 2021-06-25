@@ -1,10 +1,15 @@
-import * as semverGT from 'semver/functions/gt'
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { AppConnectorService } from '../services/appConnector.service'
 
-import { faCog, faUser, faCopy, faTrash, faPlus, faPlug } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faCopy, faTrash, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { LoginService } from '../services/login.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { SettingsModalComponent } from './settingsModal.component'
+import { ConfigModalComponent } from './configModal.component'
+import { ConfigService } from '../services/config.service'
+import { combineLatest } from 'rxjs'
+import { Config, Version } from '../api'
 
 @Component({
     selector: 'main',
@@ -14,21 +19,22 @@ import { LoginService } from '../services/login.service'
 export class MainComponent {
     _logo = require('../assets/logo.svg')
     _cogIcon = faCog
-    _userIcon = faUser
+    _settingsIcon = faCog
+    _logoutIcon = faSignOutAlt
     _copyIcon = faCopy
     _addIcon = faPlus
     _deleteIcon = faTrash
-    _connectionIcon = faPlug
 
-    configs: any[] = []
-    versions: any[] = []
-    activeVersion?: any
+    showApp = false
+
     @ViewChild('iframe') iframe: ElementRef
 
     constructor (
-        private appConnector: AppConnectorService,
+        public appConnector: AppConnectorService,
         private http: HttpClient,
         public loginService: LoginService,
+        private ngbModal: NgbModal,
+        private config: ConfigService,
     ) {
         window.addEventListener('message', event => {
             if (event.data === 'request-connector') {
@@ -39,68 +45,47 @@ export class MainComponent {
     }
 
     async ngAfterViewInit () {
-        this.configs = await this.http.get('/api/1/configs').toPromise()
-        this.versions = await this.http.get('/api/1/versions').toPromise()
-
-        this.versions.sort((a, b) => semverGT(a, b))
-
-        if (!this.configs.length) {
-            await this.createNewConfig()
-        }
-
-        this.selectConfig(this.configs[0])
-    }
-
-    async createNewConfig () {
-        this.configs.push(await this.http.post('/api/1/configs', {
-            content: '{}',
-            last_used_with_version: this.versions[0].version,
-        }).toPromise())
-    }
-
-    async duplicateConfig () {
-        const copy = {...this.appConnector.config, pk: undefined}
-        this.configs.push(await this.http.post('/api/1/configs', copy).toPromise())
+        combineLatest(
+            this.config.activeConfig$,
+            this.config.activeVersion$
+        ).subscribe(([config, version]) => {
+            if (config && version) {
+                this.reloadApp(config, version)
+            }
+        })
+        this.config
+        await this.config.ready$.toPromise()
+        await this.config.selectDefaultConfig()
     }
 
     unloadApp () {
-        delete this.activeVersion
+        this.showApp = false
         this.iframe.nativeElement.src = 'about:blank'
     }
 
-    loadApp (version) {
+    async loadApp (config, version) {
+        this.showApp = true
         this.iframe.nativeElement.src = '/terminal'
-        this.activeVersion = version
+        await this.http.patch(`/api/1/configs/${config.id}`, {
+            last_used_with_version: version.version,
+        }).toPromise()
     }
 
-    getActiveConfig () {
-        return this.appConnector.config
-    }
-
-    selectVersion (version: any) {
+    reloadApp (config: Config, version: Version) {
         // TODO check config incompatibility
         this.unloadApp()
         setTimeout(() => {
-            this.appConnector.version = version
-            this.loadApp(version)
+            this.appConnector.setState(config, version)
+            this.loadApp(config, version)
         })
     }
 
-    async selectConfig (config: any) {
-        let matchingVersion = this.versions.find(x => x.version === config.last_used_with_version)
-        if (!matchingVersion) {
-            // TODO ask to upgrade
-            matchingVersion = this.versions[0]
-        }
+    async openConfig () {
+        await this.ngbModal.open(ConfigModalComponent).result
+    }
 
-        this.appConnector.config = config
-
-        const result = await this.http.patch(`/api/1/configs/${config.id}`, {
-            last_used_with_version: matchingVersion.version,
-        }).toPromise()
-        Object.assign(config, result)
-
-        this.selectVersion(matchingVersion)
+    async openSettings () {
+        await this.ngbModal.open(SettingsModalComponent).result
     }
 
     async logout () {

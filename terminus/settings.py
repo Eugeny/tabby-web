@@ -136,6 +136,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+SOCIAL_AUTH_GITHUB_SCOPE = ['read:user', 'user:email']
+
 LOGIN_REDIRECT_URL = '/'
 
 APP_DIST_PATH = BASE_DIR / 'app-dist'
@@ -152,8 +154,18 @@ for key in [
     'CONNECTION_GATEWAY_AUTH_CA',
     'CONNECTION_GATEWAY_AUTH_CERTIFICATE',
     'CONNECTION_GATEWAY_AUTH_KEY',
+    'GITHUB_SPONSORS_USER',
+    'GITHUB_SPONSORS_MIN_PAYMENT',
+    'GITHUB_TOKEN',
 ]:
     globals()[key] = os.getenv(key)
+
+
+for key in [
+    'GITHUB_SPONSORS_MIN_PAYMENT',
+]:
+    globals()[key] = int(globals()[key]) if globals()[key] else None
+
 
 for key in [
     'CONNECTION_GATEWAY_AUTH_CA',

@@ -3,12 +3,13 @@ from dataclasses import dataclass
 from django.conf import settings
 from django.contrib.auth import logout
 from rest_framework import fields
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.serializers import ModelSerializer, Field
+from rest_framework.serializers import ModelSerializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
 
 from .models import Config, User
@@ -64,21 +65,25 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
 
 class UserSerializer(ModelSerializer):
     id = fields.IntegerField()
+    is_pro = fields.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'active_config', 'custom_connection_gateway', 'custom_connection_gateway_token')
+        fields = ('id', 'username', 'active_config', 'custom_connection_gateway', 'custom_connection_gateway_token', 'is_pro')
         read_only_fields = ('id', 'username')
 
+    def get_is_pro(self, obj):
+        return False
 
-class UserViewSet(RetrieveModelMixin, GenericViewSet):
+
+class UserViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
     def get_object(self):
         if self.request.user.is_authenticated:
             return self.request.user
-        return None
+        raise PermissionDenied()
 
 
 class LogoutView(APIView):

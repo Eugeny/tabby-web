@@ -14,6 +14,7 @@ djangorestframework-dataclasses = "^0.9"
 social-auth-app-django = "^4.0.0"
 python-dotenv = "^0.17.1"
 websockets = "^9.1"
+gql = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

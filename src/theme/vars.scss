@@ -77,7 +77,7 @@ $link-hover-color: $white;
 $link-hover-decoration: none;
 
 $component-active-color: $white;
-$component-active-bg: #2f3a42;
+$component-active-bg: $blue;
 
 $list-group-bg: $table-bg;
 $list-group-border-color: $table-border-color;
@@ -113,7 +113,7 @@ $popover-max-width: 360px;
 
 $btn-border-width:  2px;
 
-$input-bg:                       #181e23;
+$input-bg:                       $black;
 $input-disabled-bg:              #2e3235;
 
 $input-color:                    #ddd;
@@ -128,6 +128,8 @@ $input-group-addon-color: $input-color;
 $input-group-addon-bg: $input-bg;
 $input-group-addon-border-color: transparent;
 $input-group-btn-border-color: $input-bg;
+
+$form-switch-color:               rgba(255,255,255, .25);
 
 $nav-tabs-border-radius: 0;
 $nav-tabs-border-color: transparent;
@@ -179,8 +181,7 @@ $custom-control-indicator-active-bg: rgba(255, 255, 0, 0.5);
 $modal-content-bg:               $body-bg;
 $modal-content-border-color:     $body-bg;
 $modal-header-border-width:         0;
-$modal-footer-border-color:         #222;
-$modal-footer-border-width:         1px;
+$modal-footer-border-width:         0;
 $modal-content-border-width:        0;
 
 $progress-bg: $table-bg;

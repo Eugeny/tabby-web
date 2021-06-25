@@ -21,7 +21,9 @@ export class AppComponent {
 
     constructor (
         private loginService: LoginService,
-    ) { }
+    ) {
+        this.providers = [this.providers[0]] // only keep GH for now
+    }
 
     async ngOnInit () {
         await this.loginService.ready$.toPromise()

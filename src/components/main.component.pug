@@ -1,66 +1,14 @@
 .sidebar
     img.logo(src='{{_logo}}')
 
-    div(ngbDropdown, placement='bottom-right')
-        button.btn(ngbDropdownToggle)
-            fa-icon([icon]='_cogIcon', [fixedWidth]='true')
+    button.btn((click)='openConfig()')
+        fa-icon([icon]='_cogIcon', [fixedWidth]='true')
 
-        .config-menu(ngbDropdownMenu)
-            .header(*ngIf='getActiveConfig()')
-                .d-flex.align-items-center.py-2.px-4
-                    .me-auto
-                        label Active config
-                        .title {{getActiveConfig().modified_at}}
+    button.btn((click)='openSettings()')
+        fa-icon([icon]='_settingsIcon', [fixedWidth]='true')
 
-                    button.btn.btn-semi.me-2((click)='duplicateConfig()')
-                        fa-icon([icon]='_copyIcon', [fixedWidth]='true')
+    button.btn.mt-auto((click)='logout()')
+        fa-icon([icon]='_logoutIcon', [fixedWidth]='true')
 
-                    button.btn.btn-semi((click)='deleteConfig()')
-                        fa-icon([icon]='_deleteIcon', [fixedWidth]='true')
-
-                .d-flex.align-items-center.py-2.px-4(*ngIf='activeVersion')
-                    .me-auto App version:
-                    div(ngbDropdown)
-                        button.btn.btn-semi(ngbDropdownToggle) {{activeVersion.version}}
-                        div(ngbDropdownMenu)
-                            a(
-                                *ngFor='let version of versions',
-                                ngbDropdownItem,
-                                [class.active]='version == activeVersion',
-                                (click)='selectVersion(version)'
-                            ) {{version.version}}
-
-            div(*ngIf='configs.length > 1')
-                .dropdown-header All configs
-
-                ng-container(*ngFor='let config of configs')
-                    a(
-                        *ngIf='config !== getActiveConfig()',
-                        ngbDropdownItem,
-                        (click)='selectConfig(config)',
-                        href='#'
-                    ) Config modified at {{config.modified_at}}
-
-            .p-3
-                button.btn.btn-semi.w-100((click)='createNewConfig()')
-                    fa-icon([icon]='_addIcon', [fixedWidth]='true')
-                    span New config
-
-    div(ngbDropdown, placement='bottom-right')
-        button.btn(ngbDropdownToggle)
-            fa-icon([icon]='_connectionIcon', [fixedWidth]='true')
-
-        div(ngbDropdownMenu)
-            .form-check.form-switch
-                input.form-check-input(type='checkbox', ngModel='!!loginService.user.custom_connection_gateway')
-                label(class='form-check-label') Use custom connection gateway
-
-    div(ngbDropdown, placement='bottom-right')
-        button.btn(ngbDropdownToggle)
-            fa-icon([icon]='_userIcon', [fixedWidth]='true')
-
-        div(ngbDropdownMenu)
-            a(ngbDropdownItem, (click)='logout()', href='#') Logout
-
-.terminal([hidden]='!activeVersion')
+.terminal([hidden]='!showApp')
     iframe(#iframe)

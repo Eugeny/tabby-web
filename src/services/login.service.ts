@@ -1,20 +1,29 @@
 import { AsyncSubject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
+import { User } from '../api'
 
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-    user: any
+    user: User
     ready$ = new AsyncSubject<void>()
 
     constructor (private http: HttpClient) {
         this.init()
     }
 
+    async updateUser () {
+        await this.http.put('/api/1/user', this.user).toPromise()
+    }
+
     private async init () {
-        const user = await this.http.get('/api/1/user').toPromise()
-        this.user = user
+        try {
+            this.user = await this.http.get('/api/1/user').toPromise()
+        } catch {
+            this.user = null
+        }
+
         this.ready$.next()
         this.ready$.complete()
     }

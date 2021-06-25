@@ -4,6 +4,7 @@ import { debounceTime } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { LoginService } from '../services/login.service'
+import { Config, Version } from '../api'
 
 export class SocketProxy {
     connect$ = new Subject<void>()
@@ -86,10 +87,9 @@ export class SocketProxy {
 
 @Injectable({ providedIn: 'root' })
 export class AppConnectorService {
-    config: any
-    version: any
-    user: any
     private configUpdate = new Subject<string>()
+    private config: Config
+    private version: Version
 
     constructor (
         private http: HttpClient,
@@ -99,6 +99,11 @@ export class AppConnectorService {
             const result = await this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
             Object.assign(this.config, result)
         })
+    }
+
+    setState (config: Config, version: Version) {
+        this.config = config
+        this.version = version
     }
 
     async loadConfig (): Promise<string> {
