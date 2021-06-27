@@ -27,35 +27,32 @@ async function start () {
         return window['module'].exports
     }
 
-    const baseUrl = `../app-dist/${appVersion}`
+    const baseUrl = `${connector.getDistURL()}/${appVersion}`
     await webRequire(`${baseUrl}/web/dist/preload.js`)
     await webRequire(`${baseUrl}/web/dist/bundle.js`)
 
     const terminus = window['Terminus']
 
     const pluginModules = []
-    for (const plugin of [
-        'terminus-core',
-        'terminus-settings',
-        'terminus-terminal',
-        'terminus-ssh',
-        'terminus-community-color-schemes',
-        'terminus-web',
-    ]) {
+    for (const plugin of connector.getPluginsToLoad()) {
         pluginModules.push(await terminus.loadPlugin(`${baseUrl}/${plugin}`))
     }
 
     document.querySelector('app-root')['style'].display = 'flex'
 
     const config = connector.loadConfig()
-    terminus.bootstrap(pluginModules, {
-        config,
-        executable: 'web',
-        isFirstWindow: true,
-        windowID: 1,
-        installedPlugins: [],
-        userPluginsPath: '/',
+    terminus.bootstrap({
+        packageModules: pluginModules,
+        bootstrapData: {
+            config,
+            executable: 'web',
+            isFirstWindow: true,
+            windowID: 1,
+            installedPlugins: [],
+            userPluginsPath: '/',
+        },
+        debugMode: false,
+        connector,
     })
 }
-
 start()

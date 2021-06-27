@@ -10,6 +10,7 @@ import { ConfigModalComponent } from './configModal.component'
 import { ConfigService } from '../services/config.service'
 import { combineLatest } from 'rxjs'
 import { Config, Version } from '../api'
+import { Router } from '@angular/router'
 
 @Component({
     selector: 'main',
@@ -35,16 +36,25 @@ export class MainComponent {
         public loginService: LoginService,
         private ngbModal: NgbModal,
         private config: ConfigService,
+        private router: Router,
     ) {
-        window.addEventListener('message', event => {
-            if (event.data === 'request-connector') {
-                this.iframe.nativeElement.contentWindow['__connector__'] = this.appConnector
-                this.iframe.nativeElement.contentWindow.postMessage('connector-ready', '*')
-            }
-        })
+        window.addEventListener('message', this.connectorRequestHandler)
+    }
+
+    connectorRequestHandler = event => {
+        if (event.data === 'request-connector') {
+            this.iframe.nativeElement.contentWindow['__connector__'] = this.appConnector
+            this.iframe.nativeElement.contentWindow.postMessage('connector-ready', '*')
+        }
     }
 
     async ngAfterViewInit () {
+        await this.loginService.ready$.toPromise()
+        if (!this.loginService.user) {
+            this.router.navigate(['/login'])
+            return
+        }
+
         combineLatest(
             this.config.activeConfig$,
             this.config.activeVersion$
@@ -56,6 +66,10 @@ export class MainComponent {
         this.config
         await this.config.ready$.toPromise()
         await this.config.selectDefaultConfig()
+    }
+
+    ngOnDestroy () {
+        window.removeEventListener('message', this.connectorRequestHandler)
     }
 
     unloadApp () {

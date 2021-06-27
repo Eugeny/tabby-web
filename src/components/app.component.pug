@@ -1,10 +1,1 @@
-main(*ngIf='ready && loggedIn')
-.login-view(*ngIf='ready && !loggedIn')
-    .buttons
-        a.btn(
-            *ngFor='let provider of providers',
-            [class]='provider.cls',
-            href='/api/1/auth/social/login/{{provider.id}}'
-        )
-            fa-icon([icon]='provider.icon', [fixedWidth]='true')
-            span Log in with {{provider.name}}
+router-outlet

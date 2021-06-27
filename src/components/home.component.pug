@@ -1,0 +1,96 @@
+.top-half
+    .navbar
+        img.brand(src='{{_logo}}')
+        .me-auto
+        a.btn.btn-primary([href]='releaseURL', target='_blank')
+            fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
+            span Download
+        a.btn.btn-secondary(routerLink='/login')
+            fa-icon([icon]='_loginIcon', [fixedWidth]='true')
+            span Login
+
+    .container
+        .intro
+            h1 Hey.
+            div My name is Eugene and I've built a nice terminal app, #[em.ms-1 just for you].
+            div Crossplatform, local, SSH, serial - it's all there.
+            div Go on, try it out 👇
+
+        iframe(#iframe)
+
+.bottom-half
+    .container
+        .d-flex.m-auto
+            a.btn.btn-lg.btn-primary.ms-auto.me-3([href]='releaseURL', target='_blank')
+                fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
+                span Latest release
+
+            a.btn.btn-lg.btn-secondary.me-auto([href]='githubURL', target='_blank')
+                fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+                span GitHub
+
+        .quotes
+            .quote
+                .text "reasonable"
+                .author &#8212; Michael
+
+            .quote
+                .text "cool"
+                .author &#8212; some dude on my ko-fi
+
+            .quote
+                .text "very cool"
+                .author &#8212; datsukan
+
+    .section.section-a
+        .container
+            .row
+                .col
+                    img.screenshot([src]='screenshots.window')
+                .col
+                    h1 The important stuff
+                    ul
+                        li Runs on #[strong Windows, Mac and Linux]
+                        li Integrated #[strong SSH client] with a connection manager
+                        li Integrated #[strong serial terminal]
+                        li PowerShell, PS Core, WSL, Git-Bash, Cygwin, Cmder and CMD support
+                        li Full #[strong Unicode support] including double-width characters
+                        li File transfer from/to SSH sessions via #[strong SFTP and Zmodem]
+                        li Theming and color schemes
+                        li Fully #[strong configurable shortcuts] and multi-chord shortcuts
+                        li #[strong Remembers your tabs] and split panes
+                        li Proper shell experience on Windows including #[strong tab completion]
+                        li Integrated #[strong encrypted container] for SSH secrets and configuration
+
+    .section.section-b
+        .container
+            .row
+                .col
+                    h1 Terminal features
+                    ul
+                        li Multiple #[strong nested panes]
+                        li #[strong Progress bars] and activity notifications for tabs
+                        li Terminus remembers open tabs and panes where you left off
+                        li Tabs on #[strong any side of the window]
+                        li Optional #[strong quake mode] (terminal docked to a side of the screen)
+                        li Optional #[strong global hotkey] to focus/hide the terminal
+                        li Bracketed paste
+                .col
+                    img.screenshot([src]='screenshots.tabs')
+
+    .section.section-a
+        .container
+            .row
+                .col
+                    img.screenshot([src]='screenshots.ssh')
+                .col
+                    h1 SSH
+                    ul
+                        li SSH2 client with a connection manager
+                        li #[strong SFTP and Zmodem] file transfers
+                        li #[strong X11] and #[strong port forwarding]
+                        li Jump hosts
+                        li #[strong Agent forwarding] - including Pageant and Windows native OpenSSH Agent
+                        li Login scripts
+                        li Optional built-in #[strong password manager] with a master passphrase
+                        li #[strong Proxy command] support

@@ -138,7 +138,7 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GITHUB_SCOPE = ['read:user', 'user:email']
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/app'
 
 APP_DIST_PATH = BASE_DIR / 'app-dist'
 

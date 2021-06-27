@@ -119,6 +119,21 @@ export class AppConnectorService {
         return this.version.version
     }
 
+    getDistURL (): string {
+        return '../app-dist'
+    }
+
+    getPluginsToLoad (): string[] {
+        return [
+            'terminus-core',
+            'terminus-settings',
+            'terminus-terminal',
+            'terminus-ssh',
+            'terminus-community-color-schemes',
+            'terminus-web',
+        ]
+    }
+
     createSocket () {
         return new SocketProxy(this)
     }

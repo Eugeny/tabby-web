@@ -14,7 +14,8 @@ urlpatterns = [
     path('api/1/auth/logout', api.LogoutView.as_view()),
     path('api/1/user', api.UserViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
 
-    path('', views.IndexView.as_view()),
+    re_path('^(|login|app)$', views.IndexView.as_view()),
+
     path('terminal', views.TerminalView.as_view()),
     path('app-dist/<version>/<path:path>', views.AppDistView.as_view()),
     path('build/<path:path>', views.BuildView.as_view()),

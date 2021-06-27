@@ -51,7 +51,6 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
     lookup_field = 'id'
     lookup_value_regex = r'[\w\d.-]+'
     queryset = ''
-    permission_classes = [IsAuthenticated]
 
     def _get_versions(self):
         return [AppVersion(version=x) for x in os.listdir(settings.APP_DIST_PATH)]

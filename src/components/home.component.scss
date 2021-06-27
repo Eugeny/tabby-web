@@ -1,0 +1,95 @@
+@import "../theme/vars.scss";
+
+:host {
+    font-size: 20px;
+}
+
+.top-half {
+    background: linear-gradient(#0c141c, #15202b);
+}
+
+.navbar {
+    display: flex;
+    padding: 15px 30px;
+
+    a, button {
+        margin-left: 10px;
+    }
+}
+
+.brand {
+    width: 32px;
+}
+
+h1 {
+    font-family: $font-family-monospace;
+    font-weight: bold;
+    font-size: 48px;
+    text-shadow: 0 0 1px black;
+}
+
+.intro {
+    width: 60vw;
+    margin: auto;
+}
+
+iframe {
+    display: block;
+    margin: auto;
+    position: relative;
+    top: 20vw;
+    margin-top: -18vw;
+
+    width: 60vw;
+    height: 42vw;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 0 2px black, 0 0 50px #6ef2ff05, 0 0 150px #6854ff14;
+}
+
+.bottom-half {
+    padding-top: 24vw;
+}
+
+.quotes {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    .quote {
+        margin: 0 30px;
+
+        .text {
+            font-size: 50px;
+            font-style: italic;
+        }
+
+        .author {
+            font-size: 14px;
+        }
+    }
+}
+
+strong {
+    background: #9400ff57;
+    font-weight: normal;
+    padding: 2px 7px;
+    text-shadow: 0 0 2px black;
+}
+
+.section {
+    padding: 30px 0;
+
+    .screenshot {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+.section-a {
+    background: rgba(0, 0, 0, .5);
+}
+
+.section-b {
+}

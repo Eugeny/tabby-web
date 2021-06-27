@@ -66,3 +66,13 @@
 .modal-footer {
   background: #00000030;
 }
+
+a, button {
+  fa-icon {
+    opacity: .75;
+  }
+
+  fa-icon + * {
+    margin-left: 5px;
+  }
+}
