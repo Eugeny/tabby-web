@@ -5,7 +5,10 @@
         a.btn.btn-primary([href]='releaseURL', target='_blank')
             fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
             span Download
-        a.btn.btn-secondary(routerLink='/login')
+        a.btn.btn-secondary([href]='donationURL', target='_blank')
+            fa-icon([icon]='_donateIcon', [fixedWidth]='true')
+            span Donate
+        a.btn.btn-secondary(routerLink='/login', *ngIf='instanceInfo.login_enabled')
             fa-icon([icon]='_loginIcon', [fixedWidth]='true')
             span Login
 
@@ -84,7 +87,7 @@
                 .col
                     img.screenshot([src]='screenshots.ssh')
                 .col
-                    h1 SSH
+                    h1 SSH Client
                     ul
                         li SSH2 client with a connection manager
                         li #[strong SFTP and Zmodem] file transfers
@@ -94,3 +97,47 @@
                         li Login scripts
                         li Optional built-in #[strong password manager] with a master passphrase
                         li #[strong Proxy command] support
+
+    .section.section-b
+        .container
+            .row
+                .col
+                    h1 Windows, but nice
+                    ul
+                        li Support for #[strong different shells] in the same window
+                        li Better tab completion #[strong cmd.exe] thanks to Clink.
+                        li Explorer menu integration
+                        li Optional #[strong portable mode]
+                        li Current directory detection that works
+                .col
+                    img.screenshot([src]='screenshots.win')
+
+    .section.section-a
+        .container
+            .row
+                .col
+                    img.screenshot([src]='screenshots.serial')
+                .col
+                    h1 Serial Terminal
+                    ul
+                        li Multiple #[strong connection profiles]
+                        li Newline conversion
+                        li Text, #[strong readline] and #[strong byte-by-byte] input modes
+                        li Text and #[strong hexdump] output modes
+                        li Zmodem
+                        li Non-standard baud rates
+
+    .section.section-a
+        .container
+            h1 And just too much stuff to mention here:
+            ul
+                li Themes #[strong customizable with CSS]
+                li Extensible via #[strong plugins] (in JS)
+                li A bunch of color schemes already included
+                li #[strong Font ligatures] and font fallback
+                li #[strong Clickable URLs], IPs and paths
+                li #[strong WinSCP] integration
+                li Shell #[strong profiles]
+                li Simultaneous #[strong multi-pane input]
+                li Optional PuTTY style #[strong right-click paste] and #[strong copy on select]
+                li macOS vibrancy and Win 10 fluent background support

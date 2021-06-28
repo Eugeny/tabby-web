@@ -1,9 +1,10 @@
 import * as semverGT from 'semver/functions/gt'
 import { HttpClient } from '@angular/common/http'
 import { Component, ElementRef, ViewChild } from '@angular/core'
-import { Version } from '../api'
-import { faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { InstanceInfo, Version } from '../api'
+import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { ActivatedRoute } from '@angular/router'
 
 class DemoConnector {
     constructor (targetWindow: Window, private version: Version) {
@@ -47,18 +48,30 @@ export class HomeComponent {
     connector: DemoConnector
     githubURL = 'https://github.com/Eugeny/terminus'
     releaseURL = `${this.githubURL}/releases/latest`
+    donationURL = 'https://ko-fi.com/eugeny'
+
     _logo = require('../assets/logo.svg')
     _downloadIcon = faDownload
     _loginIcon = faSignInAlt
     _githubIcon = faGithub
+    _donateIcon = faCoffee
+
     screenshots = {
         window: require('../assets/screenshots/window.png'),
         tabs: require('../assets/screenshots/tabs.png'),
         ssh: require('../assets/screenshots/ssh.png'),
+        serial: require('../assets/screenshots/serial.png'),
+        win: require('../assets/screenshots/win.png'),
     }
 
-    constructor (private http: HttpClient) {
+    instanceInfo: InstanceInfo
+
+    constructor (
+        private http: HttpClient,
+        route: ActivatedRoute,
+    ) {
         window.addEventListener('message', this.connectorRequestHandler)
+        this.instanceInfo = route.snapshot.data.instanceInfo
     }
 
     connectorRequestHandler = event => {

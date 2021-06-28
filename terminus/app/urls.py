@@ -13,6 +13,7 @@ router.register('api/1/versions', api.AppVersionViewSet, basename='app-versions'
 urlpatterns = [
     path('api/1/auth/logout', api.LogoutView.as_view()),
     path('api/1/user', api.UserViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
+    path('api/1/instance-info', api.InstanceInfoViewSet.as_view({'get': 'retrieve'})),
 
     re_path('^(|login|app)$', views.IndexView.as_view()),
 

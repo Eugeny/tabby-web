@@ -13,11 +13,30 @@ import { ConfigModalComponent } from './components/configModal.component'
 import { SettingsModalComponent } from './components/settingsModal.component'
 import { HomeComponent } from './components/home.component'
 import { LoginComponent } from './components/login.component'
+import { InstanceInfoResolver } from './api'
 
 const ROUTES = [
-    { path: '', component: HomeComponent },
-    { path: 'app', component: MainComponent },
-    { path: 'login', component: LoginComponent },
+    {
+        path: '',
+        component: HomeComponent,
+        resolve: {
+            instanceInfo: InstanceInfoResolver,
+        }
+    },
+    {
+        path: 'app',
+        component: MainComponent,
+        resolve: {
+            instanceInfo: InstanceInfoResolver,
+        }
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+        resolve: {
+            instanceInfo: InstanceInfoResolver,
+        }
+    },
 ]
 
 @NgModule({

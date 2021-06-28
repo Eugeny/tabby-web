@@ -1,3 +1,8 @@
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Resolve } from '@angular/router'
+import { Observable } from 'rxjs'
+
 export interface User {
     active_config: number
     active_version: string
@@ -16,4 +21,17 @@ export interface Config {
 
 export interface Version {
     version: string
+}
+
+export interface InstanceInfo {
+    login_enabled: boolean
+}
+
+@Injectable({ providedIn: 'root' })
+export class InstanceInfoResolver implements Resolve<Observable<InstanceInfo>> {
+    constructor (private http: HttpClient) { }
+
+    resolve(): Observable<InstanceInfo> {
+        return this.http.get('/api/1/instance-info').toPromise()
+    }
 }

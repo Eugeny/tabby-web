@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
 
 from .models import Config, User
@@ -89,3 +89,17 @@ class LogoutView(APIView):
     def post(self, request, format=None):
         logout(request)
         return Response(None)
+
+
+class InstanceInfoSerializer(Serializer):
+    login_enabled = fields.BooleanField()
+
+
+class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = ''  # type: ignore
+    serializer_class = InstanceInfoSerializer
+
+    def get_object(self):
+        return {
+            'login_enabled': settings.ENABLE_LOGIN,
+        }
