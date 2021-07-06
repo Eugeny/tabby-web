@@ -140,7 +140,7 @@ SOCIAL_AUTH_GITHUB_SCOPE = ['read:user', 'user:email']
 
 LOGIN_REDIRECT_URL = '/app'
 
-APP_DIST_PATH = BASE_DIR / 'app-dist'
+APP_DIST_PATH = os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist')
 
 for key in [
     'SOCIAL_AUTH_GITHUB_KEY',
