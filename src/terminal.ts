@@ -28,8 +28,8 @@ async function start () {
     }
 
     const baseUrl = `${connector.getDistURL()}/${appVersion}`
-    await webRequire(`${baseUrl}/web/dist/preload.js`)
-    await webRequire(`${baseUrl}/web/dist/bundle.js`)
+    await webRequire(`${baseUrl}/tabby-web-container/dist/preload.js`)
+    await webRequire(`${baseUrl}/tabby-web-container/dist/bundle.js`)
 
     const tabby = window['Tabby']
 
