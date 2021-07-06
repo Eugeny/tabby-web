@@ -16,6 +16,7 @@ python-dotenv = "^0.17.1"
 websockets = "^9.1"
 gql = "^2.0.0"
 dj-database-url = "^0.5.0"
+mysqlclient = "^2.0.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
