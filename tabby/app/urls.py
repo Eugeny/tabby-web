@@ -19,7 +19,6 @@ urlpatterns = [
 
     path('terminal', views.TerminalView.as_view()),
     path('app-dist/<version>/<path:path>', views.AppDistView.as_view()),
-    path('build/<path:path>', views.BuildView.as_view()),
     path('', include(router.urls)),
 ]
 
