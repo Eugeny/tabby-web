@@ -8,11 +8,13 @@ import { ActivatedRoute } from '@angular/router'
 
 class DemoConnector {
     constructor (targetWindow: Window, private version: Version) {
-        targetWindow['terminusWebDemoDataPath'] = `${this.getDistURL()}/${version.version}/terminus-web-demo/data`
+        targetWindow['tabbyWebDemoDataPath'] = `${this.getDistURL()}/${version.version}/tabby-web-demo/data`
     }
 
     async loadConfig (): Promise<string> {
-        return '{}'
+        return `{
+            recoverTabs: false
+        }`
     }
 
     async saveConfig (content: string): Promise<void> {
@@ -28,12 +30,12 @@ class DemoConnector {
 
     getPluginsToLoad (): string[] {
         return [
-            'terminus-core',
-            'terminus-settings',
-            'terminus-terminal',
-            'terminus-community-color-schemes',
-            'terminus-web',
-            'terminus-web-demo',
+            'tabby-core',
+            'tabby-settings',
+            'tabby-terminal',
+            'tabby-community-color-schemes',
+            'tabby-web',
+            'tabby-web-demo',
         ]
     }
 }
@@ -46,7 +48,7 @@ class DemoConnector {
 export class HomeComponent {
     @ViewChild('iframe') iframe: ElementRef
     connector: DemoConnector
-    githubURL = 'https://github.com/Eugeny/terminus'
+    githubURL = 'https://github.com/Eugeny/tabby'
     releaseURL = `${this.githubURL}/releases/latest`
     donationURL = 'https://ko-fi.com/eugeny'
 

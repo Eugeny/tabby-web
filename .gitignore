@@ -12,3 +12,4 @@ build
 *.d.ts
 .env
 yarn-error.log
+static

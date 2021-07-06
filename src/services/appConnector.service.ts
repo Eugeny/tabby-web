@@ -125,12 +125,12 @@ export class AppConnectorService {
 
     getPluginsToLoad (): string[] {
         return [
-            'terminus-core',
-            'terminus-settings',
-            'terminus-terminal',
-            'terminus-ssh',
-            'terminus-community-color-schemes',
-            'terminus-web',
+            'tabby-core',
+            'tabby-settings',
+            'tabby-terminal',
+            'tabby-ssh',
+            'tabby-community-color-schemes',
+            'tabby-web',
         ]
     }
 

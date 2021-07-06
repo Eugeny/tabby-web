@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -32,7 +33,7 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'social_django',
-    'terminus.app',
+    'tabby.app',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'terminus.urls'
+ROOT_URLCONF = 'tabby.urls'
 
 TEMPLATES = [
     {
@@ -63,18 +64,15 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'terminus.asgi.application'
-WSGI_APPLICATION = 'terminus.wsgi.application'
+ASGI_APPLICATION = 'tabby.asgi.application'
+WSGI_APPLICATION = 'tabby.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 
@@ -116,6 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [BASE_DIR / 'build']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

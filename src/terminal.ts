@@ -31,17 +31,17 @@ async function start () {
     await webRequire(`${baseUrl}/web/dist/preload.js`)
     await webRequire(`${baseUrl}/web/dist/bundle.js`)
 
-    const terminus = window['Terminus']
+    const tabby = window['Tabby']
 
     const pluginModules = []
     for (const plugin of connector.getPluginsToLoad()) {
-        pluginModules.push(await terminus.loadPlugin(`${baseUrl}/${plugin}`))
+        pluginModules.push(await tabby.loadPlugin(`${baseUrl}/${plugin}`))
     }
 
     document.querySelector('app-root')['style'].display = 'flex'
 
     const config = connector.loadConfig()
-    terminus.bootstrap({
+    tabby.bootstrap({
         packageModules: pluginModules,
         bootstrapData: {
             config,

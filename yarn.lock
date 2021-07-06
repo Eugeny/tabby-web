@@ -335,10 +335,10 @@
   dependencies:
     enhanced-resolve "5.7.0"
 
-"@terminus-term/to-string-loader@^1.1.7-beta.1":
-  version "1.1.7-beta.1"
-  resolved "https://registry.yarnpkg.com/@terminus-term/to-string-loader/-/to-string-loader-1.1.7-beta.1.tgz#5a622830a7f12ebbb2e2c600c621f586259dc7fe"
-  integrity sha512-mYUDUYkEKpr/mS4LucALv4QKHsF8xWXcYChQdN2nZIXCoXJoBQFsQPSzdcAeCzbl/XDsyop/mI5vIA34RnDd0Q==
+"@tabby-gang/to-string-loader@^1.1.7-beta.1":
+  version "1.1.7-beta.2"
+  resolved "https://registry.yarnpkg.com/@tabby-gang/to-string-loader/-/to-string-loader-1.1.7-beta.2.tgz#5519ec87d5b3a49998e74d01c26c269770be50c8"
+  integrity sha512-2hgj8KMl2Qm4dcruu1iFZqeIMXLvMpNrEKIDjEjei5NbQ/aOagOozPQV4B/jlTDybiLiXzx33Ys6Xj/8tVXZMw==
   dependencies:
     loader-utils "^1.0.0"
 

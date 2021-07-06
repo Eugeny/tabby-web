@@ -32,7 +32,7 @@ module.exports = {
         test: /\.[jt]sx?$/,
         loader: '@ngtools/webpack',
       },
-      { test: /terminus\/app\/dist/, use: ['script-loader'] },
+      { test: /tabby\/app\/dist/, use: ['script-loader'] },
       {
         test: /\.pug$/,
         use: ['apply-loader', 'pug-loader'],
@@ -40,7 +40,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['@terminus-term/to-string-loader', 'css-loader', 'sass-loader'],
+        use: ['@tabby-gang/to-string-loader', 'css-loader', 'sass-loader'],
         include: /component\.scss/
       },
       {
