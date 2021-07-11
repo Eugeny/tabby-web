@@ -27,6 +27,12 @@ export interface InstanceInfo {
     login_enabled: boolean
 }
 
+export interface Gateway {
+    host: string
+    port: number
+    url: string
+}
+
 @Injectable({ providedIn: 'root' })
 export class InstanceInfoResolver implements Resolve<Observable<InstanceInfo>> {
     constructor (private http: HttpClient) { }

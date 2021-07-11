@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { AppConnectorService } from '../services/appConnector.service'
 
-import { faCog, faCopy, faTrash, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faFile, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { LoginService } from '../services/login.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { SettingsModalComponent } from './settingsModal.component'
@@ -19,12 +19,10 @@ import { Router } from '@angular/router'
 })
 export class MainComponent {
     _logo = require('../assets/logo.svg')
-    _cogIcon = faCog
     _settingsIcon = faCog
     _logoutIcon = faSignOutAlt
-    _copyIcon = faCopy
     _addIcon = faPlus
-    _deleteIcon = faTrash
+    _configIcon = faFile
 
     showApp = false
 

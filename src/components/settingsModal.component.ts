@@ -3,6 +3,7 @@ import { LoginService } from '../services/login.service'
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { User } from '../api'
+import { AppConnectorService } from '../services/appConnector.service'
 
 @Component({
     selector: 'settings-modal',
@@ -14,6 +15,7 @@ export class SettingsModalComponent {
     customGatewayEnabled = false
 
     constructor (
+        public appConnector: AppConnectorService,
         private modalInstance: NgbActiveModal,
         private loginService: LoginService,
     ) {

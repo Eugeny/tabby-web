@@ -52,8 +52,8 @@ $font-size-sm: .85rem;
 
 $line-height-base: 1.6;
 
-$border-radius:               .4rem;
-$border-radius-lg:            .6rem;
+$border-radius:               .35rem;
+$border-radius-lg:            .35rem;
 $border-radius-sm:            .2rem;
 
 $box-shadow: 0 .5rem 1rem rgba($black, .5) !default;
@@ -79,6 +79,7 @@ $link-hover-decoration: none;
 $component-active-color: $white;
 $component-active-bg: $blue;
 
+$list-group-color: $body-color;
 $list-group-bg: $table-bg;
 $list-group-border-color: $table-border-color;
 
@@ -145,6 +146,7 @@ $navbar-padding-x: 0;
 $dropdown-bg: $body-bg;
 $dropdown-color: $body-color;
 $dropdown-border-width: 1px;
+$dropdown-border-color: #ffffff24;
 $dropdown-header-color: $gray-500;
 
 $dropdown-link-color: $body-color;
@@ -182,7 +184,10 @@ $modal-content-bg:               $body-bg;
 $modal-content-border-color:     $body-bg;
 $modal-header-border-width:         0;
 $modal-footer-border-width:         0;
-$modal-content-border-width:        0;
+
+$modal-content-border-color:        #ffffff24;
+$modal-content-border-width:        1px;
+
 
 $progress-bg: $table-bg;
 $progress-height: 3px;

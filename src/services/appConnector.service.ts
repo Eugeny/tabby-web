@@ -4,13 +4,15 @@ import { debounceTime } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { LoginService } from '../services/login.service'
-import { Config, Version } from '../api'
+import { Config, Gateway, Version } from '../api'
 
 export class SocketProxy {
     connect$ = new Subject<void>()
     data$ = new Subject<Buffer>()
     error$ = new Subject<Buffer>()
+    close$ = new Subject<Buffer>()
 
+    url: string
     webSocket: WebSocket
     initialBuffer: Buffer
     options: {
@@ -22,18 +24,27 @@ export class SocketProxy {
         this.initialBuffer = Buffer.from('')
     }
 
-    connect (options) {
+    async connect (options) {
         this.options = options
-        this.webSocket = new WebSocket(
-            this.appConnector.loginService.user.custom_connection_gateway ||
-            `ws://${location.host}/api/1/gateway/tcp`
-        )
+        this.url = this.appConnector.loginService.user.custom_connection_gateway
+        if (!this.url) {
+            try {
+                this.url = (await this.appConnector.chooseConnectionGateway()).url
+            } catch (err) {
+                this.error$.next(err)
+                return
+            }
+        }
+        this.webSocket = new WebSocket(this.url)
         this.webSocket.onmessage = async event => {
             if (typeof(event.data) === 'string') {
                 this.handleServiceMessage(JSON.parse(event.data))
             } else {
                 this.data$.next(Buffer.from(await event.data.arrayBuffer()))
             }
+        }
+        this.webSocket.onclose = () => {
+            this.close()
         }
     }
 
@@ -68,20 +79,23 @@ export class SocketProxy {
     }
 
     write (chunk: Buffer): void {
-        if (!this.webSocket.readyState) {
+        if (!this.webSocket?.readyState) {
             this.initialBuffer = Buffer.concat([this.initialBuffer, chunk])
         } else {
             this.webSocket.send(chunk)
         }
     }
 
-    close (error: Error): void {
+    close (error?: Error): void {
+        this.webSocket.close()
         if (error) {
             this.error$.next(error)
         }
         this.connect$.complete()
         this.data$.complete()
         this.error$.complete()
+        this.close$.next()
+        this.close$.complete()
     }
 }
 
@@ -90,6 +104,7 @@ export class AppConnectorService {
     private configUpdate = new Subject<string>()
     private config: Config
     private version: Version
+    sockets: SocketProxy[] = []
 
     constructor (
         private http: HttpClient,
@@ -135,6 +150,15 @@ export class AppConnectorService {
     }
 
     createSocket () {
-        return new SocketProxy(this)
+        const socket = new SocketProxy(this)
+        this.sockets.push(socket)
+        socket.close$.subscribe(() => {
+            this.sockets = this.sockets.filter(x => x !== socket)
+        })
+        return socket
+    }
+
+    async chooseConnectionGateway (): Promise<Gateway> {
+        return await this.http.post('/api/1/gateways/choose', {}).toPromise()
     }
 }

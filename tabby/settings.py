@@ -109,6 +109,29 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'propagate': False,
+            'level': 'INFO',
+        },
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -140,7 +163,8 @@ SOCIAL_AUTH_GITHUB_SCOPE = ['read:user', 'user:email']
 
 LOGIN_REDIRECT_URL = '/app'
 
-APP_DIST_PATH = os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist')
+APP_DIST_PATH = Path(os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist'))
+NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
 for key in [
     'SOCIAL_AUTH_GITHUB_KEY',
@@ -164,6 +188,12 @@ for key in [
 
 for key in [
     'GITHUB_SPONSORS_MIN_PAYMENT',
+]:
+    globals()[key] = int(globals()[key]) if globals()[key] else None
+
+
+for key in [
+    'ENABLE_LOGIN',
 ]:
     globals()[key] = int(globals()[key]) if globals()[key] else None
 

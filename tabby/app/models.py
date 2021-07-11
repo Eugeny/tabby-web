@@ -22,7 +22,11 @@ class User(AbstractUser):
     modified_at = models.DateTimeField(auto_now=True)
 
 
-# @receiver(user_logged_in)
-# def post_login(sender, user, request, **kwargs):
-#     if not user.active_config:
-#         user.active_config = Config.objects.filter()
+class Gateway(models.Model):
+    host = models.CharField(max_length=255)
+    port = models.IntegerField(default=1234)
+    enabled = models.BooleanField(default=True)
+    secure = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.host}:{self.port}'

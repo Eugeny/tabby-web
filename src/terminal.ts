@@ -27,16 +27,26 @@ async function start () {
         return window['module'].exports
     }
 
+    async function prefetchURL (url) {
+        await (await fetch(url)).text()
+    }
+
     const baseUrl = `${connector.getDistURL()}/${appVersion}`
-    await webRequire(`${baseUrl}/tabby-web-container/dist/preload.js`)
-    await webRequire(`${baseUrl}/tabby-web-container/dist/bundle.js`)
+    const coreURLs = [
+        `${baseUrl}/tabby-web-container/dist/preload.js`,
+        `${baseUrl}/tabby-web-container/dist/bundle.js`,
+    ]
+
+    await Promise.all(coreURLs.map(prefetchURL))
+
+    for (const url of coreURLs) {
+        await webRequire(url)
+    }
 
     const tabby = window['Tabby']
 
-    const pluginModules = []
-    for (const plugin of connector.getPluginsToLoad()) {
-        pluginModules.push(await tabby.loadPlugin(`${baseUrl}/${plugin}`))
-    }
+    const pluginURLs = connector.getPluginsToLoad().map(x => `${baseUrl}/${x}`)
+    const pluginModules = await tabby.loadPlugins(pluginURLs)
 
     document.querySelector('app-root')['style'].display = 'flex'
 

@@ -1,13 +1,13 @@
 .sidebar
     img.logo(src='{{_logo}}')
 
-    button.btn((click)='openConfig()')
-        fa-icon([icon]='_cogIcon', [fixedWidth]='true')
+    button.btn.mt-auto((click)='openConfig()')
+        fa-icon([icon]='_configIcon', [fixedWidth]='true')
 
     button.btn((click)='openSettings()')
         fa-icon([icon]='_settingsIcon', [fixedWidth]='true')
 
-    button.btn.mt-auto((click)='logout()')
+    button.btn.mt-3((click)='logout()')
         fa-icon([icon]='_logoutIcon', [fixedWidth]='true')
 
 .terminal([hidden]='!showApp')

@@ -21,6 +21,6 @@ class AppDistView(APIView):
         return static.serve(request, os.path.join(version, path), document_root=str(settings.APP_DIST_PATH))
 
 
-class BuildView(APIView):
-    def get(self, request, path=None, format=None):
-        return static.serve(request, path, document_root=str(settings.BASE_DIR / 'build'))
+# class BuildView(APIView):
+#     def get(self, request, path=None, format=None):
+#         return static.serve(request, path, document_root=str(settings.BASE_DIR / 'build'))

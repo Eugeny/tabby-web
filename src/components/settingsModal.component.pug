@@ -1,5 +1,6 @@
 .modal-header
     h5.modal-title Settings
+
 .modal-body
     .mb-3
         .form-check.form-switch
@@ -26,6 +27,13 @@
                 placeholder='123'
             )
             label Gateway authentication token
+
+    div(*ngIf='appConnector.sockets.length')
+        h5 Active connections
+        .list-group.list-group-flush
+            .list-group-item(*ngFor='let socket of appConnector.sockets')
+                div {{socket.options.host}}:{{socket.options.port}}
+                .text-muted via {{socket.url}}
 
 .modal-footer
     button.btn.btn-primary((click)='apply()') Apply

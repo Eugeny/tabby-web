@@ -14,6 +14,7 @@ urlpatterns = [
     path('api/1/auth/logout', api.LogoutView.as_view()),
     path('api/1/user', api.UserViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
     path('api/1/instance-info', api.InstanceInfoViewSet.as_view({'get': 'retrieve'})),
+    path('api/1/gateways/choose', api.ChooseGatewayViewSet.as_view({'post': 'retrieve'})),
 
     re_path('^(|login|app)$', views.IndexView.as_view()),
 

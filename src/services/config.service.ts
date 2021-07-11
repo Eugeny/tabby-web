@@ -33,11 +33,17 @@ export class ConfigService {
         await this.http.put('/api/1/user', this.user).toPromise()
     }
 
-    async createNewConfig () {
-        this.configs.push(await this.http.post('/api/1/configs', {
+    async createNewConfig (): Promise<Config> {
+        const config = await this.http.post('/api/1/configs', {
             content: '{}',
-            last_used_with_version: this._activeVersion.version,
-        }).toPromise())
+            last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion().version,
+        }).toPromise()
+        this.configs.push(config)
+        return config
+    }
+
+    getLatestStableVersion () {
+        return this.versions[0]
     }
 
     async duplicateActiveConfig () {
@@ -60,6 +66,8 @@ export class ConfigService {
         this._activeConfig = config
         this.activeConfig$.next(config)
         this.selectVersion(matchingVersion)
+        this.loginService.user.active_config = config.id
+        await this.loginService.updateUser()
     }
 
     async selectDefaultConfig () {
@@ -71,7 +79,7 @@ export class ConfigService {
     private async init () {
         this.configs = await this.http.get('/api/1/configs').toPromise()
         this.versions = await this.http.get('/api/1/versions').toPromise()
-        this.versions.sort((a, b) => semverGT(a, b))
+        this.versions.sort((a, b) => semverGT(a.version, b.version))
 
         if (!this.configs.length) {
             await this.createNewConfig()

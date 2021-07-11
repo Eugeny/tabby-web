@@ -3,9 +3,11 @@
         .d-flex.align-items-center.py-2.px-4
             .me-auto
                 label Active config
-                .title {{configService.activeConfig.modified_at}}
+                .title
+                    fa-icon([icon]='_configIcon')
+                    span.ms-2 {{configService.activeConfig.created_at|date:"medium"}}
 
-            button.btn.btn-semi.me-2((click)='configService.duplicateConfig()')
+            button.btn.btn-semi.me-2((click)='configService.duplicateActiveConfig()')
                 fa-icon([icon]='_copyIcon', [fixedWidth]='true')
 
             button.btn.btn-semi((click)='deleteConfig()')
@@ -16,25 +18,26 @@
             div(ngbDropdown)
                 button.btn.btn-semi(ngbDropdownToggle) {{configService.activeVersion.version}}
                 div(ngbDropdownMenu)
-                    a(
-                        *ngFor='let version of versions',
+                    button(
+                        *ngFor='let version of configService.versions',
                         ngbDropdownItem,
                         [class.active]='version == configService.activeVersion',
                         (click)='selectVersion(version)'
                     ) {{version.version}}
 
-    div(*ngIf='configService.configs.length > 1')
-        .dropdown-header All configs
+    .px-4.pt-3(*ngIf='configService.configs.length > 1')
+        h5 Other configs
 
-        ng-container(*ngFor='let config of configService.configs')
-            a(
-                *ngIf='config !== configService.activeConfig',
-                ngbDropdownItem,
-                (click)='selectConfig(config)',
-                href='#'
-            ) Config modified at {{config.modified_at}}
+        .list-group.list-group-light
+            ng-container(*ngFor='let config of configService.configs')
+                button.list-group-item.list-group-item-action(
+                    *ngIf='config !== configService.activeConfig',
+                    (click)='selectConfig(config)'
+                )
+                    fa-icon([icon]='_configIcon')
+                    span Config created at {{config.created_at|date:"medium"}}
 
-    .p-3
-        button.btn.btn-semi.w-100((click)='configService.createNewConfig()')
+    .py-3.px-4
+        button.btn.btn-semi.w-100((click)='createNewConfig()')
             fa-icon([icon]='_addIcon', [fixedWidth]='true')
             span New config

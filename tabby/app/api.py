@@ -1,9 +1,10 @@
 import os
+import random
 from dataclasses import dataclass
 from django.conf import settings
 from django.contrib.auth import logout
 from rest_framework import fields
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
@@ -12,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
 
-from .models import Config, User
+from .models import Config, Gateway, User
 
 
 @dataclass
@@ -23,6 +24,17 @@ class AppVersion:
 class AppVersionSerializer(DataclassSerializer):
     class Meta:
         dataclass = AppVersion
+
+
+class GatewaySerializer(ModelSerializer):
+    url = fields.SerializerMethodField()
+
+    class Meta:
+        fields = '__all__'
+        model = Gateway
+
+    def get_url(self, gw):
+        return f'{"wss" if gw.secure else "ws"}://{gw.host}:{gw.port}/'
 
 
 class ConfigSerializer(ModelSerializer):
@@ -103,3 +115,14 @@ class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
         return {
             'login_enabled': settings.ENABLE_LOGIN,
         }
+
+
+class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = Gateway.objects.filter(enabled=True)
+    serializer_class = GatewaySerializer
+
+    def get_object(self):
+        gateways = list(self.queryset)
+        if not len(gateways):
+            raise NotFound()
+        return random.choice(gateways)

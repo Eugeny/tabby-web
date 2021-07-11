@@ -2,7 +2,8 @@ import { Component } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { AppConnectorService } from '../services/appConnector.service'
 import { ConfigService } from '../services/config.service'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faFile, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Config, Version } from '../api'
 
 @Component({
     selector: 'config-modal',
@@ -11,6 +12,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 })
 export class ConfigModalComponent {
     _addIcon = faPlus
+    _copyIcon = faCopy
+    _deleteIcon = faTrash
+    _configIcon = faFile
 
     constructor (
         private modalInstance: NgbActiveModal,
@@ -23,6 +27,22 @@ export class ConfigModalComponent {
     }
 
     cancel () {
+        this.modalInstance.dismiss()
+    }
+
+    async createNewConfig () {
+        const config = await this.configService.createNewConfig()
+        await this.configService.selectConfig(config)
+        this.modalInstance.dismiss()
+    }
+
+    async selectConfig (config: Config) {
+        await this.configService.selectConfig(config)
+        this.modalInstance.dismiss()
+    }
+
+    async selectVersion (version: Version) {
+        await this.configService.selectVersion(version)
         this.modalInstance.dismiss()
     }
 
