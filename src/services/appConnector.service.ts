@@ -13,6 +13,7 @@ export class SocketProxy {
     close$ = new Subject<Buffer>()
 
     url: string
+    authToken: string
     webSocket: WebSocket
     initialBuffer: Buffer
     options: {
@@ -27,15 +28,27 @@ export class SocketProxy {
     async connect (options) {
         this.options = options
         this.url = this.appConnector.loginService.user.custom_connection_gateway
+        this.authToken = this.appConnector.loginService.user.custom_connection_gateway_token
         if (!this.url) {
             try {
-                this.url = (await this.appConnector.chooseConnectionGateway()).url
+                const gateway = await this.appConnector.chooseConnectionGateway()
+                this.url = gateway.url
+                this.authToken = gateway.auth_token
             } catch (err) {
                 this.error$.next(err)
                 return
             }
         }
-        this.webSocket = new WebSocket(this.url)
+        try {
+            this.webSocket = new WebSocket(this.url)
+        } catch (err) {
+            this.error$.next(err)
+            return
+        }
+        this.webSocket.onerror = err => {
+            this.error$.next(new Error(`Failed to connect to the connection gateway at ${this.url}`))
+            return
+        }
         this.webSocket.onmessage = async event => {
             if (typeof(event.data) === 'string') {
                 this.handleServiceMessage(JSON.parse(event.data))
@@ -53,7 +66,7 @@ export class SocketProxy {
             this.sendServiceMessage({
                 _: 'hello',
                 version: 1,
-                auth_token: this.appConnector.loginService.user.custom_connection_gateway_token,
+                auth_token: this.authToken,
             })
         } else if (msg._ === 'ready') {
             this.sendServiceMessage({
@@ -139,13 +152,18 @@ export class AppConnectorService {
     }
 
     getPluginsToLoad (): string[] {
-        return [
+        const loadOrder = [
             'tabby-core',
             'tabby-settings',
             'tabby-terminal',
             'tabby-ssh',
             'tabby-community-color-schemes',
             'tabby-web',
+        ]
+
+        return [
+            ...loadOrder.filter(x => this.version.plugins.includes(x)),
+            ...this.version.plugins.filter(x => !loadOrder.includes(x)),
         ]
     }
 

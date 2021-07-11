@@ -21,6 +21,7 @@ export interface Config {
 
 export interface Version {
     version: string
+    plugins: string[]
 }
 
 export interface InstanceInfo {
@@ -31,6 +32,7 @@ export interface Gateway {
     host: string
     port: number
     url: string
+    auth_token: string
 }
 
 @Injectable({ providedIn: 'root' })

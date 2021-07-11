@@ -1,8 +1,10 @@
-import os
+import asyncio
 import random
-from dataclasses import dataclass
+from tabby.app.consumers import GatewayAdminConnection
 from django.conf import settings
 from django.contrib.auth import logout
+from dataclasses import dataclass
+from pathlib import Path
 from rest_framework import fields
 from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.permissions import IsAuthenticated
@@ -12,6 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
+from typing import List
 
 from .models import Config, Gateway, User
 
@@ -19,6 +22,7 @@ from .models import Config, Gateway, User
 @dataclass
 class AppVersion:
     version: str
+    plugins: List[str]
 
 
 class AppVersionSerializer(DataclassSerializer):
@@ -28,6 +32,7 @@ class AppVersionSerializer(DataclassSerializer):
 
 class GatewaySerializer(ModelSerializer):
     url = fields.SerializerMethodField()
+    auth_token = fields.CharField()
 
     class Meta:
         fields = '__all__'
@@ -65,13 +70,29 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
     queryset = ''
 
     def _get_versions(self):
-        return [AppVersion(version=x) for x in os.listdir(settings.APP_DIST_PATH)]
+        return [self._get_version(x) for x in settings.APP_DIST_PATH.iterdir()]
+
+    def _get_version(self, dir: Path):
+        plugins = [
+            x.name for x in dir.iterdir()
+            if x.is_dir() and x.name not in [
+                'tabby-web-container',
+                'tabby-web-demo',
+            ]
+        ]
+
+        return AppVersion(
+            version=dir.name,
+            plugins=plugins,
+        )
 
     def list(self, request, *args, **kwargs):
-        return Response(self.serializer_class(
-            self._get_versions(),
-            many=True,
-        ).data)
+        return Response(
+            self.serializer_class(
+                self._get_versions(),
+                many=True,
+            ).data
+        )
 
 
 class UserSerializer(ModelSerializer):
@@ -80,7 +101,14 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'active_config', 'custom_connection_gateway', 'custom_connection_gateway_token', 'is_pro')
+        fields = (
+            'id',
+            'username',
+            'active_config',
+            'custom_connection_gateway',
+            'custom_connection_gateway_token',
+            'is_pro',
+        )
         read_only_fields = ('id', 'username')
 
     def get_is_pro(self, obj):
@@ -121,8 +149,21 @@ class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):
     queryset = Gateway.objects.filter(enabled=True)
     serializer_class = GatewaySerializer
 
+    async def _authorize_client(self, gw):
+        c = GatewayAdminConnection(gw)
+        await c.connect()
+        token = await c.authorize_client()
+        await c.close()
+        return token
+
     def get_object(self):
         gateways = list(self.queryset)
         if not len(gateways):
             raise NotFound()
-        return random.choice(gateways)
+        gw = random.choice(gateways)
+
+        loop = asyncio.new_event_loop()
+        gw.auth_token = loop.run_until_complete(self._authorize_client(gw))
+        loop.close()
+
+        return gw

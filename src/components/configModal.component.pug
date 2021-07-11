@@ -31,7 +31,7 @@
         .list-group.list-group-light
             ng-container(*ngFor='let config of configService.configs')
                 button.list-group-item.list-group-item-action(
-                    *ngIf='config !== configService.activeConfig',
+                    *ngIf='config.id !== configService.activeConfig?.id',
                     (click)='selectConfig(config)'
                 )
                     fa-icon([icon]='_configIcon')

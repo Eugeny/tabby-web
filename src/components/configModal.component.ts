@@ -46,4 +46,11 @@ export class ConfigModalComponent {
         this.modalInstance.dismiss()
     }
 
+    async deleteConfig () {
+        if (confirm('Delete this config? This cannot be undone.')) {
+            await this.configService.deleteConfig(this.configService.activeConfig)
+        }
+        this.configService.selectDefaultConfig()
+        this.modalInstance.dismiss()
+    }
 }

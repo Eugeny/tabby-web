@@ -14,7 +14,7 @@ class Config(models.Model):
 
 
 class User(AbstractUser):
-    active_config = models.ForeignKey(Config, null=True, on_delete=models.CASCADE, related_name='+')
+    active_config = models.ForeignKey(Config, null=True, on_delete=models.SET_NULL, related_name='+')
     active_version = models.CharField(max_length=32, null=True)
     custom_connection_gateway = models.CharField(max_length=255, null=True)
     custom_connection_gateway_token = models.CharField(max_length=255, null=True)
@@ -25,6 +25,7 @@ class User(AbstractUser):
 class Gateway(models.Model):
     host = models.CharField(max_length=255)
     port = models.IntegerField(default=1234)
+    admin_port = models.IntegerField(default=1235)
     enabled = models.BooleanField(default=True)
     secure = models.BooleanField(default=True)
 

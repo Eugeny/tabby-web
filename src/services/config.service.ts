@@ -76,6 +76,11 @@ export class ConfigService {
         this.selectConfig(this.configs.find(c => c.id === this.loginService.user.active_config) ?? this.configs[0])
     }
 
+    async deleteConfig (config: Config) {
+        await this.http.delete(`/api/1/configs/${config.id}`).toPromise()
+        this.configs = this.configs.filter(x => x.id !== config.id)
+    }
+
     private async init () {
         this.configs = await this.http.get('/api/1/configs').toPromise()
         this.versions = await this.http.get('/api/1/versions').toPromise()
