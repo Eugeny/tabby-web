@@ -26,6 +26,7 @@ class Command(BaseCommand):
             'tabby-ssh',
             'tabby-community-color-schemes',
             'tabby-serial',
+            'tabby-telnet',
             'tabby-web',
             'tabby-web-demo',
         ]
@@ -55,3 +56,4 @@ class Command(BaseCommand):
             if target.exists():
                 shutil.rmtree(target)
             shutil.copytree(tempdir, target)
+            target.chmod(0o755)
