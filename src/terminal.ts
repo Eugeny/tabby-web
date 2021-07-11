@@ -43,12 +43,14 @@ async function start () {
         await webRequire(url)
     }
 
+    document.querySelector('app-root')['style'].display = 'flex'
+
     const tabby = window['Tabby']
 
     const pluginURLs = connector.getPluginsToLoad().map(x => `${baseUrl}/${x}`)
-    const pluginModules = await tabby.loadPlugins(pluginURLs)
-
-    document.querySelector('app-root')['style'].display = 'flex'
+    const pluginModules = await tabby.loadPlugins(pluginURLs, (current, total) => {
+        (document.querySelector('.progress .bar') as HTMLElement).style.width = `${100 * current / total}%` // eslint-disable-line
+    })
 
     const config = connector.loadConfig()
     tabby.bootstrap({

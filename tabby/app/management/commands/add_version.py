@@ -25,6 +25,7 @@ class Command(BaseCommand):
             'tabby-terminal',
             'tabby-ssh',
             'tabby-community-color-schemes',
+            'tabby-serial',
             'tabby-web',
             'tabby-web-demo',
         ]
