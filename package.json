@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^11.0.0",
     "@angular/platform-browser-dynamic": "^11.0.0",
     "@angular/router": "^11.0.0",
+    "@fontsource/fira-code": "^4.5.0",
     "@fortawesome/angular-fontawesome": "0.8",
     "@fortawesome/fontawesome-free": "^5.7.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

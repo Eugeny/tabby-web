@@ -1,4 +1,4 @@
-import * as semverGT from 'semver/functions/gt'
+import * as semverCompare from 'semver/functions/compare-loose'
 import { HttpClient } from '@angular/common/http'
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { InstanceInfo, Version } from '../api'
@@ -86,7 +86,7 @@ export class HomeComponent {
 
     async ngAfterViewInit () {
         const versions = await this.http.get('/api/1/versions').toPromise()
-        versions.sort((a, b) => semverGT(a.version, b.version))
+        versions.sort((a, b) => -semverCompare(a.version, b.version))
         this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, versions[0])
         this.iframe.nativeElement.src = '/terminal'
     }

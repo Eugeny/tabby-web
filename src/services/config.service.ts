@@ -1,4 +1,4 @@
-import * as semverGT from 'semver/functions/gt'
+import * as semverCompare from 'semver/functions/compare-loose'
 import { AsyncSubject, Subject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
@@ -84,7 +84,7 @@ export class ConfigService {
     private async init () {
         this.configs = await this.http.get('/api/1/configs').toPromise()
         this.versions = await this.http.get('/api/1/versions').toPromise()
-        this.versions.sort((a, b) => semverGT(a.version, b.version))
+        this.versions.sort((a, b) => -semverCompare(a.version, b.version))
 
         if (!this.configs.length) {
             await this.createNewConfig()

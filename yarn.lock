@@ -283,6 +283,11 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
+"@fontsource/fira-code@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/fira-code/-/fira-code-4.5.0.tgz#b69a8a70fe54f6e7ef79a65cc5b15c66c7391794"
+  integrity sha512-fxRV3qt0eJaIXZvICXZMhXVR0lSyxZTC0cnM+1Ma/1JShGrIjCQ3yJ0W05rwaEoF3cAbpU2lKMrXfE7Of/zpIA==
+
 "@fortawesome/angular-fontawesome@0.8":
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.8.2.tgz#fe0401c66dd237fd78d3f29d540ef7302bb40e5a"

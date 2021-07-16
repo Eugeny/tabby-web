@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { Title } from '@angular/platform-browser'
 import { AppConnectorService } from '../services/appConnector.service'
 
 import { faCog, faFile, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
@@ -29,6 +30,7 @@ export class MainComponent {
     @ViewChild('iframe') iframe: ElementRef
 
     constructor (
+        titleService: Title,
         public appConnector: AppConnectorService,
         private http: HttpClient,
         public loginService: LoginService,
@@ -36,6 +38,7 @@ export class MainComponent {
         private config: ConfigService,
         private router: Router,
     ) {
+        titleService.setTitle('Tabby')
         window.addEventListener('message', this.connectorRequestHandler)
     }
 
