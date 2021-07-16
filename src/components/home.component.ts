@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs'
 import * as semverCompare from 'semver/functions/compare-loose'
 import { HttpClient } from '@angular/common/http'
 import { Component, ElementRef, ViewChild } from '@angular/core'
@@ -35,11 +36,30 @@ class DemoConnector {
             'tabby-settings',
             'tabby-terminal',
             'tabby-community-color-schemes',
+            'tabby-ssh',
+            'tabby-telnet',
             'tabby-web',
             'tabby-web-demo',
         ]
     }
+
+    createSocket () {
+        return new DemoSocketProxy()
+    }
 }
+
+
+export class DemoSocketProxy {
+    connect$ = new Subject<void>()
+    data$ = new Subject<Buffer>()
+    error$ = new Subject<Buffer>()
+    close$ = new Subject<Buffer>()
+
+    async connect (options) {
+        this.error$.next(new Error('This web demo can\'t actually access Internet, but feel free to download the release and try it out!'))
+    }
+}
+
 
 @Component({
     selector: 'home',
