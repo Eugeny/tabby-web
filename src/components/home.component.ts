@@ -6,23 +6,6 @@ import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-i
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { ActivatedRoute } from '@angular/router'
 
-// TODO
-import Analytics from 'analytics'
-import googleAnalytics from '@analytics/google-analytics'
-
-
-const analytics = Analytics({
-    app: 'tabby-web',
-    plugins: [
-        googleAnalytics({
-            trackingId: 'UA-3278102-18'
-        })
-    ]
-})
-
-/* Track a page view */
-analytics.page()
-
 
 class DemoConnector {
     constructor (targetWindow: Window, private version: Version) {

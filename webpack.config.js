@@ -1,23 +1,31 @@
 const path = require('path')
 const webpack = require('webpack')
 const { AngularWebpackPlugin } =  require('@ngtools/webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const htmlPluginOptions = {
+  hash: true,
+  minify: false
+}
 
 module.exports = {
   target: 'web',
   entry: {
-    'index.ignore': 'file-loader?name=index.html!pug-html-loader!' + path.resolve(__dirname, './src/index.pug'),
     index: path.resolve(__dirname, 'src/index.ts'),
-    'terminal.ignore': 'file-loader?name=terminal.html!pug-html-loader!' + path.resolve(__dirname, './src/terminal.pug'),
     terminal: path.resolve(__dirname, 'src/terminal.ts'),
   },
   mode: process.env.DEV ? 'development' : 'production',
   context: __dirname,
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   output: {
     path: path.join(__dirname, 'build'),
     pathinfo: true,
+    publicPath: '/static/',
     filename: '[name].js',
     chunkFilename: '[name].bundle.js',
+  },
+  cache: !process.env.DEV ? false : {
+    type: 'filesystem',
   },
   resolve: {
     modules: [
@@ -56,7 +64,11 @@ module.exports = {
       {
         test: /\.(jpeg|png|svg)?$/,
         type: 'asset/resource',
-      }
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+      },
     ],
   },
 
@@ -64,6 +76,18 @@ module.exports = {
     new AngularWebpackPlugin({
       tsconfig: 'tsconfig.main.json',
       directTemplateLoading: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+      chunks: ['index'],
+      ...htmlPluginOptions,
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/terminal.html',
+      filename: 'terminal.html',
+      chunks: ['terminal'],
+      ...htmlPluginOptions,
     }),
   ],
 }

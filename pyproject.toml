@@ -22,6 +22,7 @@ gunicorn = "^20.1.0"
 Twisted = "20.3.0"
 semver = "^2.13.0"
 requests = "^2.25.1"
+pyga = "^2.6.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

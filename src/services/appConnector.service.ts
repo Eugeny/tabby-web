@@ -14,7 +14,7 @@ export class SocketProxy {
 
     url: string
     authToken: string
-    webSocket: WebSocket
+    webSocket: WebSocket|null
     initialBuffer: Buffer
     options: {
         host: string
@@ -35,18 +35,18 @@ export class SocketProxy {
                 this.url = gateway.url
                 this.authToken = gateway.auth_token
             } catch (err) {
-                this.error$.next(err)
+                this.close(err)
                 return
             }
         }
         try {
             this.webSocket = new WebSocket(this.url)
         } catch (err) {
-            this.error$.next(err)
+            this.close(err)
             return
         }
         this.webSocket.onerror = err => {
-            this.error$.next(new Error(`Failed to connect to the connection gateway at ${this.url}`))
+            this.close(new Error(`Failed to connect to the connection gateway at ${this.url}`))
             return
         }
         this.webSocket.onmessage = async event => {
@@ -100,7 +100,7 @@ export class SocketProxy {
     }
 
     close (error?: Error): void {
-        this.webSocket.close()
+        this.webSocket?.close()
         if (error) {
             this.error$.next(error)
         }
@@ -177,6 +177,13 @@ export class AppConnectorService {
     }
 
     async chooseConnectionGateway (): Promise<Gateway> {
-        return await this.http.post('/api/1/gateways/choose', {}).toPromise()
+        try {
+            return await this.http.post('/api/1/gateways/choose', {}).toPromise()
+        } catch (err){
+            if (err.status === 503) {
+                throw new Error('All connections gateway are unavailable right now')
+            }
+            throw err
+        }
     }
 }

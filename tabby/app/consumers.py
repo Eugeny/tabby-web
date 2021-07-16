@@ -33,7 +33,10 @@ class GatewayConnection:
 
     async def connect(self):
         self.context = websockets.connect(self.url, ssl=GatewayConnection._ssl_context)
-        self.socket = await self.context.__aenter__()
+        try:
+            self.socket = await self.context.__aenter__()
+        except OSError:
+            raise ConnectionError()
 
     async def send(self, data):
         await self.socket.send(data)
@@ -69,7 +72,10 @@ class GatewayAdminConnection:
 
     async def connect(self):
         self.context = websockets.connect(self.url, ssl=GatewayAdminConnection._ssl_context)
-        self.socket = await self.context.__aenter__()
+        try:
+            self.socket = await self.context.__aenter__()
+        except OSError:
+            raise ConnectionError()
 
     async def authorize_client(self) -> str:
         token = secrets.token_hex(32)

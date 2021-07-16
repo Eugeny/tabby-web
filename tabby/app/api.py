@@ -5,8 +5,8 @@ from django.conf import settings
 from django.contrib.auth import logout
 from dataclasses import dataclass
 from pathlib import Path
-from rest_framework import fields
-from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework import fields, status
+from rest_framework.exceptions import APIException, PermissionDenied, NotFound
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
@@ -145,6 +145,12 @@ class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
         }
 
 
+class NoGatewaysError(APIException):
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    default_detail ='No connection gateways available.'
+    default_code = 'no_gateways'
+
+
 class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):
     queryset = Gateway.objects.filter(enabled=True)
     serializer_class = GatewaySerializer
@@ -158,12 +164,19 @@ class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):
 
     def get_object(self):
         gateways = list(self.queryset)
+        random.shuffle(gateways)
         if not len(gateways):
             raise NotFound()
-        gw = random.choice(gateways)
 
         loop = asyncio.new_event_loop()
-        gw.auth_token = loop.run_until_complete(self._authorize_client(gw))
-        loop.close()
+        try:
+            for gw in gateways:
+                try:
+                    gw.auth_token = loop.run_until_complete(self._authorize_client(gw))
+                except ConnectionError:
+                    continue
+                return gw
 
-        return gw
+            raise NoGatewaysError()
+        finally:
+            loop.close()
