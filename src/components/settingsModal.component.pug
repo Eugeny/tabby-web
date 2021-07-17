@@ -10,23 +10,31 @@
             )
             label(class='form-check-label') Use custom connection gateway
 
-    .mb-3(*ngIf='customGatewayEnabled')
-        .form-floating
-            input.form-control(
-                type='text',
-                [(ngModel)]='user.custom_connection_gateway',
-                placeholder='wss://1.2.3.4'
-            )
-            label Gateway address
+        small.text-muted This allows you to securely route connections through your own hosted gateway. See #[a(href='https://github.com/Eugeny/tabby-connection-gateway#readme', target='_blank') tabby-connection-gateway] for setup instructions.
 
-    .mb-3(*ngIf='customGatewayEnabled')
-        .form-floating
-            input.form-control(
-                type='password',
-                [(ngModel)]='user.custom_connection_gateway_token',
-                placeholder='123'
-            )
-            label Gateway authentication token
+    form
+        input.d-none(type='text', name='fakeusername')
+        input.d-none(type='password', name='fakepassword')
+
+        .mb-3(*ngIf='customGatewayEnabled')
+            .form-floating
+                input.form-control(
+                    type='text',
+                    [(ngModel)]='user.custom_connection_gateway',
+                    placeholder='wss://1.2.3.4',
+                    autocomplete='off'
+                )
+                label Gateway address
+
+        .mb-3(*ngIf='customGatewayEnabled')
+            .form-floating
+                input.form-control(
+                    type='password',
+                    [(ngModel)]='user.custom_connection_gateway_token',
+                    placeholder='123',
+                    autocomplete='new-password'
+                )
+                label Gateway authentication token
 
     div(*ngIf='appConnector.sockets.length')
         h5 Active connections

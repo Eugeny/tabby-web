@@ -3,7 +3,7 @@
 
 .modal-body
     .header(*ngIf='configService.activeConfig')
-        .d-flex.align-items-center.py-2.px-4
+        .d-flex.align-items-center.py-2
             .me-auto
                 label Active config
                 .title
@@ -16,7 +16,7 @@
             button.btn.btn-semi((click)='deleteConfig()')
                 fa-icon([icon]='_deleteIcon', [fixedWidth]='true')
 
-        .d-flex.align-items-center.py-2.px-4(*ngIf='configService.activeVersion')
+        .d-flex.align-items-center.py-2(*ngIf='configService.activeVersion')
             .me-auto App version:
             div(ngbDropdown)
                 button.btn.btn-semi(ngbDropdownToggle) {{configService.activeVersion.version}}
@@ -28,7 +28,7 @@
                         (click)='selectVersion(version)'
                     ) {{version.version}}
 
-    .px-4.pt-3(*ngIf='configService.configs.length > 1')
+    .pt-3(*ngIf='configService.configs.length > 1')
         h5 Other configs
 
         .list-group.list-group-light
@@ -40,7 +40,7 @@
                     fa-icon([icon]='_configIcon')
                     span Config created at {{config.created_at|date:"medium"}}
 
-    .py-3.px-4
+    .py-3
         button.btn.btn-semi.w-100((click)='createNewConfig()')
             fa-icon([icon]='_addIcon', [fixedWidth]='true')
             span New config

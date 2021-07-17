@@ -63,6 +63,10 @@
   box-shadow: $dropdown-box-shadow;
 }
 
+.modal-header, .modal-body {
+  padding: $modal-inner-padding $modal-inner-padding * 2;
+}
+
 .modal-footer {
   background: #00000030;
 }
