@@ -1,12 +1,14 @@
 from django.conf import settings
+from django.core.cache import cache
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
 
 GQL_ENDPOINT = 'https://api.github.com/graphql'
+CACHE_KEY = 'cached-sponsors'
 
 
-def get_sponsor_usernames():
+def fetch_sponsor_usernames():
     client = Client(
         transport=RequestsHTTPTransport(
             url=GQL_ENDPOINT,
@@ -61,3 +63,9 @@ def get_sponsor_usernames():
                 result.append(node['sponsor']['login'])
 
     return result
+
+
+def get_sponsor_usernames():
+    if not cache.get(CACHE_KEY):
+        cache.set(CACHE_KEY, fetch_sponsor_usernames(), timeout=30)
+    return cache.get(CACHE_KEY)

@@ -16,8 +16,8 @@ class Config(models.Model):
 class User(AbstractUser):
     active_config = models.ForeignKey(Config, null=True, on_delete=models.SET_NULL, related_name='+')
     active_version = models.CharField(max_length=32, null=True)
-    custom_connection_gateway = models.CharField(max_length=255, null=True)
-    custom_connection_gateway_token = models.CharField(max_length=255, null=True)
+    custom_connection_gateway = models.CharField(max_length=255, null=True, blank=True)
+    custom_connection_gateway_token = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 

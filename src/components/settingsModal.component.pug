@@ -1,8 +1,15 @@
 .modal-header
-    h5.modal-title Settings
+    h3.modal-title Settings
 
 .modal-body
     .mb-3
+        h5 GitHub account
+        a.btn.btn-info(href='/api/1/auth/social/login/github')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            span Connect a GitHub account
+
+    .mb-3
+        h5 Connection gateway
         .form-check.form-switch
             input.form-check-input(
                 type='checkbox',

@@ -1,6 +1,5 @@
 import asyncio
 import random
-from tabby.app.consumers import GatewayAdminConnection
 from django.conf import settings
 from django.contrib.auth import logout
 from dataclasses import dataclass
@@ -14,8 +13,11 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
+from social_django.models import UserSocialAuth
 from typing import List
 
+from .consumers import GatewayAdminConnection
+from .sponsors import get_sponsor_usernames
 from .models import Config, Gateway, User
 
 
@@ -98,6 +100,7 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
 class UserSerializer(ModelSerializer):
     id = fields.IntegerField()
     is_pro = fields.SerializerMethodField()
+    github_username = fields.SerializerMethodField()
 
     class Meta:
         model = User
@@ -108,11 +111,22 @@ class UserSerializer(ModelSerializer):
             'custom_connection_gateway',
             'custom_connection_gateway_token',
             'is_pro',
+            'github_username',
         )
         read_only_fields = ('id', 'username')
 
     def get_is_pro(self, obj):
-        return False
+        username = self.get_github_username(obj)
+        if not username:
+            return False
+        return username in get_sponsor_usernames()
+
+    def get_github_username(self, obj):
+        social_auth = UserSocialAuth.objects.filter(user=obj, provider='github').first()
+        if not social_auth:
+            return None
+
+        return social_auth.extra_data.get('login')
 
 
 class UserViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):

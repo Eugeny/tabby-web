@@ -4,6 +4,7 @@ import { LoginService } from '../services/login.service'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { User } from '../api'
 import { AppConnectorService } from '../services/appConnector.service'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 @Component({
     selector: 'settings-modal',
@@ -13,6 +14,7 @@ import { AppConnectorService } from '../services/appConnector.service'
 export class SettingsModalComponent {
     user: User
     customGatewayEnabled = false
+    _githubIcon = faGithub
 
     constructor (
         public appConnector: AppConnectorService,
