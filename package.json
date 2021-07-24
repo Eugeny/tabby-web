@@ -5,6 +5,8 @@
   "scripts": {
     "build": "webpack --progress",
     "watch": "DEV=1 webpack --progress --watch",
+    "build:server": "webpack --progress -c webpack.server.config.js",
+    "watch:server": "DEV=1 webpack --progress --watch -c webpack.server.config.js",
     "start": "./manage.py runserver"
   },
   "private": true,
