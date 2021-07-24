@@ -8,6 +8,8 @@ export interface User {
     active_version: string
     custom_connection_gateway: string|null
     custom_connection_gateway_token: string|null
+    config_sync_token: string
+    github_username: string
     is_pro: boolean
 }
 

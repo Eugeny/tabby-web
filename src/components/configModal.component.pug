@@ -8,7 +8,7 @@
                 label Active config
                 .title
                     fa-icon([icon]='_configIcon')
-                    span.ms-2 {{configService.activeConfig.created_at|date:"medium"}}
+                    span.ms-2 {{configService.activeConfig.name}}
 
             button.btn.btn-semi.me-2((click)='configService.duplicateActiveConfig()')
                 fa-icon([icon]='_copyIcon', [fixedWidth]='true')
@@ -38,7 +38,7 @@
                     (click)='selectConfig(config)'
                 )
                     fa-icon([icon]='_configIcon')
-                    span Config created at {{config.created_at|date:"medium"}}
+                    span {{config.name}}
 
     .py-3
         button.btn.btn-semi.w-100((click)='createNewConfig()')

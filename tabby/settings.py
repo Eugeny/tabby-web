@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tabby.middleware.TokenMiddleware',
     'tabby.middleware.GAMiddleware',
 ]
 
@@ -179,6 +180,8 @@ LOGIN_REDIRECT_URL = '/app'
 APP_DIST_PATH = Path(os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist'))
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
+GITHUB_ELIGIBLE_SPONSORSHIPS = None
+
 for key in [
     'SOCIAL_AUTH_GITHUB_KEY',
     'SOCIAL_AUTH_GITHUB_SECRET',
@@ -191,7 +194,7 @@ for key in [
     'CONNECTION_GATEWAY_AUTH_CA',
     'CONNECTION_GATEWAY_AUTH_CERTIFICATE',
     'CONNECTION_GATEWAY_AUTH_KEY',
-    'GITHUB_SPONSORS_USER',
+    'GITHUB_ELIGIBLE_SPONSORSHIPS',
     'GITHUB_SPONSORS_MIN_PAYMENT',
     'GITHUB_TOKEN',
     'ENABLE_LOGIN',
@@ -221,3 +224,8 @@ for key in [
     v = globals()[key]
     if v and not os.path.exists(v):
         raise ValueError(f'{v} does not exist')
+
+if GITHUB_ELIGIBLE_SPONSORSHIPS:
+    GITHUB_ELIGIBLE_SPONSORSHIPS = GITHUB_ELIGIBLE_SPONSORSHIPS.split(',')
+else:
+    GITHUB_ELIGIBLE_SPONSORSHIPS = []

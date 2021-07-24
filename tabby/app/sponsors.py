@@ -2,24 +2,33 @@ from django.conf import settings
 from django.core.cache import cache
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
+from social_django.models import UserSocialAuth
+
+from .models import User
 
 
 GQL_ENDPOINT = 'https://api.github.com/graphql'
-CACHE_KEY = 'cached-sponsors'
+CACHE_KEY = 'cached-sponsors:%s'
 
 
-def fetch_sponsor_usernames():
+def check_is_sponsor(user: User) -> bool:
+    try:
+        token = user.social_auth.get(provider='github').extra_data.get('access_token')
+    except UserSocialAuth.DoesNotExist:
+        return False
+
+    if not token:
+        return False
+
     client = Client(
         transport=RequestsHTTPTransport(
             url=GQL_ENDPOINT,
             use_json=True,
             headers={
-                'Authorization': f'Bearer {settings.GITHUB_TOKEN}',
+                'Authorization': f'Bearer {token}',
             }
         )
     )
-
-    result = []
 
     after = None
 
@@ -31,21 +40,17 @@ def fetch_sponsor_usernames():
         query = '''
             query {
                 user (login: "eugeny") {
-                    sponsorshipsAsMaintainer(%s, includePrivate: true) {
-                    pageInfo {
-                        startCursor
-                        hasNextPage
-                        endCursor
-                    }
-                    nodes {
-                        createdAt
-                            tier {
-                                monthlyPriceInDollars
-                            }
-                            sponsor{
-                                ... on User {
-                                    login
-                                }
+                    sponsorshipsAsSponsor(%s) {
+                        pageInfo {
+                            startCursor
+                            hasNextPage
+                            endCursor
+                        }
+                        totalRecurringMonthlyPriceInDollars
+                        nodes {
+                            sponsorable {
+                                ... on Organization { login }
+                                ... on User { login }
                             }
                         }
                     }
@@ -54,18 +59,22 @@ def fetch_sponsor_usernames():
         ''' % (params,)
 
         response = client.execute(gql(query))
-        after = response['user']['sponsorshipsAsMaintainer']['pageInfo']['endCursor']
-        nodes = response['user']['sponsorshipsAsMaintainer']['nodes']
+        info = response['user']['sponsorshipsAsSponsor']
+        after = info['pageInfo']['endCursor']
+        nodes = info['nodes']
         if not len(nodes):
             break
         for node in nodes:
-            if node['tier']['monthlyPriceInDollars'] >= settings.GITHUB_SPONSORS_MIN_PAYMENT:
-                result.append(node['sponsor']['login'])
+            if node['sponsorable']['login'].lower() not in settings.GITHUB_ELIGIBLE_SPONSORSHIPS:
+                continue
+            if info['totalRecurringMonthlyPriceInDollars'] >= settings.GITHUB_SPONSORS_MIN_PAYMENT:
+                return True
 
-    return result
+    return False
 
 
-def get_sponsor_usernames():
-    if not cache.get(CACHE_KEY):
-        cache.set(CACHE_KEY, fetch_sponsor_usernames(), timeout=30)
-    return cache.get(CACHE_KEY)
+def check_is_sponsor_cached(user: User) -> bool:
+    cache_key = CACHE_KEY % user.id
+    if not cache.get(cache_key):
+        cache.set(cache_key, check_is_sponsor(user), timeout=30)
+    return cache.get(cache_key)

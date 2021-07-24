@@ -1,16 +1,21 @@
+import secrets
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.signals import user_logged_in
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 
 
 class Config(models.Model):
     user = models.ForeignKey('app.User', related_name='configs', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
     content = models.TextField(default='{}')
     last_used_with_version = models.CharField(max_length=32, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = f'Unnamed config ({date.today()})'
+        super().save(*args, **kwargs)
 
 
 class User(AbstractUser):
@@ -18,8 +23,15 @@ class User(AbstractUser):
     active_version = models.CharField(max_length=32, null=True)
     custom_connection_gateway = models.CharField(max_length=255, null=True, blank=True)
     custom_connection_gateway_token = models.CharField(max_length=255, null=True, blank=True)
+    config_sync_token = models.CharField(max_length=255)
+    force_pro = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.config_sync_token:
+            self.config_sync_token = secrets.token_hex(64)
+        super().save(*args, **kwargs)
 
 
 class Gateway(models.Model):

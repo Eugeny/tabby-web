@@ -4,11 +4,29 @@
 .modal-body
     .mb-3
         h5 GitHub account
-        a.btn.btn-info(href='/api/1/auth/social/login/github')
+        a.btn.btn-info(href='/api/1/auth/social/login/github', *ngIf='!user.github_username')
             fa-icon([icon]='_githubIcon', [fixedWidth]='true')
             span Connect a GitHub account
+        .alert.alert-success.d-flex(*ngIf='user.github_username')
+            fa-icon.me-2([icon]='_okIcon', [fixedWidth]='true')
+            div
+                div Connected as #[strong {{user.github_username}}]
+                div(*ngIf='user.is_sponsor') Thank you for supporting Tabby on GitHub!
 
-    .mb-3
+    .mb-3.mt-4
+        h5 Config sync
+        .d-flex.aling-items-stretch.mb-3
+            .form-floating.w-100
+                input.form-control(
+                    type='text',
+                    readonly,
+                    [ngModel]='user.config_sync_token'
+                )
+                label Sync token for the Tabby app
+            button.btn.btn-dark([cdkCopyToClipboard]='user.config_sync_token')
+                fa-icon([icon]='_copyIcon', [fixedWidth]='true')
+
+    .mb-3.mt-4
         h5 Connection gateway
         .form-check.form-switch
             input.form-check-input(

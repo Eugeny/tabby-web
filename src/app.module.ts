@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'
+import { ClipboardModule } from '@angular/cdk/clipboard'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
@@ -50,6 +51,7 @@ const ROUTES = [
         NgbDropdownModule,
         NgbModalModule,
         FontAwesomeModule,
+        ClipboardModule,
         RouterModule.forRoot(ROUTES),
     ],
     declarations: [

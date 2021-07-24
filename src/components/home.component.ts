@@ -15,7 +15,10 @@ class DemoConnector {
 
     async loadConfig (): Promise<string> {
         return `{
-            recoverTabs: false
+            recoverTabs: false,
+            web: {
+                preventAccidentalTabClosure: false,
+            },
         }`
     }
 

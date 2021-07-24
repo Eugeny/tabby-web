@@ -17,7 +17,7 @@ from social_django.models import UserSocialAuth
 from typing import List
 
 from .consumers import GatewayAdminConnection
-from .sponsors import get_sponsor_usernames
+from .sponsors import check_is_sponsor, check_is_sponsor_cached
 from .models import Config, Gateway, User
 
 
@@ -45,6 +45,8 @@ class GatewaySerializer(ModelSerializer):
 
 
 class ConfigSerializer(ModelSerializer):
+    name = fields.CharField(required=False)
+
     class Meta:
         model = Config
         read_only_fields = ('user', 'created_at', 'modified_at')
@@ -100,6 +102,7 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
 class UserSerializer(ModelSerializer):
     id = fields.IntegerField()
     is_pro = fields.SerializerMethodField()
+    is_sponsor = fields.SerializerMethodField()
     github_username = fields.SerializerMethodField()
 
     class Meta:
@@ -110,16 +113,18 @@ class UserSerializer(ModelSerializer):
             'active_config',
             'custom_connection_gateway',
             'custom_connection_gateway_token',
+            'config_sync_token',
             'is_pro',
+            'is_sponsor',
             'github_username',
         )
         read_only_fields = ('id', 'username')
 
     def get_is_pro(self, obj):
-        username = self.get_github_username(obj)
-        if not username:
-            return False
-        return username in get_sponsor_usernames()
+        return check_is_sponsor_cached(obj) or obj.force_pro
+
+    def get_is_sponsor(self, obj):
+        return check_is_sponsor_cached(obj)
 
     def get_github_username(self, obj):
         social_auth = UserSocialAuth.objects.filter(user=obj, provider='github').first()
