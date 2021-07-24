@@ -8,22 +8,20 @@ import { Config, Gateway, Version } from '../api'
 
 export class SocketProxy {
     connect$ = new Subject<void>()
-    data$ = new Subject<Buffer>()
-    error$ = new Subject<Buffer>()
-    close$ = new Subject<Buffer>()
+    data$ = new Subject<Uint8Array>()
+    error$ = new Subject<Error>()
+    close$ = new Subject<void>()
 
     url: string
     authToken: string
     webSocket: WebSocket|null
-    initialBuffer: Buffer
+    initialBuffers: any[] = []
     options: {
         host: string
         port: number
     }
 
-    constructor (private appConnector: AppConnectorService) {
-        this.initialBuffer = Buffer.from('')
-    }
+    constructor (private appConnector: AppConnectorService) { }
 
     async connect (options) {
         this.options = options
@@ -77,8 +75,10 @@ export class SocketProxy {
         } else if (msg._ === 'connected') {
             this.connect$.next()
             this.connect$.complete()
-            this.webSocket.send(this.initialBuffer)
-            this.initialBuffer = Buffer.from('')
+            for (const b of this.initialBuffers) {
+                this.webSocket.send(b)
+            }
+            this.initialBuffers = []
         } else if (msg._ === 'error') {
             console.error('Connection gateway error', msg)
             this.close(new Error(msg.details))
@@ -93,7 +93,7 @@ export class SocketProxy {
 
     write (chunk: Buffer): void {
         if (!this.webSocket?.readyState) {
-            this.initialBuffer = Buffer.concat([this.initialBuffer, chunk])
+            this.initialBuffers.push(chunk)
         } else {
             this.webSocket.send(chunk)
         }

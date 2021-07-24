@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http'
 import { ClipboardModule } from '@angular/cdk/clipboard'
+import { TransferHttpCacheModule } from '@nguniversal/common'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
@@ -15,6 +16,8 @@ import { SettingsModalComponent } from './components/settingsModal.component'
 import { HomeComponent } from './components/home.component'
 import { LoginComponent } from './components/login.component'
 import { InstanceInfoResolver } from './api'
+
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const ROUTES = [
     {
@@ -42,7 +45,10 @@ const ROUTES = [
 
 @NgModule({
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({
+            appId: 'tabby'
+        }),
+        TransferHttpCacheModule,
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,

@@ -8,6 +8,7 @@ db.sqlite3
 __pycache__
 .vscode
 build
+build-server
 *.d.ts
 .env
 yarn-error.log
