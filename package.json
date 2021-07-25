@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress",
-    "watch": "BACKEND_URL=http://localhost:8001 DEV=1 webpack --progress --watch",
+    "watch": "DEV=1 webpack --progress --watch",
     "build:server": "webpack --progress -c webpack.config.server.js",
     "watch:server": "DEV=1 webpack --progress --watch -c webpack.config.server.js",
     "start": "./manage.py runserver 8001",
@@ -42,6 +42,7 @@
     "core-js": "^3.14.0",
     "css-loader": "^2.1.0",
     "deepmerge": "^4.2.2",
+    "dotenv": "^10.0.0",
     "eslint": "^7.31.0",
     "file-loader": "^1.1.11",
     "html-loader": "^2.1.2",

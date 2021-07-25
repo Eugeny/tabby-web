@@ -8,7 +8,7 @@ urlpatterns = [
     path('', include(app_urlpatterns)),
     path('api/1/auth/social/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
-    path(f'^{settings.STATIC_URL}<path:path>', serve, kwargs={
+    path(f'{settings.STATIC_URL}<path:path>', serve, kwargs={
         'document_root': settings.STATIC_ROOT,
     }),
 ]

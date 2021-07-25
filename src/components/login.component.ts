@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import { LoginService } from '../services/login.service'
+import { CommonService } from '../services/common.service'
 
 import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons'
 
@@ -21,6 +22,7 @@ export class LoginComponent {
 
     constructor (
         private loginService: LoginService,
+        public commonService: CommonService,
     ) { }
 
     async ngOnInit () {

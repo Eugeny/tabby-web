@@ -3,16 +3,21 @@ import { Injectable } from '@angular/core'
 
 @Injectable({ providedIn: 'root' })
 export class CommonService {
-    private  backendURL?: string
+    private configPromise: Promise<any>
+    backendURL$: Promise<string>
 
-    async getBackendURL (): Promise<string> {
-        if (!this.backendURL) {
-            const config = await (await fetch('/config.json')).json()
-            this.backendURL = config.backendURL
-            if (this.backendURL.endsWith('/')) {
-                this.backendURL = this.backendURL.slice(0, -1)
+    constructor () {
+        this.configPromise = this.getConfig()
+        this.backendURL$ = this.configPromise.then(cfg => {
+            let backendURL = cfg.backendURL
+            if (backendURL.endsWith('/')) {
+                backendURL = backendURL.slice(0, -1)
             }
-        }
-        return this.backendURL
+            return backendURL
+        })
+    }
+
+    private async getConfig () {
+        return (await fetch('/config.json')).json()
     }
 }

@@ -37,7 +37,7 @@ class DemoConnector {
     }
 
     async getDistURL (): Promise<string> {
-        return await this.commonService.getBackendURL() + '/app-dist'
+        return await this.commonService.backendURL$ + '/app-dist'
     }
 
     getPluginsToLoad (): string[] {

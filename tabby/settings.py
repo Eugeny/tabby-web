@@ -169,8 +169,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-LOGIN_REDIRECT_URL = '/app'
-
 APP_DIST_PATH = Path(os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist'))
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
@@ -229,3 +227,21 @@ else:
 
 if FRONTEND_URL:
     CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+    CORS_ALLOW_CREDENTIALS = True
+    CORS_ALLOW_HEADERS = [
+        'accept',
+        'accept-encoding',
+        'authorization',
+        'content-type',
+        'dnt',
+        'origin',
+        'user-agent',
+        'x-xsrf-token',
+        'x-requested-with',
+    ]
+    CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
+    FRONTEND_URL = FRONTEND_URL.rstrip('/')
+else:
+    FRONTEND_URL = ''
+
+LOGIN_REDIRECT_URL = FRONTEND_URL + '/app'

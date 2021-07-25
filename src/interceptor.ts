@@ -10,11 +10,12 @@ export class UniversalInterceptor implements HttpInterceptor {
 
     intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (!request.url.startsWith('//') && request.url.startsWith('/')) {
-            return from(this.commonService.getBackendURL()).pipe(switchMap((baseUrl: string) => {
+            return from(this.commonService.backendURL$).pipe(switchMap((baseUrl: string) => {
                 const endpoint = request.url
 
                 request = request.clone({
                     url: `${baseUrl}${endpoint}`,
+                    withCredentials: true,
                 })
                 return next.handle(request)
             }))
