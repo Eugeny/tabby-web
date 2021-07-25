@@ -1,0 +1,8 @@
+node_modules
+*.ignore.js
+*.ignore.js.map
+build
+build-server
+*.d.ts
+yarn-error.log
+static

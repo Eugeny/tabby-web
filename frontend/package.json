@@ -7,22 +7,21 @@
     "watch": "DEV=1 webpack --progress --watch",
     "build:server": "webpack --progress -c webpack.config.server.js",
     "watch:server": "DEV=1 webpack --progress --watch -c webpack.config.server.js",
-    "start": "./manage.py runserver 8001",
-    "start:server": "PORT=8000 node build-server/server.js"
+    "start": "node build-server/server.js"
   },
   "private": true,
   "devDependencies": {
-    "@angular/animations": "^11.0.0",
+    "@angular/animations": "^11.2.14",
     "@angular/cdk": "^12.1.3",
-    "@angular/common": "^11.0.0",
-    "@angular/compiler": "^11.0.0",
-    "@angular/compiler-cli": "^11.0.0",
-    "@angular/core": "^11.0.0",
-    "@angular/forms": "^11.0.0",
-    "@angular/platform-browser": "^11.0.0",
-    "@angular/platform-browser-dynamic": "^11.0.0",
+    "@angular/common": "^11.2.14",
+    "@angular/compiler": "^11.2.14",
+    "@angular/compiler-cli": "^11.2.14",
+    "@angular/core": "^11.2.14",
+    "@angular/forms": "^11.2.14",
+    "@angular/platform-browser": "^11.2.14",
+    "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/platform-server": "^11.2.14",
-    "@angular/router": "^11.0.0",
+    "@angular/router": "^11.2.14",
     "@fontsource/fira-code": "^4.5.0",
     "@fortawesome/angular-fontawesome": "0.8",
     "@fortawesome/fontawesome-free": "^5.7.2",
@@ -36,7 +35,6 @@
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
     "apply-loader": "^2.0.0",
-    "awesome-typescript-loader": "^5.2.1",
     "bootstrap": "^5.0.1",
     "buffer": "^6.0.3",
     "core-js": "^3.14.0",
@@ -69,15 +67,10 @@
     "webpack": "^5.38.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
-    "webpack-node-externals": "^3.0.0",
-    "zone.js": "^0.11.4"
-  },
-  "dependencies": {
+    "zone.js": "^0.11.4",
     "@nguniversal/express-engine": "^11.1.0",
     "domino": "^2.1.6",
     "express": "^4.17.1",
-    "express-http-proxy": "^1.6.2",
-    "mock-browser": "^0.92.14",
     "source-map-support": "^0.5.19"
   }
 }

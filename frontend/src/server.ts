@@ -23,7 +23,7 @@ const engine = ngExpressEngine({
 function start () {
     const app = express()
 
-    const PORT = process.env.PORT || 4000
+    const PORT = process.env.PORT || 8000
     const DIST_FOLDER = join(process.cwd(), 'build')
 
     app.engine('html', engine)
