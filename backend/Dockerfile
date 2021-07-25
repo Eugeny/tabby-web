@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1
 FROM node:12-alpine AS build
-ARG BACKEND_URL
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn

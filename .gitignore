@@ -1,6 +1,4 @@
-__pycache__
 .vscode
 .env
-.mypy_cache
 app-dist
-db.sqlite3
+.mypy_cache

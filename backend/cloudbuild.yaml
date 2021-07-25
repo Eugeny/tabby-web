@@ -1,14 +1,12 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  dir: 'frontend'
+  dir: 'backend'
   args:
   - build
   - '-t'
-  - '${_DOCKER_TAG}'
+  - '${_DOCKER_PUBLISH_URL}'
   - '--cache-from'
-  - '${_DOCKER_TAG}'
+  - '${_DOCKER_PUBLISH_URL}'
   - '--build-arg'
   - 'BACKEND_URL=${_BACKEND_URL}'
   - '.'
-
-images: ['${_DOCKER_TAG}']
