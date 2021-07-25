@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http'
-import { Observable, from } from 'rxjs'
-import { switchMap } from 'rxjs/operators'
+import { Observable } from 'rxjs'
 import { CommonService } from './services/common.service'
 
 @Injectable()
@@ -9,16 +8,14 @@ export class UniversalInterceptor implements HttpInterceptor {
     constructor (private commonService: CommonService) { }
 
     intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        console.log(request.url)
         if (!request.url.startsWith('//') && request.url.startsWith('/')) {
-            return from(this.commonService.backendURL$).pipe(switchMap((baseUrl: string) => {
-                const endpoint = request.url
-
-                request = request.clone({
-                    url: `${baseUrl}${endpoint}`,
-                    withCredentials: true,
-                })
-                return next.handle(request)
-            }))
+            const endpoint = request.url
+            console.log(this.commonService.backendURL, request.url)
+            request = request.clone({
+                url: `${this.commonService.backendURL}${endpoint}`,
+                withCredentials: true,
+            })
         }
         return next.handle(request)
     }

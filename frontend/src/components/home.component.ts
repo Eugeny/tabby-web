@@ -15,9 +15,7 @@ class DemoConnector {
         private commonService: CommonService,
         private version: Version,
     ) {
-        this.getDistURL().then(distURL => {
-            targetWindow['tabbyWebDemoDataPath'] = `${distURL}/${version.version}/tabby-web-demo/data`
-        })
+        targetWindow['tabbyWebDemoDataPath'] = `${this.getDistURL()}/${version.version}/tabby-web-demo/data`
     }
 
     async loadConfig (): Promise<string> {
@@ -36,8 +34,8 @@ class DemoConnector {
         return this.version.version
     }
 
-    async getDistURL (): Promise<string> {
-        return await this.commonService.backendURL$ + '/app-dist'
+    getDistURL (): string {
+        return this.commonService.backendURL + '/app-dist'
     }
 
     getPluginsToLoad (): string[] {

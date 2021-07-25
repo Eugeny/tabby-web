@@ -4,7 +4,7 @@ main(*ngIf='ready && loggedIn')
         a.btn(
             *ngFor='let provider of providers',
             [class]='provider.cls',
-            href='{{commonService.backendURL$|async}}/api/1/auth/social/login/{{provider.id}}'
+            href='{{commonService.backendURL}}/api/1/auth/social/login/{{provider.id}}'
         )
             fa-icon([icon]='provider.icon', [fixedWidth]='true')
             span Log in with {{provider.name}}

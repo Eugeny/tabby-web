@@ -1,7 +1,6 @@
-require('dotenv').config()
 const baseConfig = require('./webpack.config.base.js')
-const fs = require('fs')
 const path = require('path')
+const webpack = require('webpack')
 const { AngularWebpackPlugin } =  require('@ngtools/webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -12,15 +11,6 @@ const htmlPluginOptions = {
 }
 
 const outputPath = path.join(__dirname, 'build')
-const backendURL = process.env.BACKEND_URL
-
-if (process.env.DEV && !backendURL) {
-    backendURL = 'http://localhost:8001'
-}
-
-if (!backendURL) {
-  throw new Error('BACKEND_URL env var is required')
-}
 
 module.exports = {
   name: 'browser',
@@ -49,15 +39,6 @@ module.exports = {
       chunks: ['terminal'],
       ...htmlPluginOptions,
     }),
-    {
-      apply: (compiler) => {
-        compiler.hooks.afterEmit.tap('AfterEmitPlugin', () => {
-          fs.writeFileSync(path.join(outputPath, 'config.json'), JSON.stringify({
-            backendURL,
-          }))
-        })
-      },
-    },
   ],
   output: {
     path: outputPath,

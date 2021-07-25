@@ -159,8 +159,8 @@ export class AppConnectorService {
         return this.version.version
     }
 
-    async getDistURL (): Promise<string> {
-        return await this.commonService.backendURL$ + '/app-dist'
+    getDistURL (): string {
+        return this.commonService.backendURL + '/app-dist'
     }
 
     getPluginsToLoad (): string[] {

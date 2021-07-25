@@ -18,7 +18,7 @@ import { HomeComponent } from './components/home.component'
 import { LoginComponent } from './components/login.component'
 import { InstanceInfoResolver } from './api'
 
-// import '@fortawesome/fontawesome-svg-core/styles.css'
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const ROUTES = [
     {
