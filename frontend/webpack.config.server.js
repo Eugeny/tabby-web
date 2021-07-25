@@ -1,7 +1,6 @@
 const baseConfig = require('./webpack.config.base.js')
 const path = require('path')
 const { AngularWebpackPlugin } =  require('@ngtools/webpack')
-const nodeExternals = require('webpack-node-externals')
 
 const outputPath = path.join(__dirname, 'build-server')
 
