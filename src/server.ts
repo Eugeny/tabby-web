@@ -1,12 +1,13 @@
-import 'zone.js/dist/zone-node';
-import { enableProdMode } from '@angular/core';
-
 require('source-map-support').install()
+
+import 'zone.js/dist/zone-node';
+import './ssr-polyfills'
+
+import { enableProdMode } from '@angular/core';
 
 // Express Engine
 import { ngExpressEngine } from '@nguniversal/express-engine';
 
-import './ssr-polyfills'
 
 import * as express from 'express'
 import { join } from 'path'
@@ -37,15 +38,15 @@ app.use('/static', express.static(DIST_FOLDER, {
   maxAge: '1y'
 }));
 
-var proxy = require('express-http-proxy');
+// var proxy = require('express-http-proxy');
 
-app.get(['/', '/login'], (req, res) => {
+app.get('*', (req, res) => {
   res.render('index', { req });
 });
 
 
-app.use('/', proxy('http://tabby.local:8000/api/', {
-}))
+// app.use('/', proxy('http://tabby.local:8000/api/', {
+// }))
 
 // Start up the Node server
 app.listen(PORT, () => {

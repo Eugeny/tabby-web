@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'social_django',
+    'corsheaders',
     'tabby.app',
 ]
 
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'tabby.middleware.TokenMiddleware',
     'tabby.middleware.GAMiddleware',
 ]
@@ -135,15 +137,7 @@ LOGGING = {
     },
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [BASE_DIR / 'build']
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -180,9 +174,11 @@ LOGIN_REDIRECT_URL = '/app'
 APP_DIST_PATH = Path(os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist'))
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
+FRONTEND_URL = None
 GITHUB_ELIGIBLE_SPONSORSHIPS = None
 
 for key in [
+    'FRONTEND_URL',
     'SOCIAL_AUTH_GITHUB_KEY',
     'SOCIAL_AUTH_GITHUB_SECRET',
     'SOCIAL_AUTH_GITLAB_KEY',
@@ -229,3 +225,7 @@ if GITHUB_ELIGIBLE_SPONSORSHIPS:
     GITHUB_ELIGIBLE_SPONSORSHIPS = GITHUB_ELIGIBLE_SPONSORSHIPS.split(',')
 else:
     GITHUB_ELIGIBLE_SPONSORSHIPS = []
+
+
+if FRONTEND_URL:
+    CORS_ALLOWED_ORIGINS = [FRONTEND_URL]

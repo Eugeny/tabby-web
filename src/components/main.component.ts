@@ -80,7 +80,7 @@ export class MainComponent {
 
     async loadApp (config, version) {
         this.showApp = true
-        this.iframe.nativeElement.src = '/terminal'
+        this.iframe.nativeElement.src = '/terminal.html'
         await this.http.patch(`/api/1/configs/${config.id}`, {
             last_used_with_version: version.version,
         }).toPromise()

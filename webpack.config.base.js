@@ -1,11 +1,5 @@
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-
-const htmlPluginOptions = {
-  hash: true,
-  minify: false
-}
 
 module.exports  = {
   mode: process.env.DEV ? 'development' : 'production',
@@ -61,17 +55,5 @@ module.exports  = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-      chunks: ['index'],
-      ...htmlPluginOptions,
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/terminal.html',
-      filename: 'terminal.html',
-      chunks: ['terminal'],
-      ...htmlPluginOptions,
-    }),
   ],
 }

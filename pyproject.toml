@@ -23,6 +23,7 @@ Twisted = "20.3.0"
 semver = "^2.13.0"
 requests = "^2.25.1"
 pyga = "^2.6.2"
+django-cors-headers = "^3.7.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

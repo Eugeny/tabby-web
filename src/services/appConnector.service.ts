@@ -2,9 +2,10 @@ import { Buffer } from 'buffer'
 import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { LoginService } from '../services/login.service'
+import { Injectable, Injector } from '@angular/core'
 import { Config, Gateway, Version } from '../api'
+import { LoginService } from './login.service'
+import { CommonService } from './common.service'
 
 export class SocketProxy {
     connect$ = new Subject<void>()
@@ -21,12 +22,21 @@ export class SocketProxy {
         port: number
     }
 
-    constructor (private appConnector: AppConnectorService) { }
+    private appConnector: AppConnectorService
+    private loginService: LoginService
 
-    async connect (options) {
+    constructor (
+        injector: Injector,
+    ) {
+        this.appConnector = injector.get(AppConnectorService)
+        this.loginService = injector.get(LoginService)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    async connect (options: any): Promise<void> {
         this.options = options
-        this.url = this.appConnector.loginService.user.custom_connection_gateway
-        this.authToken = this.appConnector.loginService.user.custom_connection_gateway_token
+        this.url = this.loginService.user.custom_connection_gateway
+        this.authToken = this.loginService.user.custom_connection_gateway_token
         if (!this.url) {
             try {
                 const gateway = await this.appConnector.chooseConnectionGateway()
@@ -120,9 +130,11 @@ export class AppConnectorService {
     sockets: SocketProxy[] = []
 
     constructor (
+        private injector: Injector,
         private http: HttpClient,
-        public loginService: LoginService,
+        private commonService: CommonService,
     ) {
+
         this.configUpdate.pipe(debounceTime(1000)).subscribe(async content => {
             const result = await this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
             Object.assign(this.config, result)
@@ -147,8 +159,8 @@ export class AppConnectorService {
         return this.version.version
     }
 
-    getDistURL (): string {
-        return '../app-dist'
+    async getDistURL (): Promise<string> {
+        return await this.commonService.getBackendURL() + '/app-dist'
     }
 
     getPluginsToLoad (): string[] {
@@ -168,7 +180,7 @@ export class AppConnectorService {
     }
 
     createSocket () {
-        const socket = new SocketProxy(this)
+        const socket = new SocketProxy(this.injector)
         this.sockets.push(socket)
         socket.close$.subscribe(() => {
             this.sockets = this.sockets.filter(x => x !== socket)

@@ -2,7 +2,7 @@ import * as domino from 'domino';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const template = fs.readFileSync(path.join(process.cwd(), 'build-server', 'index.html')).toString();
+const template = fs.readFileSync(path.join(process.cwd(), 'build', 'index.html')).toString();
 const win = domino.createWindow(template);
 
 global['window'] = win;

@@ -6,11 +6,18 @@ import { InstanceInfo, Version } from '../api'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { ActivatedRoute } from '@angular/router'
+import { CommonService } from '../services/common.service'
 
 
 class DemoConnector {
-    constructor (targetWindow: Window, private version: Version) {
-        targetWindow['tabbyWebDemoDataPath'] = `${this.getDistURL()}/${version.version}/tabby-web-demo/data`
+    constructor (
+        targetWindow: Window,
+        private commonService: CommonService,
+        private version: Version,
+    ) {
+        this.getDistURL().then(distURL => {
+            targetWindow['tabbyWebDemoDataPath'] = `${distURL}/${version.version}/tabby-web-demo/data`
+        })
     }
 
     async loadConfig (): Promise<string> {
@@ -22,15 +29,15 @@ class DemoConnector {
         }`
     }
 
-    async saveConfig (content: string): Promise<void> {
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    async saveConfig (_content: string): Promise<void> { }
 
     getAppVersion (): string {
         return this.version.version
     }
 
-    getDistURL (): string {
-        return '/app-dist'
+    async getDistURL (): Promise<string> {
+        return await this.commonService.getBackendURL() + '/app-dist'
     }
 
     getPluginsToLoad (): string[] {
@@ -94,12 +101,14 @@ export class HomeComponent {
 
     constructor (
         private http: HttpClient,
+        private commonService: CommonService,
         route: ActivatedRoute,
     ) {
         window.addEventListener('message', this.connectorRequestHandler)
         this.instanceInfo = route.snapshot.data.instanceInfo
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     connectorRequestHandler = event => {
         if (event.data === 'request-connector') {
             this.iframe.nativeElement.contentWindow['__connector__'] = this.connector
@@ -107,14 +116,14 @@ export class HomeComponent {
         }
     }
 
-    async ngAfterViewInit () {
+    async ngAfterViewInit (): Promise<void> {
         const versions = await this.http.get('/api/1/versions').toPromise()
         versions.sort((a, b) => -semverCompare(a.version, b.version))
-        this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, versions[0])
-        this.iframe.nativeElement.src = '/terminal'
+        this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0])
+        this.iframe.nativeElement.src = '/terminal.html'
     }
 
-    ngOnDestroy () {
+    ngOnDestroy (): void {
         window.removeEventListener('message', this.connectorRequestHandler)
     }
 }

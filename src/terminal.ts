@@ -31,7 +31,7 @@ async function start () {
         await (await fetch(url)).text()
     }
 
-    const baseUrl = `${connector.getDistURL()}/${appVersion}`
+    const baseUrl = `${await connector.getDistURL()}/${appVersion}`
     const coreURLs = [
         `${baseUrl}/tabby-web-container/dist/preload.js`,
         `${baseUrl}/tabby-web-container/dist/bundle.js`,
