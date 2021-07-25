@@ -39,6 +39,7 @@ function start () {
         res.render('index', { req })
     })
 
+    process.umask(0o002)
     app.listen(PORT, () => {
         console.log(`Node Express server listening on http://localhost:${PORT}`)
     })
