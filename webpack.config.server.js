@@ -13,6 +13,9 @@ module.exports = {
         // 'index.server': path.resolve(__dirname, 'src/index.server.ts'),
         'server': path.resolve(__dirname, 'src/server.ts'),
     },
+    optimization: {
+        minimize: false,
+    },
     resolve: {
       ...baseConfig.resolve,
       mainFields: ['esm2015', 'module', 'main'],
