@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'frontend'
+  args:
+  - build
+  - '-t'
+  - '${_DOCKER_PUBLISH_URL}'
+  - '--build-arg'
+  - 'BACKEND_URL=${_BACKEND_URL}'
+  - '.'
