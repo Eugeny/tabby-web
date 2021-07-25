@@ -13,4 +13,5 @@ WORKDIR /app
 COPY --from=0 /app/build build
 COPY --from=0 /app/build-server build-server
 COPY package.json .
+
 CMD ["npm", "start"]
