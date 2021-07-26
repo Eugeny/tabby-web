@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.7-alpine AS build
+FROM python:3.9-alpine AS build
 ARG EXTRA_DEPS
 RUN apk add build-base musl-dev libffi-dev openssl-dev mariadb-dev
 WORKDIR /app
@@ -11,6 +11,7 @@ RUN poetry install --no-dev --no-ansi --no-interaction
 FROM node:12-alpine AS package
 WORKDIR /app
 COPY --from=0 /usr/local /usr/local
+COPY --from=0 /usr/lib/python3.9 /usr/lib/python3.9
 COPY start.sh manage.py gunicorn.conf.py ./
 COPY tabby tabby
 ENTRYPOINT ./start.sh
