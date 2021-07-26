@@ -239,8 +239,16 @@ if FRONTEND_URL:
         'x-xsrf-token',
         'x-requested-with',
     ]
-    CSRF_TRUSTED_ORIGINS = [urlparse(FRONTEND_URL).hostname]
+    frontend_domain = urlparse(FRONTEND_URL).hostname
+    CSRF_TRUSTED_ORIGINS = [frontend_domain]
+    SESSION_COOKIE_DOMAIN = frontend_domain
+    CSRF_COOKIE_DOMAIN = frontend_domain
+
     FRONTEND_URL = FRONTEND_URL.rstrip('/')
+
+    if FRONTEND_URL.startswith('https://'):
+        CSRF_COOKIE_SECURE = True
+        SESSION_COOKIE_SECURE = True
 else:
     FRONTEND_URL = ''
 
