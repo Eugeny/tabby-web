@@ -2,6 +2,7 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 from pathlib import Path
+from urllib.parse import urlparse
 
 load_dotenv()
 
@@ -238,7 +239,7 @@ if FRONTEND_URL:
         'x-xsrf-token',
         'x-requested-with',
     ]
-    CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
+    CSRF_TRUSTED_ORIGINS = [urlparse(FRONTEND_URL).hostname]
     FRONTEND_URL = FRONTEND_URL.rstrip('/')
 else:
     FRONTEND_URL = ''
