@@ -9,7 +9,7 @@ import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angu
 import { ClipboardModule } from '@angular/cdk/clipboard'
 import { TransferHttpCacheModule } from '@nguniversal/common'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-import { UniversalInterceptor } from './interceptor'
+import { BackendXsrfInterceptor, UniversalInterceptor } from './interceptor'
 import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
 import { ConfigModalComponent } from './components/configModal.component'
@@ -62,11 +62,8 @@ const ROUTES = [
         RouterModule.forRoot(ROUTES),
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: UniversalInterceptor,
-            multi: true,
-        },
+        { provide: HTTP_INTERCEPTORS, useClass: UniversalInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: BackendXsrfInterceptor, multi: true },
     ],
     declarations: [
         AppComponent,
