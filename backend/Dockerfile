@@ -1,17 +1,15 @@
 # syntax=docker/dockerfile:1
-FROM node:12-alpine AS build
+FROM python:3.7-alpine AS build
+RUN apk add build-base musl-dev libffi-dev openssl-dev mariadb-dev
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn
-COPY webpack* tsconfig.json ./
-COPY src src
-RUN yarn run build
-RUN yarn run build:server
+RUN pip install -U setuptools 'cryptography>=3.0,<3.1' poetry==1.1.7
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev --no-ansi --no-interaction
 
 FROM node:12-alpine AS package
 WORKDIR /app
-COPY --from=0 /app/build build
-COPY --from=0 /app/build-server build-server
-COPY package.json .
-
-CMD ["npm", "start"]
+COPY --from=0 /usr /usr
+COPY manage.py gunicorn.conf.py ./
+COPY tabby tabby
+CMD ["gunicorn"]
