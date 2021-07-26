@@ -11,6 +11,9 @@ RUN poetry install --no-dev --no-ansi --no-interaction
 FROM node:12-alpine AS package
 WORKDIR /app
 COPY --from=0 /usr /usr
-COPY start.sh manage.py gunicorn.conf.py ./
+COPY manage.py gunicorn.conf.py ./
 COPY tabby tabby
-ENTRYPOINT ["/app/start.sh"]
+
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/start.sh"]
