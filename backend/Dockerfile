@@ -13,4 +13,4 @@ WORKDIR /app
 COPY --from=0 /usr /usr
 COPY start.sh manage.py gunicorn.conf.py ./
 COPY tabby tabby
-ENTRYPOINT ./start.sh
+ENTRYPOINT ["/app/start.sh"]
