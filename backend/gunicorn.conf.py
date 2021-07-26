@@ -1,6 +1,5 @@
-wsgi_app = "tabby.asgi:application"
+wsgi_app = "tabby.wsgi:application"
 workers = 4
-worker_class = 'uvicorn.workers.UvicornWorker'
 preload_app = True
 sendfile = True
 

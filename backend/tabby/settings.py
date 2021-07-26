@@ -8,6 +8,7 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+FRONTEND_BUILD_DIR = BASE_DIR / '../frontend/build'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -32,7 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
     'rest_framework',
     'social_django',
     'corsheaders',
@@ -70,7 +70,6 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'tabby.asgi.application'
 WSGI_APPLICATION = 'tabby.wsgi.application'
 
 DATABASES = {
@@ -138,6 +137,7 @@ LOGGING = {
 }
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -169,7 +169,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-APP_DIST_PATH = Path(os.getenv('APP_DIST_PATH', BASE_DIR / 'app-dist'))
+APP_DIST_STORAGE = os.getenv('APP_DIST_STORAGE', 'file://' + str(BASE_DIR / 'app-dist'))
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
 FRONTEND_URL = None

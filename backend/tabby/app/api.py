@@ -1,3 +1,5 @@
+import fsspec
+import os
 import asyncio
 import random
 from django.conf import settings
@@ -15,8 +17,9 @@ from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_dataclasses.serializers import DataclassSerializer
 from social_django.models import UserSocialAuth
 from typing import List
+from urllib.parse import urlparse
 
-from .consumers import GatewayAdminConnection
+from .gateway import GatewayAdminConnection
 from .sponsors import check_is_sponsor, check_is_sponsor_cached
 from .models import Config, Gateway, User
 
@@ -74,19 +77,26 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
     queryset = ''
 
     def _get_versions(self):
-        return [self._get_version(x) for x in settings.APP_DIST_PATH.iterdir()]
+        fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
+        return [
+            self._get_version(x['name'])
+            for x in fs.listdir(settings.APP_DIST_STORAGE)
+        ]
 
-    def _get_version(self, dir: Path):
+    def _get_version(self, dir):
+        fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
         plugins = [
-            x.name for x in dir.iterdir()
-            if x.is_dir() and x.name not in [
+            os.path.basename(x['name'])
+            for x in fs.listdir(dir)
+            if x['type'] == 'directory' and os.path.basename(x['name'])
+            not in [
                 'tabby-web-container',
                 'tabby-web-demo',
             ]
         ]
 
         return AppVersion(
-            version=dir.name,
+            version=os.path.basename(dir),
             plugins=plugins,
         )
 
@@ -166,7 +176,7 @@ class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
 
 class NoGatewaysError(APIException):
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-    default_detail ='No connection gateways available.'
+    default_detail = 'No connection gateways available.'
     default_code = 'no_gateways'
 
 

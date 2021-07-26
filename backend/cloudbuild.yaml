@@ -7,6 +7,8 @@ steps:
   - '${_DOCKER_TAG}'
   - '--cache-from'
   - '${_DOCKER_TAG}'
+  - '--build-arg'
+  - 'EXTRA_DEPS=${_EXTRA_DEPS}'
   - '.'
 
 images: ['${_DOCKER_TAG}']

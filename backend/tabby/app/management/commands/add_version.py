@@ -1,3 +1,4 @@
+import fsspec
 import logging
 import requests
 import shutil
@@ -6,6 +7,7 @@ import tempfile
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 class Command(BaseCommand):
@@ -16,7 +18,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         version = options['version']
-        target: Path = settings.APP_DIST_PATH / version
+        target = f'{settings.APP_DIST_STORAGE}/{version}'
+
+        fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
 
         plugin_list = [
             'tabby-web-container',
@@ -51,9 +55,11 @@ class Command(BaseCommand):
                         subprocess.check_call(
                             ['tar', '-xzf', f.name, '-C', str(extraction_tmp)]
                         )
-                        shutil.move(Path(extraction_tmp) / 'package', plugin_final_target)
+                        shutil.move(
+                            Path(extraction_tmp) / 'package', plugin_final_target
+                        )
 
-            if target.exists():
-                shutil.rmtree(target)
-            shutil.copytree(tempdir, target)
-            target.chmod(0o755)
+            if fs.exists(target):
+                fs.rm(target, recursive=True)
+            fs.mkdir(target)
+            fs.put(str(tempdir), target, recursive=True)

@@ -8,7 +8,6 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.7"
 Django = "^3.2.3"
 django-rest-framework = "^0.1.0"
-channels = "^3.0.3"
 djangorestframework-dataclasses = "^0.9"
 social-auth-app-django = "^4.0.0"
 python-dotenv = "^0.17.1"
@@ -23,7 +22,7 @@ requests = "^2.25.1"
 pyga = "^2.6.2"
 django-cors-headers = "^3.7.0"
 cryptography = "3.0"
-uvicorn = "^0.14.0"
+fsspec = "^2021.7.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"

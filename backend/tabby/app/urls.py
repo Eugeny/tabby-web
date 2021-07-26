@@ -2,7 +2,6 @@ from django.urls import path, re_path, include
 from rest_framework import routers
 
 from . import api
-from . import consumers
 from . import views
 
 
@@ -16,13 +15,9 @@ urlpatterns = [
     path('api/1/instance-info', api.InstanceInfoViewSet.as_view({'get': 'retrieve'})),
     path('api/1/gateways/choose', api.ChooseGatewayViewSet.as_view({'post': 'retrieve'})),
 
-    # re_path('^(|login|app)$', views.IndexView.as_view()),
+    re_path('^(|login|app)$', views.IndexView.as_view()),
+    path('terminal', views.TerminalView.as_view()),
 
-    # path('terminal', views.TerminalView.as_view()),
     path('app-dist/<version>/<path:path>', views.AppDistView.as_view()),
     path('', include(router.urls)),
-]
-
-websocket_urlpatterns = [
-    re_path(r'^api/1/gateway/tcp/(?P<host>[^/]+):(?P<port>\d+)$', consumers.TCPConsumer.as_asgi()),
 ]

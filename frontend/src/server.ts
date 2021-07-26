@@ -31,7 +31,7 @@ function start () {
     app.set('view engine', 'html')
     app.set('views', DIST_FOLDER)
 
-    app.get('*.*', express.static(DIST_FOLDER, {
+    app.get('*.*', express.static(join(DIST_FOLDER, 'static'), {
         maxAge: '1y',
     }))
 

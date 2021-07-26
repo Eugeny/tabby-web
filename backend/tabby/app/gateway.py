@@ -4,7 +4,6 @@ import os
 import secrets
 import ssl
 import websockets
-from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 from urllib.parse import quote
 
@@ -91,35 +90,3 @@ class GatewayAdminConnection:
     async def close(self):
         await self.socket.close()
         await self.context.__aexit__(None, None, None)
-
-
-class TCPConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.closed = False
-        self.conn = GatewayConnection(
-            self.scope['url_route']['kwargs']['host'],
-            int(self.scope['url_route']['kwargs']['port']),
-        )
-        await self.conn.connect()
-        await self.accept()
-        self.reader = asyncio.get_event_loop().create_task(self.socket_reader())
-
-    async def disconnect(self, close_code):
-        self.closed = True
-        await self.conn.close()
-
-    async def receive(self, bytes_data):
-        await self.conn.send(bytes_data)
-
-    async def socket_reader(self):
-        while True:
-            if self.closed:
-                return
-            try:
-                data = await self.conn.recv(timeout=10)
-            except asyncio.TimeoutError:
-                continue
-            except websockets.exceptions.ConnectionClosed:
-                await self.close()
-                return
-            await self.send(bytes_data=data)
