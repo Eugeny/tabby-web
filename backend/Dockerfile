@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=0 /usr /usr
 COPY manage.py gunicorn.conf.py ./
 COPY tabby tabby
-CMD ["gunicorn"]
+ENTRYPOINT ./start.sh
