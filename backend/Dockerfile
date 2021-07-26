@@ -10,8 +10,7 @@ RUN poetry install --no-dev --no-ansi --no-interaction
 
 FROM node:12-alpine AS package
 WORKDIR /app
-COPY --from=0 /usr/local /usr/local
-COPY --from=0 /usr/lib/python3.9 /usr/lib/python3.9
+COPY --from=0 /usr /usr
 COPY start.sh manage.py gunicorn.conf.py ./
 COPY tabby tabby
 ENTRYPOINT ./start.sh
