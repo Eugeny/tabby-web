@@ -15,5 +15,5 @@ COPY manage.py gunicorn.conf.py ./
 COPY tabby tabby
 
 COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN ["chmod", "+x", "/start.sh"]
 CMD ["/start.sh"]

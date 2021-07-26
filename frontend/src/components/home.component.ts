@@ -118,7 +118,7 @@ export class HomeComponent {
         const versions = await this.http.get('/api/1/versions').toPromise()
         versions.sort((a, b) => -semverCompare(a.version, b.version))
         this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0])
-        this.iframe.nativeElement.src = '/terminal.html'
+        this.iframe.nativeElement.src = '/terminal'
     }
 
     ngOnDestroy (): void {
