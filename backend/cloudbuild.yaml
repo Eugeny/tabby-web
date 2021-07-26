@@ -4,9 +4,9 @@ steps:
   args:
   - build
   - '-t'
-  - '${_DOCKER_PUBLISH_URL}'
+  - '${_DOCKER_TAG}'
   - '--cache-from'
-  - '${_DOCKER_PUBLISH_URL}'
+  - '${_DOCKER_TAG}'
   - '.'
 
 images: ['${_DOCKER_TAG}']
