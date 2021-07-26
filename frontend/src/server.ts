@@ -31,11 +31,11 @@ function start () {
     app.set('view engine', 'html')
     app.set('views', DIST_FOLDER)
 
-    app.get('*.*', express.static(join(DIST_FOLDER, 'static'), {
+    app.use('/static', express.static(DIST_FOLDER, {
         maxAge: '1y',
     }))
 
-    app.get('*', (req, res) => {
+    app.get(['/', '/app', '/login'], (req, res) => {
         res.render('index', { req })
     })
 

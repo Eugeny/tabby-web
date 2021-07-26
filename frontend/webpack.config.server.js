@@ -34,7 +34,7 @@ module.exports = {
         // libraryTarget: 'commonjs',
         path: outputPath,
         pathinfo: true,
-        publicPath: '/',
+        publicPath: '/static/',
         filename: '[name].js',
         chunkFilename: '[name].bundle.js',
     },

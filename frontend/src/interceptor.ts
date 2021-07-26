@@ -8,10 +8,8 @@ export class UniversalInterceptor implements HttpInterceptor {
     constructor (private commonService: CommonService) { }
 
     intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(request.url)
         if (!request.url.startsWith('//') && request.url.startsWith('/')) {
             const endpoint = request.url
-            console.log(this.commonService.backendURL, request.url)
             request = request.clone({
                 url: `${this.commonService.backendURL}${endpoint}`,
                 withCredentials: true,
