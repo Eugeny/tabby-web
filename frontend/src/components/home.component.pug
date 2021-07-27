@@ -49,7 +49,10 @@
         .container
             .row
                 .col-12.col-xl-6
-                    img.screenshot([src]='screenshots.window', loading='lazy')
+                    lib-ngx-image-zoom(
+                        [fullImage]='screenshots.window',
+                        [thumbImage]='screenshots.window'
+                    )
                 .col-12.col-xl-6
                     h1 The important stuff
                     ul
@@ -79,13 +82,19 @@
                         li Optional #[strong global hotkey] to focus/hide the terminal
                         li Bracketed paste
                 .col-12.col-xl-6
-                    img.screenshot([src]='screenshots.tabs', loading='lazy')
+                    lib-ngx-image-zoom(
+                        [fullImage]='screenshots.tabs',
+                        [thumbImage]='screenshots.tabs'
+                    )
 
     .section.section-a
         .container
             .row
                 .col-12.col-xl-6
-                    img.screenshot([src]='screenshots.ssh', loading='lazy')
+                    lib-ngx-image-zoom(
+                        [fullImage]='screenshots.ssh',
+                        [thumbImage]='screenshots.ssh'
+                    )
                 .col-12.col-xl-6
                     h1 SSH Client
                     ul
@@ -110,13 +119,19 @@
                         li Optional #[strong portable mode]
                         li Current directory detection that works
                 .col-12.col-xl-6
-                    img.screenshot([src]='screenshots.win', loading='lazy')
+                    lib-ngx-image-zoom(
+                        [fullImage]='screenshots.win',
+                        [thumbImage]='screenshots.win'
+                    )
 
     .section.section-a
         .container
             .row
                 .col-12.col-xl-6
-                    img.screenshot([src]='screenshots.serial', loading='lazy')
+                    lib-ngx-image-zoom(
+                        [fullImage]='screenshots.serial',
+                        [thumbImage]='screenshots.serial'
+                    )
                 .col-12.col-xl-6
                     h1 Serial Terminal
                     ul

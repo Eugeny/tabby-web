@@ -9,6 +9,8 @@ import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angu
 import { ClipboardModule } from '@angular/cdk/clipboard'
 import { TransferHttpCacheModule } from '@nguniversal/common'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { NgxImageZoomModule } from 'ngx-image-zoom'
+
 import { BackendXsrfInterceptor, UniversalInterceptor } from './interceptor'
 import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
@@ -59,6 +61,7 @@ const ROUTES = [
         NgbModalModule,
         FontAwesomeModule,
         ClipboardModule,
+        NgxImageZoomModule,
         RouterModule.forRoot(ROUTES),
     ],
     providers: [

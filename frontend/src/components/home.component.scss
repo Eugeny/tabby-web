@@ -96,11 +96,6 @@ strong {
 
 .section {
     padding: 50px 0;
-
-    .screenshot {
-        min-width: 0;
-        max-width: 100%;
-    }
 }
 
 .section-a {
@@ -108,4 +103,15 @@ strong {
 }
 
 .section-b {
+}
+
+::ng-deep lib-ngx-image-zoom {
+    width: 100%;
+    display: block;
+
+    img {
+        min-width: 100px;
+        max-width: 100%;
+    width: 100%;
+}
 }
