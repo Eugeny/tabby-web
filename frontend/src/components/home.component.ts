@@ -5,7 +5,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core'
 import { InstanceInfo, Version } from '../api'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { CommonService } from '../services/common.service'
 
 
@@ -101,9 +101,13 @@ export class HomeComponent {
         private http: HttpClient,
         private commonService: CommonService,
         route: ActivatedRoute,
+        router: Router,
     ) {
         window.addEventListener('message', this.connectorRequestHandler)
         this.instanceInfo = route.snapshot.data.instanceInfo
+        if (!this.instanceInfo.homepage_enabled) {
+            router.navigate(['/app'])
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

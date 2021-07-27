@@ -194,6 +194,7 @@ for key in [
     'ENABLE_LOGIN',
     'GA_ID',
     'GA_DOMAIN',
+    'ENABLE_HOMEPAGE',
 ]:
     globals()[key] = os.getenv(key)
 
@@ -206,6 +207,7 @@ for key in [
 
 for key in [
     'ENABLE_LOGIN',
+    'ENABLE_HOMEPAGE',
 ]:
     globals()[key] = bool(globals()[key]) if globals()[key] else None
 

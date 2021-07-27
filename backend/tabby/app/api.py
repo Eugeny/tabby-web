@@ -162,6 +162,7 @@ class LogoutView(APIView):
 
 class InstanceInfoSerializer(Serializer):
     login_enabled = fields.BooleanField()
+    homepage_enabled = fields.BooleanField()
 
 
 class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
@@ -171,6 +172,7 @@ class InstanceInfoViewSet(RetrieveModelMixin, GenericViewSet):
     def get_object(self):
         return {
             'login_enabled': settings.ENABLE_LOGIN,
+            'homepage_enabled': settings.ENABLE_HOMEPAGE,
         }
 
 

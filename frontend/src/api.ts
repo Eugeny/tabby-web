@@ -28,6 +28,7 @@ export interface Version {
 
 export interface InstanceInfo {
     login_enabled: boolean
+    homepage_enabled: boolean
 }
 
 export interface Gateway {
