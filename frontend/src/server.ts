@@ -20,6 +20,10 @@ const engine = ngExpressEngine({
     bootstrap: AppServerModule,
 })
 
+const hardlinks = {
+    'cwd-detection': 'https://github.com/Eugeny/tabby/wiki/Shell-working-directory-reporting',
+}
+
 function start () {
     const app = express()
 
@@ -42,6 +46,10 @@ function start () {
     app.get(['/terminal'], (req, res) => {
         res.sendFile(join(DIST_FOLDER, 'terminal.html'))
     })
+
+    for (const [key, value] of Object.entries(hardlinks)) {
+        app.get(`/go/${key}`, (req, res) => res.redirect(value))
+    }
 
     process.umask(0o002)
     app.listen(PORT, () => {
