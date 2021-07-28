@@ -1,0 +1,28 @@
+.modal-header
+    h1.modal-title Hey!
+
+.modal-body
+    h4 It looks like you're enjoying Tabby a lot!
+
+    p Tabby Web has a limit of {{appConnector.connectionLimit}} simultaneous connections due to the fact that I have to pay for hosting and traffic out of my own pocket.
+
+    p #[strong You can have unlimited parallel connections] if you support Tabby on GitHub with #[code $3]/month or more. It's cancellable anytime, there are no hidden costs and it helps me pay my bills.
+
+    a.btn.btn-primary.btn-lg.d-block.mb-3(href='https://github.com/sponsors/Eugeny', target='_blank')
+        fa-icon.me-2([icon]='_loveIcon')
+        span Support Tabby on GitHub
+
+    button.btn.btn-warning.d-block.w-100((click)='skipOnce()', *ngIf='canSkip')
+        fa-icon.me-2([icon]='_giftIcon')
+        span Skip - just this one time
+
+    p.mt-3 If you work in education, have already supported me on Ko-fi before, or your country isn't supported on GitHub Sponsors, just #[a(href='mailto:e@ajenti.org?subject=Help with Tabby Pro') let me know] and I'll hook you up.
+
+    .mb-3(*ngIf='!loginService.user.github_username')
+        a.btn.btn-info(href='{{commonService.backendURL}}/api/1/auth/social/login/github')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            span Connect your GitHub account to link your sponsorship
+
+    .mt-4
+    p You can also kill any active connection from the list below to free up a slot.
+    connection-list

@@ -18,6 +18,8 @@ import { ConfigModalComponent } from './components/configModal.component'
 import { SettingsModalComponent } from './components/settingsModal.component'
 import { HomeComponent } from './components/home.component'
 import { LoginComponent } from './components/login.component'
+import { ConnectionListComponent } from './components/connectionList.component'
+import { UpgradeModalComponent } from './components/upgradeModal.component'
 import { InstanceInfoResolver } from './api'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -75,6 +77,8 @@ const ROUTES = [
         LoginComponent,
         ConfigModalComponent,
         SettingsModalComponent,
+        ConnectionListComponent,
+        UpgradeModalComponent,
     ],
     bootstrap: [AppComponent],
 })

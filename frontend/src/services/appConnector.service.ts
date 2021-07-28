@@ -2,7 +2,9 @@ import { Buffer } from 'buffer'
 import { Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http'
-import { Injectable, Injector } from '@angular/core'
+import { Injectable, Injector, NgZone } from '@angular/core'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { UpgradeModalComponent } from '../components/upgradeModal.component'
 import { Config, Gateway, Version } from '../api'
 import { LoginService } from './login.service'
 import { CommonService } from './common.service'
@@ -24,16 +26,31 @@ export class SocketProxy {
 
     private appConnector: AppConnectorService
     private loginService: LoginService
+    private ngbModal: NgbModal
+    private zone: NgZone
 
     constructor (
         injector: Injector,
     ) {
         this.appConnector = injector.get(AppConnectorService)
         this.loginService = injector.get(LoginService)
+        this.ngbModal = injector.get(NgbModal)
+        this.zone = injector.get(NgZone)
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     async connect (options: any): Promise<void> {
+        if (!this.loginService.user.is_pro && this.appConnector.sockets.length > this.appConnector.connectionLimit && !window.sessionStorage['upgrade-skip-active']) {
+            let skipped = false
+            try {
+                skipped = await this.zone.run(() => this.ngbModal.open(UpgradeModalComponent)).result
+            } catch { }
+            if (!skipped) {
+                this.close(new Error('Connection limit reached'))
+                return
+            }
+        }
+
         this.options = options
         this.url = this.loginService.user.custom_connection_gateway
         this.authToken = this.loginService.user.custom_connection_gateway_token
@@ -127,12 +144,14 @@ export class AppConnectorService {
     private configUpdate = new Subject<string>()
     private config: Config
     private version: Version
+    connectionLimit = 3
     sockets: SocketProxy[] = []
 
     constructor (
         private injector: Injector,
         private http: HttpClient,
         private commonService: CommonService,
+        private zone: NgZone,
     ) {
 
         this.configUpdate.pipe(debounceTime(1000)).subscribe(async content => {
@@ -180,12 +199,14 @@ export class AppConnectorService {
     }
 
     createSocket () {
-        const socket = new SocketProxy(this.injector)
-        this.sockets.push(socket)
-        socket.close$.subscribe(() => {
-            this.sockets = this.sockets.filter(x => x !== socket)
+        return this.zone.run(() => {
+            const socket = new SocketProxy(this.injector)
+            this.sockets.push(socket)
+            socket.close$.subscribe(() => {
+                this.sockets = this.sockets.filter(x => x !== socket)
+            })
+            return socket
         })
-        return socket
     }
 
     async chooseConnectionGateway (): Promise<Gateway> {

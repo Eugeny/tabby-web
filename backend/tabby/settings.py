@@ -100,6 +100,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'app.User'
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -174,10 +180,12 @@ APP_DIST_STORAGE = os.getenv('APP_DIST_STORAGE', 'file://' + str(BASE_DIR / 'app
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
 
 FRONTEND_URL = None
+BACKEND_URL = None
 GITHUB_ELIGIBLE_SPONSORSHIPS = None
 
 for key in [
     'FRONTEND_URL',
+    'BACKEND_URL',
     'SOCIAL_AUTH_GITHUB_KEY',
     'SOCIAL_AUTH_GITHUB_SECRET',
     'SOCIAL_AUTH_GITLAB_KEY',
@@ -243,6 +251,8 @@ if FRONTEND_URL:
     ]
     frontend_domain = urlparse(FRONTEND_URL).hostname
     CSRF_TRUSTED_ORIGINS = [frontend_domain]
+    if BACKEND_URL:
+        CSRF_TRUSTED_ORIGINS.append(urlparse(BACKEND_URL).hostname)
     SESSION_COOKIE_DOMAIN = frontend_domain
     CSRF_COOKIE_DOMAIN = frontend_domain
 

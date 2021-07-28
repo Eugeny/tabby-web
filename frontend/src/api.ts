@@ -4,6 +4,7 @@ import { Resolve } from '@angular/router'
 import { Observable } from 'rxjs'
 
 export interface User {
+    id: number
     active_config: number
     active_version: string
     custom_connection_gateway: string|null
@@ -11,6 +12,7 @@ export interface User {
     config_sync_token: string
     github_username: string
     is_pro: boolean
+    is_sponsor: boolean
 }
 
 export interface Config {

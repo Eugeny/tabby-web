@@ -131,7 +131,7 @@ class UserSerializer(ModelSerializer):
         read_only_fields = ('id', 'username')
 
     def get_is_pro(self, obj):
-        return check_is_sponsor_cached(obj) or obj.force_pro
+        return obj.force_pro or not settings.GITHUB_ELIGIBLE_SPONSORSHIPS or check_is_sponsor_cached(obj)
 
     def get_is_sponsor(self, obj):
         return check_is_sponsor_cached(obj)

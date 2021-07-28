@@ -4,7 +4,7 @@
 .modal-body
     .mb-3
         h5 GitHub account
-        a.btn.btn-info(href='/api/1/auth/social/login/github', *ngIf='!user.github_username')
+        a.btn.btn-info(href='{{commonService.backendURL}}/api/1/auth/social/login/github', *ngIf='!user.github_username')
             fa-icon([icon]='_githubIcon', [fixedWidth]='true')
             span Connect a GitHub account
         .alert.alert-success.d-flex(*ngIf='user.github_username')
@@ -61,13 +61,12 @@
                 )
                 label Gateway authentication token
 
-    div(*ngIf='appConnector.sockets.length')
+    .mb-3.mt-4(*ngIf='appConnector.sockets.length')
         h5 Active connections
-        .list-group.list-group-flush
-            .list-group-item(*ngFor='let socket of appConnector.sockets')
-                div {{socket.options.host}}:{{socket.options.port}}
-                .text-muted via {{socket.url}}
+        connection-list
 
 .modal-footer
+    .text-muted Account ID: {{user.id}}
+    .ms-auto
     button.btn.btn-primary((click)='apply()') Apply
     button.btn.btn-secondary((click)='cancel()') Cancel
