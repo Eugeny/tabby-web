@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: eugeny/tabby-web-backend
+  IMAGE_NAME: eugeny/tabby-web-frontend
 
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: backend
+          context: frontend
           build-args: EXTRA_DEPS=gcsfs
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
