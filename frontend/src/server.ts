@@ -22,6 +22,8 @@ const engine = ngExpressEngine({
 
 const hardlinks = {
     'cwd-detection': 'https://github.com/Eugeny/tabby/wiki/Shell-working-directory-reporting',
+    'privacy-policy': 'https://github.com/Eugeny/tabby/wiki/Privacy-Policy-for-Tabby-Web',
+    'terms-of-use': 'https://github.com/Eugeny/tabby/wiki/Terms-of-Use-of-Tabby-Web',
 }
 
 function start () {
