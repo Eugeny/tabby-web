@@ -1,6 +1,8 @@
 import fsspec
+import os
+from fsspec.implementations.local import LocalFileSystem
 from django.conf import settings
-from django.http.response import HttpResponseRedirect
+from django.http.response import FileResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views import static
 from rest_framework.views import APIView
 from urllib.parse import urlparse
@@ -24,4 +26,9 @@ class AppDistView(APIView):
     def get(self, request, version=None, path=None, format=None):
         fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
         url = f'{settings.APP_DIST_STORAGE}/{version}/{path}'
-        return HttpResponseRedirect(fs.url(url))
+        if isinstance(fs, LocalFileSystem):
+            if not fs.exists(url):
+                return HttpResponseNotFound()
+            return FileResponse(fs.open(url), filename=os.path.basename(url))
+        else:
+            return HttpResponseRedirect(fs.url(url))

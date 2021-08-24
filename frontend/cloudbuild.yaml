@@ -7,8 +7,6 @@ steps:
   - '${_DOCKER_TAG}'
   - '--cache-from'
   - '${_DOCKER_TAG}'
-  - '--build-arg'
-  - 'BACKEND_URL=${_BACKEND_URL}'
   - '.'
 
 images: ['${_DOCKER_TAG}']

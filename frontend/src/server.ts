@@ -8,6 +8,7 @@ import { enableProdMode } from '@angular/core'
 import { ngExpressEngine } from '@nguniversal/express-engine'
 
 import * as express from 'express'
+
 import { join } from 'path'
 
 
@@ -42,7 +43,19 @@ function start () {
     }))
 
     app.get(['/', '/app', '/login'], (req, res) => {
-        res.render('index', { req })
+        res.render(
+            'index',
+            {
+                req,
+                providers: [
+                    { provide: 'BACKEND_URL', useValue: process.env.BACKEND_URL ?? '' },
+                ],
+            },
+            (err: Error, html: string) => {
+                html = html.replace('{{backendURL}}', process.env.BACKEND_URL ?? '')
+                res.status(err ? 500 : 200).send(html || err.message)
+            },
+        )
     })
 
     app.get(['/terminal'], (req, res) => {

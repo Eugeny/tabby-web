@@ -1,6 +1,8 @@
 import './terminal-styles.scss'
 
 async function start () {
+    window['__filename'] = ''
+
     await new Promise<void>(resolve => {
         window.addEventListener('message', event => {
             if (event.data === 'connector-ready') {

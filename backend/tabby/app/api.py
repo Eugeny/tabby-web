@@ -81,6 +81,7 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
         return [
             self._get_version(x['name'])
             for x in fs.listdir(settings.APP_DIST_STORAGE)
+            if x['type'] == 'directory'
         ]
 
     def _get_version(self, dir):
