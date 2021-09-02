@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,6 +146,7 @@ LOGGING = {
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
+STATIC_ROOT = BASE_DIR / 'public'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
