@@ -16,4 +16,7 @@ COPY tabby tabby
 
 COPY start.sh /start.sh
 RUN ["chmod", "+x", "/start.sh"]
+
+RUN ./manage.py collectstatic --noinput
+
 CMD ["/start.sh"]
