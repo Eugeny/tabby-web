@@ -59,5 +59,8 @@ module.exports  = {
     new webpack.DefinePlugin({
         BACKEND_URL: JSON.stringify(process.env.BACKEND_URL || ''),
     }),
+    new webpack.ProvidePlugin({
+        THREE: 'three',
+    })
   ],
 }

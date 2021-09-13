@@ -1,159 +1,32 @@
 .top-half
-    .navbar
-        img.brand(src='{{_logo}}')
-        .me-auto
-        a.btn.btn-primary([href]='releaseURL', target='_blank')
-            fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
-            span Download
-        a.btn.btn-secondary([href]='donationURL', target='_blank')
-            fa-icon([icon]='_donateIcon', [fixedWidth]='true')
-            span Donate
-        a.btn.btn-secondary(routerLink='/login', *ngIf='instanceInfo.login_enabled')
-            fa-icon([icon]='_loginIcon', [fixedWidth]='true')
-            span Login
+    .container.overflow-hidden
+        .navbar
+            img.brand(src='{{_logo}}')
+            .me-auto
+            a.btn.btn-primary([href]='releaseURL', target='_blank')
+                fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
+                span Download
+            a.btn.btn-secondary([href]='donationURL', target='_blank')
+                fa-icon([icon]='_donateIcon', [fixedWidth]='true')
+                span Donate
+            a.btn.btn-secondary(routerLink='/login', *ngIf='instanceInfo.login_enabled')
+                fa-icon([icon]='_loginIcon', [fixedWidth]='true')
+                span Login
+
+        ul.nav-pills.mb-4(ngbNav, [activeId]='router.url')
+            li([ngbNavItem]='link.link', *ngFor='let link of navLinks')
+                a(ngbNavLink, routerLink='.', [routerLink]='link.link') {{ link.title }}
 
     .container
-        .intro
-            h1 Hey.
-            div My name is Eugene and I've built a nice terminal app, #[em.ms-1 just for you].
-            div Crossplatform, local, SSH, serial, Telnet - it's all there.
-            div Here's a demo 👇
+        div(*ngIf='router.url == "/"')
+            .intro
+                h1 Hey.
+                div My name is Eugene and I've built a nice terminal app, #[em.ms-1 just for you].
+                div Crossplatform, local, SSH, serial, Telnet - it's all there.
+                div Here's a demo 👇
 
-        iframe(#iframe)
+            demo-terminal
 
 .bottom-half
-    .container
-        .d-flex.m-auto.mb-5
-            a.btn.btn-lg.btn-primary.ms-auto.me-3([href]='releaseURL', target='_blank')
-                fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
-                span Latest release
-
-            a.btn.btn-lg.btn-secondary.me-auto([href]='githubURL', target='_blank')
-                fa-icon([icon]='_githubIcon', [fixedWidth]='true')
-                span GitHub
-
-        .quotes
-            .quote
-                .text "reasonable"
-                .author &#8212; Michael
-
-            .quote
-                .text "cool"
-                .author &#8212; some dude on my ko-fi
-
-            .quote
-                .text "very cool"
-                .author &#8212; datsukan
-
-    .section.section-a
-        .container
-            .row
-                .col-12.col-xl-6
-                    lib-ngx-image-zoom(
-                        [fullImage]='screenshots.window',
-                        [thumbImage]='screenshots.window'
-                    )
-                .col-12.col-xl-6
-                    h1 The important stuff
-                    ul
-                        li Runs on #[strong Windows, Mac and Linux]
-                        li Integrated #[strong SSH client] with a connection manager
-                        li Integrated #[strong serial terminal]
-                        li PowerShell, PS Core, WSL, Git-Bash, Cygwin, Cmder and CMD support
-                        li Full #[strong Unicode support] including double-width characters
-                        li File transfer from/to SSH sessions via #[strong SFTP and Zmodem]
-                        li Theming and color schemes
-                        li Fully #[strong configurable shortcuts] and multi-chord shortcuts
-                        li #[strong Remembers your tabs] and split panes
-                        li Proper shell experience on Windows including #[strong tab completion]
-                        li Integrated #[strong encrypted container] for SSH secrets and configuration
-
-    .section.section-b
-        .container
-            .row
-                .col-12.col-xl-6
-                    h1 Terminal features
-                    ul
-                        li Multiple #[strong nested panes]
-                        li #[strong Progress bars] and activity notifications for tabs
-                        li Tabby remembers open tabs and panes where you left off
-                        li Tabs on #[strong any side of the window]
-                        li Optional #[strong quake mode] (terminal docked to a side of the screen)
-                        li Optional #[strong global hotkey] to focus/hide the terminal
-                        li Bracketed paste
-                .col-12.col-xl-6
-                    lib-ngx-image-zoom(
-                        [fullImage]='screenshots.tabs',
-                        [thumbImage]='screenshots.tabs'
-                    )
-
-    .section.section-a
-        .container
-            .row
-                .col-12.col-xl-6
-                    lib-ngx-image-zoom(
-                        [fullImage]='screenshots.ssh',
-                        [thumbImage]='screenshots.ssh'
-                    )
-                .col-12.col-xl-6
-                    h1 SSH Client
-                    ul
-                        li SSH2 client with a connection manager
-                        li #[strong SFTP and Zmodem] file transfers
-                        li #[strong X11] and #[strong port forwarding]
-                        li Jump hosts
-                        li #[strong Agent forwarding] - including Pageant and Windows native OpenSSH Agent
-                        li Login scripts
-                        li Optional built-in #[strong password manager] with a master passphrase
-                        li #[strong Proxy command] support
-
-    .section.section-b
-        .container
-            .row
-                .col-12.col-xl-6
-                    h1 Windows, but nice
-                    ul
-                        li Support for #[strong different shells] in the same window
-                        li Better tab completion #[strong cmd.exe] thanks to Clink.
-                        li Explorer menu integration
-                        li Optional #[strong portable mode]
-                        li Current directory detection that works
-                .col-12.col-xl-6
-                    lib-ngx-image-zoom(
-                        [fullImage]='screenshots.win',
-                        [thumbImage]='screenshots.win'
-                    )
-
-    .section.section-a
-        .container
-            .row
-                .col-12.col-xl-6
-                    lib-ngx-image-zoom(
-                        [fullImage]='screenshots.serial',
-                        [thumbImage]='screenshots.serial'
-                    )
-                .col-12.col-xl-6
-                    h1 Serial Terminal
-                    ul
-                        li Multiple #[strong connection profiles]
-                        li Newline conversion
-                        li Text, #[strong readline] and #[strong byte-by-byte] input modes
-                        li Text and #[strong hexdump] output modes
-                        li Zmodem
-                        li Non-standard baud rates
-
-    .section.section-a
-        .container
-            h1 And just too much stuff to mention here:
-            ul
-                li Themes #[strong customizable with CSS]
-                li Extensible via #[strong plugins] (in JS)
-                li A bunch of color schemes already included
-                li Telnet client
-                li #[strong Font ligatures] and font fallback
-                li #[strong Clickable URLs], IPs and paths
-                li #[strong WinSCP] integration
-                li Shell #[strong profiles]
-                li Simultaneous #[strong multi-pane input]
-                li Optional PuTTY style #[strong right-click paste] and #[strong copy on select]
-                li macOS vibrancy and Win 10 fluent background support
+    .demo-offset(*ngIf='router.url == "/"')
+    router-outlet

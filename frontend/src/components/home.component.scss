@@ -4,18 +4,33 @@
 :host {
     font-size: 20px;
     font-family: 'Fira Code', monospace;
-
-    button, a, .quote {
-        font-family: $font-family-sans-serif;
-    }
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
 }
 
 .top-half {
-    background: linear-gradient(#0c141c, #15202b);
+    background: linear-gradient(#0c141c00, #15202b);
 
     h1 {
         font-size: 80px;
     }
+
+    .nav {
+        font-size: 14px;
+        padding: 0 35px;
+    }
+}
+
+.demo-offset {
+    padding-top: 24vw;
+}
+
+.bottom-half {
+    background: $body-bg;
+    overflow: hidden;
+    min-height: 100vh;
 }
 
 .navbar {
@@ -31,87 +46,11 @@
     width: 32px;
 }
 
-h1 {
-    font-family: $font-family-monospace;
-    font-weight: bold;
-    font-size: 48px;
-    text-shadow: 0 0 1px black;
-    margin: 0 0 25px;
-}
-
-.intro {
-    width: 60vw;
+demo-terminal {
     margin: auto;
-}
-
-iframe {
-    display: block;
-    margin: auto;
+    width: calc(min(max(480px, 60vw), 100vw));
+    height: calc(max(460px, 42vw));
     position: relative;
     top: 20vw;
     margin-top: -16vw;
-
-    width: calc(min(max(480px, 60vw), 100vw));
-    height: calc(max(460px, 42vw));
-    overflow: hidden;
-    border-radius: 5px;
-    box-shadow: 0 0 2px black, 0 0 50px #6ef2ff05, 0 0 150px #6854ff14;
-}
-
-
-.bottom-half {
-    padding-top: 24vw;
-}
-
-.quotes {
-    margin: 50px 0;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-
-    .quote {
-        margin: 0 30px;
-
-        .text {
-            font-size: 50px;
-            font-style: italic;
-        }
-
-        .author {
-            font-size: 14px;
-        }
-    }
-
-    @media (max-width: 600px) {
-        & { display: none;}
-    }
-}
-
-strong {
-    background: #849dff;
-    font-weight: normal;
-    padding: 2px 7px;
-    color: black;
-}
-
-.section {
-    padding: 50px 0;
-}
-
-.section-a {
-    background: rgba(0, 0, 0, .5);
-}
-
-.section-b {
-}
-
-::ng-deep lib-ngx-image-zoom {
-    width: 100%;
-    display: block;
-
-    img {
-        min-width: 100px;
-        max-width: 100%;
-        width: 100%;
-    }
 }

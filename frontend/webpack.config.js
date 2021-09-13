@@ -25,7 +25,7 @@ module.exports = {
     new AngularWebpackPlugin({
         tsconfig: 'tsconfig.json',
         directTemplateLoading: false,
-        skipCodeGeneration: false,
+        jitMode: false,
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',

@@ -1,0 +1,71 @@
+@import "../theme/vars.scss";
+
+h1 {
+    font-family: $font-family-monospace;
+    font-weight: bold;
+    font-size: 48px;
+    text-shadow: 0 0 1px black;
+    margin: 0 0 25px;
+}
+
+button, a, .quote {
+    font-family: $font-family-sans-serif;
+}
+
+.intro {
+    width: 60vw;
+    margin: auto;
+}
+
+.quotes {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    .quote {
+        margin: 0 30px;
+
+        .text {
+            font-size: 50px;
+            font-style: italic;
+        }
+
+        .author {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        & { display: none;}
+    }
+}
+
+strong {
+    background: #849dff;
+    font-weight: normal;
+    padding: 2px 7px;
+    color: black;
+}
+
+.section {
+    padding: 50px 0;
+}
+
+.section-a {
+    background: rgba(0, 0, 0, .5);
+}
+
+.section-b {
+}
+
+::ng-deep lib-ngx-image-zoom {
+    width: 100%;
+    display: block;
+
+    img {
+        min-width: 100px;
+        max-width: 100%;
+        width: 100%;
+    }
+}

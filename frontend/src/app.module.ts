@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbDropdownModule, NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CommonModule } from '@angular/common'
@@ -16,10 +16,13 @@ import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
 import { ConfigModalComponent } from './components/configModal.component'
 import { SettingsModalComponent } from './components/settingsModal.component'
-import { HomeComponent } from './components/home.component'
+import { HomeComponent, HomeComponentPreloadResolver } from './components/home.component'
 import { LoginComponent } from './components/login.component'
 import { ConnectionListComponent } from './components/connectionList.component'
 import { UpgradeModalComponent } from './components/upgradeModal.component'
+import { HomeIndexComponent } from './components/homeIndex.component'
+import { DemoTerminalComponent } from './components/demoTerminal.component'
+import { HomeFeaturesComponent } from './components/homeFeatures.component'
 import { InstanceInfoResolver } from './api'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -30,7 +33,18 @@ const ROUTES = [
         component: HomeComponent,
         resolve: {
             instanceInfo: InstanceInfoResolver,
+            preload: HomeComponentPreloadResolver,
         },
+        children: [
+            {
+                path: '',
+                component: HomeIndexComponent,
+            },
+            {
+                path: 'features',
+                component: HomeFeaturesComponent,
+            },
+        ],
     },
     {
         path: 'app',
@@ -61,6 +75,7 @@ const ROUTES = [
         HttpClientXsrfModule,
         NgbDropdownModule,
         NgbModalModule,
+        NgbNavModule,
         FontAwesomeModule,
         ClipboardModule,
         NgxImageZoomModule,
@@ -74,11 +89,13 @@ const ROUTES = [
         AppComponent,
         MainComponent,
         HomeComponent,
+        HomeIndexComponent,
         LoginComponent,
         ConfigModalComponent,
         SettingsModalComponent,
         ConnectionListComponent,
         UpgradeModalComponent,
+        DemoTerminalComponent,
     ],
     bootstrap: [AppComponent],
 })

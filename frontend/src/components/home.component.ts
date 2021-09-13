@@ -1,72 +1,7 @@
-import { Subject } from 'rxjs'
-import * as semverCompare from 'semver/functions/compare-loose'
-import { HttpClient } from '@angular/common/http'
-import { Component, ElementRef, ViewChild } from '@angular/core'
-import { InstanceInfo, Version } from '../api'
+import { Component, Injectable } from '@angular/core'
+import { ActivatedRoute, Router, Resolve } from '@angular/router'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
-import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { ActivatedRoute, Router } from '@angular/router'
-import { CommonService } from '../services/common.service'
-
-
-class DemoConnector {
-    constructor (
-        targetWindow: Window,
-        private commonService: CommonService,
-        private version: Version,
-    ) {
-        targetWindow['tabbyWebDemoDataPath'] = `${this.getDistURL()}/${version.version}/tabby-web-demo/data`
-    }
-
-    async loadConfig (): Promise<string> {
-        return `{
-            recoverTabs: false,
-            web: {
-                preventAccidentalTabClosure: false,
-            },
-        }`
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    async saveConfig (_content: string): Promise<void> { }
-
-    getAppVersion (): string {
-        return this.version.version
-    }
-
-    getDistURL (): string {
-        return this.commonService.backendURL + '/app-dist'
-    }
-
-    getPluginsToLoad (): string[] {
-        return [
-            'tabby-core',
-            'tabby-settings',
-            'tabby-terminal',
-            'tabby-community-color-schemes',
-            'tabby-ssh',
-            'tabby-telnet',
-            'tabby-web',
-            'tabby-web-demo',
-        ]
-    }
-
-    createSocket () {
-        return new DemoSocketProxy()
-    }
-}
-
-
-export class DemoSocketProxy {
-    connect$ = new Subject<void>()
-    data$ = new Subject<Buffer>()
-    error$ = new Subject<Buffer>()
-    close$ = new Subject<Buffer>()
-
-    async connect (options) {
-        this.error$.next(new Error('This web demo can\'t actually access Internet, but feel free to download the release and try it out!'))
-    }
-}
+import { InstanceInfo } from '../api'
 
 
 @Component({
@@ -75,8 +10,6 @@ export class DemoSocketProxy {
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-    @ViewChild('iframe') iframe: ElementRef
-    connector: DemoConnector
     githubURL = 'https://github.com/Eugeny/tabby'
     releaseURL = `${this.githubURL}/releases/latest`
     donationURL = 'https://ko-fi.com/eugeny'
@@ -84,48 +17,55 @@ export class HomeComponent {
     _logo = require('../assets/logo.svg')
     _downloadIcon = faDownload
     _loginIcon = faSignInAlt
-    _githubIcon = faGithub
     _donateIcon = faCoffee
 
-    screenshots = {
-        window: require('../assets/screenshots/window.png'),
-        tabs: require('../assets/screenshots/tabs.png'),
-        ssh: require('../assets/screenshots/ssh.png'),
-        serial: require('../assets/screenshots/serial.png'),
-        win: require('../assets/screenshots/win.png'),
-    }
+    navLinks = [
+        {
+            title: 'About Tabby',
+            link: '/'
+        },
+        {
+            title: 'Features',
+            link: '/features'
+        },
+    ]
 
     instanceInfo: InstanceInfo
 
     constructor (
-        private http: HttpClient,
-        private commonService: CommonService,
-        route: ActivatedRoute,
-        router: Router,
+        public route: ActivatedRoute,
+        public router: Router,
     ) {
-        window.addEventListener('message', this.connectorRequestHandler)
         this.instanceInfo = route.snapshot.data.instanceInfo
         if (!this.instanceInfo.homepage_enabled) {
             router.navigate(['/app'])
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    connectorRequestHandler = event => {
-        if (event.data === 'request-connector') {
-            this.iframe.nativeElement.contentWindow['__connector__'] = this.connector
-            this.iframe.nativeElement.contentWindow.postMessage('connector-ready', '*')
-        }
+    static async preload () {
+        const three = await import(/* webpackChunkName: "gfx" */ 'three')
+        window['THREE'] = three
+        await import(/* webpackChunkName: "gfx" */ 'vanta/src/vanta.waves.js')
     }
 
     async ngAfterViewInit (): Promise<void> {
-        const versions = await this.http.get('/api/1/versions').toPromise()
-        versions.sort((a, b) => -semverCompare(a.version, b.version))
-        this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0])
-        this.iframe.nativeElement.src = '/terminal'
+        window['VANTA'].WAVES({
+            el: 'body',
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x70f
+        })
     }
+}
 
-    ngOnDestroy (): void {
-        window.removeEventListener('message', this.connectorRequestHandler)
+@Injectable({ providedIn: 'root' })
+export class HomeComponentPreloadResolver implements Resolve<Promise<void>> {
+    resolve () {
+        return HomeComponent.preload()
     }
 }

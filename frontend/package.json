@@ -69,9 +69,11 @@
     "throng": "^5.0.0",
     "typescript": "~4.1",
     "val-loader": "^4.0.0",
+    "vanta": "^0.5.21",
     "webpack": "^5.38.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
+    "three": "^0.119.0",
     "zone.js": "^0.11.4"
   }
 }
