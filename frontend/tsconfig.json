@@ -24,7 +24,7 @@
       "es7"
     ],
     "paths": {
-      "*": ["src/*"]
+      "src/*": ["./src/*"]
     }
   },
   "include": ["src"]

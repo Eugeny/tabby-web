@@ -1,8 +1,8 @@
 import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
-import type { Waves } from '../homepage/vanta/vanta.waves.js'
-import { InstanceInfo } from '../api'
+import { Waves } from '../vanta/vanta.waves.js'
+import { InstanceInfo } from '../../api'
 
 
 @Component({
@@ -15,7 +15,7 @@ export class HomeComponent {
     releaseURL = `${this.githubURL}/releases/latest`
     donationURL = 'https://ko-fi.com/eugeny'
 
-    _logo = require('../assets/logo.svg')
+    _logo = require('../../assets/logo.svg')
     _downloadIcon = faDownload
     _loginIcon = faSignInAlt
     _donateIcon = faCoffee
@@ -46,7 +46,6 @@ export class HomeComponent {
     }
 
     async ngAfterViewInit (): Promise<void> {
-        const { Waves } = await import(/* webpackChunkName: "gfx" */ '../homepage/vanta/vanta.waves.js')
         this.background = new Waves({
             el: 'body',
             mouseControls: true,

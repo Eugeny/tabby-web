@@ -15,10 +15,10 @@ export class HomeIndexComponent {
     _githubIcon = faGithub
 
     screenshots = {
-        window: require('../assets/screenshots/window.png'),
-        tabs: require('../assets/screenshots/tabs.png'),
-        ssh: require('../assets/screenshots/ssh.png'),
-        serial: require('../assets/screenshots/serial.png'),
-        win: require('../assets/screenshots/win.png'),
+        window: require('../../assets/screenshots/window.png'),
+        tabs: require('../../assets/screenshots/tabs.png'),
+        ssh: require('../../assets/screenshots/ssh.png'),
+        serial: require('../../assets/screenshots/serial.png'),
+        win: require('../../assets/screenshots/win.png'),
     }
 }

@@ -2,8 +2,8 @@ import { Subject } from 'rxjs'
 import * as semverCompare from 'semver/functions/compare-loose'
 import { HttpClient } from '@angular/common/http'
 import { Component, ElementRef, ViewChild } from '@angular/core'
-import { Version } from '../api'
-import { CommonService } from '../services/common.service'
+import { Version } from '../../api'
+import { CommonService } from '../../services/common.service'
 
 class DemoConnector {
     constructor (

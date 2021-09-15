@@ -1,5 +1,6 @@
 require('dotenv').config({path: '../.env'})
 const webpack = require('webpack')
+const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports  = {
@@ -16,6 +17,9 @@ module.exports  = {
       'node_modules/',
     ],
     extensions: ['.ts', '.js'],
+    alias: {
+        src: path.resolve(__dirname, 'src'),
+    },
   },
   module: {
     rules: [
