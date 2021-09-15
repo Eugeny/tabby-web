@@ -50,5 +50,5 @@ module.exports = {
 }
 
 if (process.env.BUNDLE_ANALYZER) {
-  module.exports[0].plugins.push(new BundleAnalyzerPlugin())
+  module.exports.plugins.push(new BundleAnalyzerPlugin())
 }

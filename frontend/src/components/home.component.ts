@@ -1,6 +1,7 @@
-import { Component, Injectable } from '@angular/core'
-import { ActivatedRoute, Router, Resolve } from '@angular/router'
+import { Component } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import type { Waves } from '../homepage/vanta/vanta.waves.js'
 import { InstanceInfo } from '../api'
 
 
@@ -32,6 +33,8 @@ export class HomeComponent {
 
     instanceInfo: InstanceInfo
 
+    background: Waves|undefined
+
     constructor (
         public route: ActivatedRoute,
         public router: Router,
@@ -42,14 +45,9 @@ export class HomeComponent {
         }
     }
 
-    static async preload () {
-        const three = await import(/* webpackChunkName: "gfx" */ 'three')
-        window['THREE'] = three
-        await import(/* webpackChunkName: "gfx" */ 'vanta/src/vanta.waves.js')
-    }
-
     async ngAfterViewInit (): Promise<void> {
-        window['VANTA'].WAVES({
+        const { Waves } = await import(/* webpackChunkName: "gfx" */ '../homepage/vanta/vanta.waves.js')
+        this.background = new Waves({
             el: 'body',
             mouseControls: true,
             touchControls: true,
@@ -61,11 +59,8 @@ export class HomeComponent {
             color: 0x70f
         })
     }
-}
 
-@Injectable({ providedIn: 'root' })
-export class HomeComponentPreloadResolver implements Resolve<Promise<void>> {
-    resolve () {
-        return HomeComponent.preload()
+    ngOnDestroy () {
+        this.background?.destroy()
     }
 }

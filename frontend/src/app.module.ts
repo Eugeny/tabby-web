@@ -16,7 +16,7 @@ import { AppComponent } from './components/app.component'
 import { MainComponent } from './components/main.component'
 import { ConfigModalComponent } from './components/configModal.component'
 import { SettingsModalComponent } from './components/settingsModal.component'
-import { HomeComponent, HomeComponentPreloadResolver } from './components/home.component'
+import { HomeComponent } from './components/home.component'
 import { LoginComponent } from './components/login.component'
 import { ConnectionListComponent } from './components/connectionList.component'
 import { UpgradeModalComponent } from './components/upgradeModal.component'
@@ -33,7 +33,6 @@ const ROUTES = [
         component: HomeComponent,
         resolve: {
             instanceInfo: InstanceInfoResolver,
-            preload: HomeComponentPreloadResolver,
         },
         children: [
             {
