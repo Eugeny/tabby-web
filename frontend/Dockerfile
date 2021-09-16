@@ -5,7 +5,9 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY webpack* tsconfig.json ./
+COPY assets assets
 COPY src src
+COPY theme theme
 RUN yarn run build
 RUN yarn run build:server
 
