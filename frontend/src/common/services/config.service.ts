@@ -2,7 +2,7 @@ import * as semverCompare from 'semver/functions/compare-loose'
 import { AsyncSubject, Subject } from 'rxjs'
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Config, User, Version } from '../api'
+import { Config, User, Version } from '../../api'
 import { LoginService } from './login.service'
 
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { faCoffee, faDownload, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { Waves } from '../vanta/vanta.waves.js'
-import { InstanceInfo } from '../../api'
+import { InstanceInfo } from 'src/api'
 
 
 @Component({
@@ -15,7 +15,7 @@ export class HomeComponent {
     releaseURL = `${this.githubURL}/releases/latest`
     donationURL = 'https://ko-fi.com/eugeny'
 
-    _logo = require('../../assets/logo.svg')
+    _logo = require('assets/logo.svg')
     _downloadIcon = faDownload
     _loginIcon = faSignInAlt
     _donateIcon = faCoffee

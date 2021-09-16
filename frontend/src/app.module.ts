@@ -5,20 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
-import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ClipboardModule } from '@angular/cdk/clipboard'
 import { TransferHttpCacheModule } from '@nguniversal/common'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { HttpClientModule } from '@angular/common/http'
 
-import { BackendXsrfInterceptor, UniversalInterceptor } from './interceptor'
-import { AppComponent } from './components/app.component'
-import { MainComponent } from './components/main.component'
-import { ConfigModalComponent } from './components/configModal.component'
-import { SettingsModalComponent } from './components/settingsModal.component'
-import { LoginComponent } from './components/login.component'
-import { ConnectionListComponent } from './components/connectionList.component'
-import { UpgradeModalComponent } from './components/upgradeModal.component'
-import { InstanceInfoResolver } from './api'
+import { AppComponent } from './app.component'
+import { CommonAppModule } from 'src/common'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
@@ -29,17 +22,11 @@ const ROUTES = [
     },
     {
         path: 'app',
-        component: MainComponent,
-        resolve: {
-            instanceInfo: InstanceInfoResolver,
-        },
+        loadChildren: () => import(/* webpackChunkName: "app" */'./app').then(m => m.ApplicationModule),
     },
     {
         path: 'login',
-        component: LoginComponent,
-        resolve: {
-            instanceInfo: InstanceInfoResolver,
-        },
+        loadChildren: () => import(/* webpackChunkName: "login" */'./login').then(m => m.LoginModule),
     },
 ]
 
@@ -48,30 +35,20 @@ const ROUTES = [
         BrowserModule.withServerTransition({
             appId: 'tabby',
         }),
+        CommonAppModule.forRoot(),
         TransferHttpCacheModule,
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,
-        HttpClientModule,
-        HttpClientXsrfModule,
         NgbDropdownModule,
         NgbModalModule,
         FontAwesomeModule,
         ClipboardModule,
+        HttpClientModule,
         RouterModule.forRoot(ROUTES),
-    ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: UniversalInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: BackendXsrfInterceptor, multi: true },
     ],
     declarations: [
         AppComponent,
-        MainComponent,
-        LoginComponent,
-        ConfigModalComponent,
-        SettingsModalComponent,
-        ConnectionListComponent,
-        UpgradeModalComponent,
     ],
     bootstrap: [AppComponent],
 })

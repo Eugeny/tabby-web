@@ -1,9 +1,9 @@
 import { Component } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { AppConnectorService } from '../services/appConnector.service'
-import { ConfigService } from '../services/config.service'
+import { ConfigService } from 'src/common'
 import { faCopy, faFile, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { Config, Version } from '../api'
+import { Config, Version } from 'src/api'
 
 @Component({
     selector: 'config-modal',

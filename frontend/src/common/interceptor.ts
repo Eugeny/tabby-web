@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpXsrfTokenExtr
 import { Observable } from 'rxjs'
 import { CommonService } from './services/common.service'
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UniversalInterceptor implements HttpInterceptor {
     constructor (private commonService: CommonService) { }
 
@@ -19,7 +19,7 @@ export class UniversalInterceptor implements HttpInterceptor {
     }
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BackendXsrfInterceptor implements HttpInterceptor {
     constructor (
         private commonService: CommonService,

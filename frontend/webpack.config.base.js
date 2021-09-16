@@ -18,7 +18,9 @@ module.exports  = {
     ],
     extensions: ['.ts', '.js'],
     alias: {
+        assets: path.resolve(__dirname, 'assets'),
         src: path.resolve(__dirname, 'src'),
+        theme: path.resolve(__dirname, 'theme'),
     },
   },
   module: {

@@ -3,10 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faGift, faHeart } from '@fortawesome/free-solid-svg-icons'
 
-import { LoginService } from '../services/login.service'
 import { AppConnectorService } from '../services/appConnector.service'
-import { CommonService } from '../services/common.service'
-import { User } from '../api'
+import { CommonService, LoginService } from 'src/common'
+import { User } from 'src/api'
 
 @Component({
     selector: 'upgrade-modal',

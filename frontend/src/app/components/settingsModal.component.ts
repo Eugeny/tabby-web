@@ -1,17 +1,14 @@
 import { Component } from '@angular/core'
-import { LoginService } from '../services/login.service'
-
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { User } from '../api'
+import { User } from 'src/api'
+import { CommonService, LoginService } from 'src/common'
 import { AppConnectorService } from '../services/appConnector.service'
-import { CommonService } from '../services/common.service'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faCheck, faCopy } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
     selector: 'settings-modal',
     templateUrl: './settingsModal.component.pug',
-    // styleUrls: ['./settingsModal.component.scss'],
 })
 export class SettingsModalComponent {
     user: User

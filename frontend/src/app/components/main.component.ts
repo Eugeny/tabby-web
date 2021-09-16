@@ -4,13 +4,12 @@ import { Title } from '@angular/platform-browser'
 import { AppConnectorService } from '../services/appConnector.service'
 
 import { faCog, faFile, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { LoginService } from '../services/login.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { SettingsModalComponent } from './settingsModal.component'
 import { ConfigModalComponent } from './configModal.component'
-import { ConfigService } from '../services/config.service'
+import { ConfigService, LoginService } from 'src/common'
 import { combineLatest } from 'rxjs'
-import { Config, Version } from '../api'
+import { Config, Version } from 'src/api'
 import { Router } from '@angular/router'
 
 @Component({
@@ -19,7 +18,7 @@ import { Router } from '@angular/router'
     styleUrls: ['./main.component.scss'],
 })
 export class MainComponent {
-    _logo = require('../assets/logo.svg')
+    _logo = require('assets/logo.svg')
     _settingsIcon = faCog
     _logoutIcon = faSignOutAlt
     _addIcon = faPlus

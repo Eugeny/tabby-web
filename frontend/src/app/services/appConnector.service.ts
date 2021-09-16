@@ -5,9 +5,8 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable, Injector, NgZone } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { UpgradeModalComponent } from '../components/upgradeModal.component'
-import { Config, Gateway, Version } from '../api'
-import { LoginService } from './login.service'
-import { CommonService } from './common.service'
+import { Config, Gateway, Version } from 'src/api'
+import { LoginService, CommonService } from 'src/common'
 
 export class SocketProxy {
     connect$ = new Subject<void>()

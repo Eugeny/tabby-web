@@ -6,30 +6,17 @@ import { RouterModule } from '@angular/router'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { NgxImageZoomModule } from 'ngx-image-zoom'
 
-import { HomeComponent } from './components/home.component'
-import { HomeIndexComponent } from './components/homeIndex.component'
-import { DemoTerminalComponent } from './components/demoTerminal.component'
-import { HomeFeaturesComponent } from './components/homeFeatures.component'
+import { LoginComponent } from './components/login.component'
 import { InstanceInfoResolver } from 'src/api'
 import { CommonAppModule } from 'src/common'
 
 const ROUTES = [
     {
         path: '',
-        component: HomeComponent,
+        component: LoginComponent,
         resolve: {
             instanceInfo: InstanceInfoResolver,
         },
-        children: [
-            {
-                path: '',
-                component: HomeIndexComponent,
-            },
-            {
-                path: 'features',
-                component: HomeFeaturesComponent,
-            },
-        ],
     },
 ]
 
@@ -44,10 +31,7 @@ const ROUTES = [
         RouterModule.forChild(ROUTES),
     ],
     declarations: [
-        HomeComponent,
-        HomeIndexComponent,
-        HomeFeaturesComponent,
-        DemoTerminalComponent,
+        LoginComponent,
     ],
 })
-export class HomepageModule { }
+export class LoginModule { }
