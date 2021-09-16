@@ -15,7 +15,7 @@ export class HomeComponent {
     releaseURL = `${this.githubURL}/releases/latest`
     donationURL = 'https://ko-fi.com/eugeny'
 
-    _logo = require('assets/logo.svg')
+    _logo = require('../../../assets/logo.svg')
     _downloadIcon = faDownload
     _loginIcon = faSignInAlt
     _donateIcon = faCoffee

@@ -18,7 +18,7 @@ import { Router } from '@angular/router'
     styleUrls: ['./main.component.scss'],
 })
 export class MainComponent {
-    _logo = require('assets/logo.svg')
+    _logo = require('../../../assets/logo.svg')
     _settingsIcon = faCog
     _logoutIcon = faSignOutAlt
     _addIcon = faPlus
