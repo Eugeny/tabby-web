@@ -12,11 +12,6 @@ button, a, .quote {
     font-family: $font-family-sans-serif;
 }
 
-.intro {
-    width: 60vw;
-    margin: auto;
-}
-
 .quotes {
     margin: 50px 0;
     display: flex;
@@ -27,7 +22,7 @@ button, a, .quote {
         margin: 0 30px;
 
         .text {
-            font-size: 50px;
+            font-size: 40px;
             font-style: italic;
         }
 
