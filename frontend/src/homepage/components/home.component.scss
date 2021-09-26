@@ -2,7 +2,7 @@
 @import "~@fontsource/fira-code/latin.css";
 
 :host {
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'Fira Code', monospace;
     position: absolute;
     width: 100vw;
@@ -14,7 +14,8 @@
     background: linear-gradient(#0c141c00, #15202b);
 
     h1 {
-        font-size: 80px;
+        font-size: 70px;
+        margin: 40px 0;
     }
 
     .nav {
@@ -23,6 +24,7 @@
     }
 
     .intro {
+        font-size: 20px;
         width: 60vw;
         margin: auto;
     }
@@ -58,4 +60,15 @@ demo-terminal {
     position: relative;
     top: 20vw;
     margin-top: -16vw;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.0;
+    }
+}
+
+.cursor {
+    display: inline;
+    animation: blink 1s step-start 0s infinite;
 }
