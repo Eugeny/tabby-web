@@ -3,38 +3,34 @@
 
     button.btn.mt-auto(
         (click)='openConfig()',
-        placement='right',
-        ngbTooltip='Manage configs'
+        title='Manage configs'
     )
         fa-icon([icon]='_configIcon', [fixedWidth]='true', size='lg')
 
     button.btn(
         (click)='openSettings()',
         *ngIf='loginService.user',
-        placement='right',
-        ngbTooltip='Settings'
+        title='Settings'
     )
         fa-icon([icon]='_settingsIcon', [fixedWidth]='true', size='lg')
 
     a.btn.mt-3(
         href='/login',
         *ngIf='!loginService.user',
-        placement='right',
-        ngbTooltip='Log in'
+        title='Log in'
     )
         fa-icon([icon]='_loginIcon', [fixedWidth]='true', size='lg')
 
     button.btn.mt-3(
         (click)='logout()',
         *ngIf='loginService.user',
-        placement='right',
-        ngbTooltip='Log out'
+        title='Log out'
     )
         fa-icon([icon]='_logoutIcon', [fixedWidth]='true', size='lg')
 
 .terminal
     iframe(#iframe, [hidden]='!showApp')
-    .alert.alert-warning.d-flex.border-0.m-0(*ngIf='!loginService.user')
+    .alert.alert-warning.d-flex.border-0.m-0(*ngIf='showApp && !loginService.user')
         fa-icon.me-2([icon]='_saveIcon', [fixedWidth]='true')
         div
             div To save profiles and settings, #[a(href='/login') log in].
