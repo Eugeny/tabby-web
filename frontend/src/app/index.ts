@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
@@ -31,6 +31,7 @@ const ROUTES = [
         FormsModule,
         NgbDropdownModule,
         NgbModalModule,
+        NgbTooltipModule,
         ClipboardModule,
         FontAwesomeModule,
         RouterModule.forChild(ROUTES),

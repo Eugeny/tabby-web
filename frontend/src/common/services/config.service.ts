@@ -30,14 +30,29 @@ export class ConfigService {
     }
 
     async updateUser () {
+        if (!this.loginService.user) {
+            return
+        }
         await this.http.put('/api/1/user', this.user).toPromise()
     }
 
     async createNewConfig (): Promise<Config> {
-        const config = await this.http.post('/api/1/configs', {
+        const configData = {
             content: '{}',
             last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion().version,
-        }).toPromise()
+        }
+        if (!this.loginService.user) {
+            const config = {
+                id: Date.now(),
+                name: `Temporary config at ${new Date()}`,
+                created_at: new Date(),
+                modified_at: new Date(),
+                ...configData,
+            }
+            this.configs.push(config)
+            return config
+        }
+        const config = await this.http.post('/api/1/configs', configData).toPromise()
         this.configs.push(config)
         return config
     }
@@ -47,8 +62,11 @@ export class ConfigService {
     }
 
     async duplicateActiveConfig () {
-        const copy = {...this._activeConfig, pk: undefined}
-        this.configs.push(await this.http.post('/api/1/configs', copy).toPromise())
+        let copy = {...this._activeConfig, pk: undefined, id: undefined}
+        if (this.loginService.user) {
+            copy = await this.http.post('/api/1/configs', copy).toPromise()
+        }
+        this.configs.push(copy)
     }
 
     async selectVersion (version: Version) {
@@ -66,23 +84,29 @@ export class ConfigService {
         this._activeConfig = config
         this.activeConfig$.next(config)
         this.selectVersion(matchingVersion)
-        this.loginService.user.active_config = config.id
-        await this.loginService.updateUser()
+        if (this.loginService.user) {
+            this.loginService.user.active_config = config.id
+            await this.loginService.updateUser()
+        }
     }
 
     async selectDefaultConfig () {
         await this.ready$.toPromise()
         await this.loginService.ready$.toPromise()
-        this.selectConfig(this.configs.find(c => c.id === this.loginService.user.active_config) ?? this.configs[0])
+        this.selectConfig(this.configs.find(c => c.id === this.loginService.user?.active_config) ?? this.configs[0])
     }
 
     async deleteConfig (config: Config) {
-        await this.http.delete(`/api/1/configs/${config.id}`).toPromise()
+        if (this.loginService.user) {
+            await this.http.delete(`/api/1/configs/${config.id}`).toPromise()
+        }
         this.configs = this.configs.filter(x => x.id !== config.id)
     }
 
     private async init () {
-        this.configs = await this.http.get('/api/1/configs').toPromise()
+        if (this.loginService.user) {
+            this.configs = await this.http.get('/api/1/configs').toPromise()
+        }
         this.versions = await this.http.get('/api/1/versions').toPromise()
         this.versions.sort((a, b) => -semverCompare(a.version, b.version))
 

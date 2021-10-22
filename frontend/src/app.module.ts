@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core'
-import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CommonModule } from '@angular/common'
@@ -40,8 +39,6 @@ const ROUTES = [
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,
-        NgbDropdownModule,
-        NgbModalModule,
         FontAwesomeModule,
         ClipboardModule,
         HttpClientModule,

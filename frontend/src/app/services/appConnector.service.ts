@@ -39,7 +39,7 @@ export class SocketProxy {
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     async connect (options: any): Promise<void> {
-        if (!this.loginService.user.is_pro && this.appConnector.sockets.length > this.appConnector.connectionLimit && !window.sessionStorage['upgrade-skip-active']) {
+        if (!this.loginService.user?.is_pro && this.appConnector.sockets.length > this.appConnector.connectionLimit && !window.sessionStorage['upgrade-skip-active']) {
             let skipped = false
             try {
                 skipped = await this.zone.run(() => this.ngbModal.open(UpgradeModalComponent)).result
@@ -51,8 +51,8 @@ export class SocketProxy {
         }
 
         this.options = options
-        this.url = this.loginService.user.custom_connection_gateway
-        this.authToken = this.loginService.user.custom_connection_gateway_token
+        this.url = this.loginService.user?.custom_connection_gateway
+        this.authToken = this.loginService.user?.custom_connection_gateway_token
         if (!this.url) {
             try {
                 const gateway = await this.appConnector.chooseConnectionGateway()
@@ -151,11 +151,14 @@ export class AppConnectorService {
         private http: HttpClient,
         private commonService: CommonService,
         private zone: NgZone,
+        private loginService: LoginService,
     ) {
 
         this.configUpdate.pipe(debounceTime(1000)).subscribe(async content => {
-            const result = await this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
-            Object.assign(this.config, result)
+            if (this.loginService.user) {
+                const result = await this.http.patch(`/api/1/configs/${this.config.id}`, { content }).toPromise()
+                Object.assign(this.config, result)
+            }
         })
     }
 

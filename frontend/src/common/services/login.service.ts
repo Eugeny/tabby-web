@@ -6,7 +6,7 @@ import { User } from '../../api'
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-    user: User
+    user: User | null
     ready$ = new AsyncSubject<void>()
 
     constructor (private http: HttpClient) {
@@ -14,6 +14,9 @@ export class LoginService {
     }
 
     async updateUser () {
+        if (!this.user) {
+            return
+        }
         await this.http.put('/api/1/user', this.user).toPromise()
     }
 

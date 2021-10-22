@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http'
 import { Title } from '@angular/platform-browser'
 import { AppConnectorService } from '../services/appConnector.service'
 
-import { faCog, faFile, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faFile, faPlus, faSave, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { SettingsModalComponent } from './settingsModal.component'
 import { ConfigModalComponent } from './configModal.component'
 import { ConfigService, LoginService } from 'src/common'
 import { combineLatest } from 'rxjs'
 import { Config, Version } from 'src/api'
-import { Router } from '@angular/router'
 
 @Component({
     selector: 'main',
@@ -20,9 +19,11 @@ import { Router } from '@angular/router'
 export class MainComponent {
     _logo = require('../../../assets/logo.svg')
     _settingsIcon = faCog
+    _loginIcon = faSignInAlt
     _logoutIcon = faSignOutAlt
     _addIcon = faPlus
     _configIcon = faFile
+    _saveIcon = faSave
 
     showApp = false
 
@@ -35,7 +36,6 @@ export class MainComponent {
         public loginService: LoginService,
         private ngbModal: NgbModal,
         private config: ConfigService,
-        private router: Router,
     ) {
         titleService.setTitle('Tabby')
         window.addEventListener('message', this.connectorRequestHandler)
@@ -50,10 +50,6 @@ export class MainComponent {
 
     async ngAfterViewInit () {
         await this.loginService.ready$.toPromise()
-        if (!this.loginService.user) {
-            this.router.navigate(['/login'])
-            return
-        }
 
         combineLatest(
             this.config.activeConfig$,
@@ -63,7 +59,7 @@ export class MainComponent {
                 this.reloadApp(config, version)
             }
         })
-        this.config
+
         await this.config.ready$.toPromise()
         await this.config.selectDefaultConfig()
     }
@@ -80,9 +76,11 @@ export class MainComponent {
     async loadApp (config, version) {
         this.showApp = true
         this.iframe.nativeElement.src = '/terminal'
-        await this.http.patch(`/api/1/configs/${config.id}`, {
-            last_used_with_version: version.version,
-        }).toPromise()
+        if (this.loginService.user) {
+            await this.http.patch(`/api/1/configs/${config.id}`, {
+                last_used_with_version: version.version,
+            }).toPromise()
+        }
     }
 
     reloadApp (config: Config, version: Version) {
