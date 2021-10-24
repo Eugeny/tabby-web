@@ -3,18 +3,18 @@ import { AppConnectorService, SocketProxy } from '../services/appConnector.servi
 import { faCircle, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
-    selector: 'connection-list',
-    templateUrl: './connectionList.component.pug',
+  selector: 'connection-list',
+  templateUrl: './connectionList.component.pug',
 })
 export class ConnectionListComponent {
-    _circleIcon = faCircle
-    _closeIcon = faTimes
+  _circleIcon = faCircle
+  _closeIcon = faTimes
 
-    constructor (
-        public appConnector: AppConnectorService,
-    ) { }
+  constructor (
+    public appConnector: AppConnectorService,
+  ) { }
 
-    closeSocket (socket: SocketProxy) {
-        socket.close(new Error('Connection closed by user'))
-    }
+  closeSocket (socket: SocketProxy) {
+    socket.close(new Error('Connection closed by user'))
+  }
 }

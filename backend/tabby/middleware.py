@@ -1,7 +1,7 @@
 import logging
 from tabby.app.models import User
 from django.conf import settings
-from django.contrib.auth import hashers, logout, login
+from django.contrib.auth import login
 from pyga.requests import Tracker, Page, Session, Visitor
 
 

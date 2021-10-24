@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src",
     "build": "webpack --progress",
     "watch": "DEV=1 webpack --progress --watch",
     "build:server": "webpack --progress -c webpack.config.server.js",
@@ -33,8 +34,8 @@
     "@nguniversal/express-engine": "^11.1.0",
     "@tabby-gang/to-string-loader": "^1.1.7-beta.1",
     "@types/node": "^11.9.5",
-    "@typescript-eslint/eslint-plugin": "^4.28.4",
-    "@typescript-eslint/parser": "^4.28.4",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
     "apply-loader": "^2.0.0",
     "bootstrap": "^5.0.1",
     "buffer": "^6.0.3",
@@ -66,6 +67,7 @@
     "source-map-support": "^0.5.19",
     "source-sans-pro": "^2.45.0",
     "style-loader": "^0.23.1",
+    "three": "^0.119.0",
     "throng": "^5.0.0",
     "typescript": "~4.1",
     "val-loader": "^4.0.0",
@@ -73,7 +75,6 @@
     "webpack": "^5.38.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2",
-    "three": "^0.119.0",
     "zone.js": "^0.11.4"
   }
 }

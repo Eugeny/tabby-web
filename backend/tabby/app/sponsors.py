@@ -39,7 +39,7 @@ def check_is_sponsor(user: User) -> bool:
 
         query = '''
             query {
-                user (login: "eugeny") {
+                viewer {
                     sponsorshipsAsSponsor(%s) {
                         pageInfo {
                             startCursor

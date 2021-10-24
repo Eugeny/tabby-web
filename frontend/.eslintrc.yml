@@ -2,7 +2,6 @@ parser: '@typescript-eslint/parser'
 parserOptions:
   project:
   - tsconfig.json
-  - '*/tsconfig.typings.json'
 extends:
   - 'plugin:@typescript-eslint/all'
 plugins:
@@ -18,7 +17,7 @@ rules:
   - never
   '@typescript-eslint/indent':
   - error
-  - 4
+  - 2
   '@typescript-eslint/explicit-member-accessibility':
   - error
   - accessibility: no-public
@@ -121,3 +120,10 @@ rules:
   '@typescript-eslint/no-unsafe-argument': off
   '@typescript-eslint/restrict-plus-operands': off
   '@typescript-eslint/space-infix-ops': off
+  '@typescript-eslint/explicit-module-boundary-types': off
+
+overrides:
+- files: '*.service.ts'
+  rules:
+    '@typescript-eslint/explicit-module-boundary-types':
+    - error

@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/init-declarations */
+/* eslint-disable @typescript-eslint/prefer-for-of */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import VantaBase, { VANTA } from './_base'
-import { rn, ri, sample } from 'vanta/src/helpers.js'
-import { Geometry, MeshPhongMaterial, Vector3, Face3, Mesh, AmbientLight, EdgesGeometry, LineBasicMaterial, LineSegments, PerspectiveCamera, PointLight, DoubleSide } from 'three/src/Three'
+import { rn, ri } from 'vanta/src/helpers.js'
+import { Geometry, MeshPhongMaterial, Vector3, Face3, Mesh, AmbientLight, PerspectiveCamera, PointLight, DoubleSide } from 'three/src/Three'
 import { FaceColors } from 'three/src/Three.Legacy'
 
 const defaultOptions = {
@@ -8,49 +11,46 @@ const defaultOptions = {
   shininess: 30,
   waveHeight: 15,
   waveSpeed: 1,
-  zoom: 1
+  zoom: 1,
 }
 
 export class Waves extends VantaBase {
-  static initClass() {
-    this.prototype.ww = 100;
-    this.prototype.hh = 80;
-    this.prototype.waveNoise = 4; // Choppiness of water
-  }
-  constructor(userOptions) {
-    super(userOptions)
+  static initClass () {
+    this.prototype.ww = 100
+    this.prototype.hh = 80
+    this.prototype.waveNoise = 4 // Choppiness of water
   }
 
-  getMaterial() {
+  getMaterial () {
     const options = {
       color: this.options.color,
       shininess: this.options.shininess,
       flatShading: true,
       vertexColors: FaceColors, // Allow coloring individual faces
-      side: DoubleSide
-    };
-    return new MeshPhongMaterial(options);
+      side: DoubleSide,
+    }
+    return new MeshPhongMaterial(options)
   }
 
-  onInit() {
-    let i, j;
-    const CELLSIZE = 18;
-    const material = this.getMaterial();
-    const geometry = new Geometry();
+  onInit () {
+    let i, j
+    const CELLSIZE = 18
+    const material = this.getMaterial()
+    const geometry = new Geometry()
 
     // Add vertices
-    this.gg = [];
+    this.gg = []
     for (i=0; i<=this.ww; i++){
-      this.gg[i] = [];
+      this.gg[i] = []
       for (j=0; j<=this.hh; j++){
-        const id = geometry.vertices.length;
+        const id = geometry.vertices.length
         const newVertex = new Vector3(
-          (i - (this.ww * 0.5)) * CELLSIZE,
+          (i - this.ww * 0.5) * CELLSIZE,
           rn(0, this.waveNoise) - 10,
-          ((this.hh * 0.5) - j) * CELLSIZE
-        );
-        geometry.vertices.push(newVertex);
-        this.gg[i][j] = id;
+          (this.hh * 0.5 - j) * CELLSIZE
+        )
+        geometry.vertices.push(newVertex)
+        this.gg[i][j] = id
       }
     }
 
@@ -64,7 +64,7 @@ export class Waves extends VantaBase {
         const b = this.gg[i][j-1]
         const c = this.gg[i-1][j]
         const a = this.gg[i-1][j-1]
-        if (ri(0,1)) {
+        if (ri(0, 1)) {
           face1 = new Face3( a, b, c )
           face2 = new Face3( b, c, d )
         } else {
@@ -75,8 +75,8 @@ export class Waves extends VantaBase {
       }
     }
 
-    this.plane = new Mesh(geometry, material);
-    this.scene.add(this.plane);
+    this.plane = new Mesh(geometry, material)
+    this.scene.add(this.plane)
 
     // WIREFRAME
     // lightColor = 0x55aaee
@@ -88,55 +88,55 @@ export class Waves extends VantaBase {
     // @scene.add( @wireframe )
 
     // LIGHTS
-    const ambience = new AmbientLight( 0xffffff, 0.9 );
-    this.scene.add(ambience);
+    const ambience = new AmbientLight( 0xffffff, 0.9 )
+    this.scene.add(ambience)
 
-    const pointLight = new PointLight( 0xffffff, 0.9 );
-    pointLight.position.set(-100,250,-100);
-    this.scene.add(pointLight);
+    const pointLight = new PointLight( 0xffffff, 0.9 )
+    pointLight.position.set(-100, 250, -100)
+    this.scene.add(pointLight)
 
     // CAMERA
     this.camera = new PerspectiveCamera(
       35,
       this.width / this.height,
-      50, 10000);
+      50, 10000)
 
-    const xOffset = -10;
-    const zOffset = -10;
-    this.cameraPosition = new Vector3( 250+xOffset, 200, 400+zOffset );
-    this.cameraTarget = new Vector3( 150+xOffset, -30, 200+zOffset );
-    this.camera.position.copy(this.cameraPosition);
-    this.scene.add(this.camera);
+    const xOffset = -10
+    const zOffset = -10
+    this.cameraPosition = new Vector3( 250+xOffset, 200, 400+zOffset )
+    this.cameraTarget = new Vector3( 150+xOffset, -30, 200+zOffset )
+    this.camera.position.copy(this.cameraPosition)
+    this.scene.add(this.camera)
   }
 
-  onUpdate() {
+  onUpdate () {
     // Update options
-    let diff;
-    this.plane.material.color.set(this.options.color);
-    this.plane.material.shininess = this.options.shininess;
-    this.camera.ox = this.cameraPosition.x / this.options.zoom;
-    this.camera.oy = this.cameraPosition.y / this.options.zoom;
-    this.camera.oz = this.cameraPosition.z / this.options.zoom;
+    let diff
+    this.plane.material.color.set(this.options.color)
+    this.plane.material.shininess = this.options.shininess
+    this.camera.ox = this.cameraPosition.x / this.options.zoom
+    this.camera.oy = this.cameraPosition.y / this.options.zoom
+    this.camera.oz = this.cameraPosition.z / this.options.zoom
 
     if (this.controls != null) {
-      this.controls.update();
+      this.controls.update()
     }
 
-    const c = this.camera;
+    const c = this.camera
     if (Math.abs(c.tx - c.position.x) > 0.01) {
-      diff = c.tx - c.position.x;
-      c.position.x += diff * 0.02;
+      diff = c.tx - c.position.x
+      c.position.x += diff * 0.02
     }
     if (Math.abs(c.ty - c.position.y) > 0.01) {
-      diff = c.ty - c.position.y;
-      c.position.y += diff * 0.02;
+      diff = c.ty - c.position.y
+      c.position.y += diff * 0.02
     }
     if (Math.abs(c.tz - c.position.z) > 0.01) {
-      diff = c.tz - c.position.z;
-      c.position.z += diff * 0.02;
+      diff = c.tz - c.position.z
+      c.position.z += diff * 0.02
     }
 
-    c.lookAt( this.cameraTarget );
+    c.lookAt( this.cameraTarget )
 
     // Fix flickering problems
     // c.near = Math.max((c.position.y * 0.5) - 20, 1);
@@ -144,24 +144,24 @@ export class Waves extends VantaBase {
 
     // WAVES
     for (let i = 0; i < this.plane.geometry.vertices.length; i++) {
-      const v = this.plane.geometry.vertices[i];
+      const v = this.plane.geometry.vertices[i]
       if (!v.oy) { // INIT
-        v.oy = v.y;
+        v.oy = v.y
       } else {
-        const s = this.options.waveSpeed;
-        const crossChop = Math.sqrt(s) * Math.cos(-v.x - (v.z*0.7)); // + s * (i % 229) / 229 * 5
-        const delta = Math.sin((((s*this.t*0.02) - (s*v.x*0.025)) + (s*v.z*0.015) + crossChop));
-        const trochoidDelta = Math.pow(delta + 1, 2) / 4;
-        v.y = v.oy + (trochoidDelta * this.options.waveHeight);
+        const s = this.options.waveSpeed
+        const crossChop = Math.sqrt(s) * Math.cos(-v.x - v.z*0.7) // + s * (i % 229) / 229 * 5
+        const delta = Math.sin(s*this.t*0.02 - s*v.x*0.025 + s*v.z*0.015 + crossChop)
+        const trochoidDelta = Math.pow(delta + 1, 2) / 4
+        v.y = v.oy + trochoidDelta * this.options.waveHeight
       }
     }
 
-      // @wireframe.geometry.vertices[i].y = v.y
+    // @wireframe.geometry.vertices[i].y = v.y
 
-    this.plane.geometry.dynamic = true;
-    this.plane.geometry.computeFaceNormals();
-    this.plane.geometry.verticesNeedUpdate = true;
-    this.plane.geometry.normalsNeedUpdate = true;
+    this.plane.geometry.dynamic = true
+    this.plane.geometry.computeFaceNormals()
+    this.plane.geometry.verticesNeedUpdate = true
+    this.plane.geometry.normalsNeedUpdate = true
 
     // @scene.remove( @wireframe )
     // geo = new EdgesGeometry(@plane.geometry)
@@ -170,21 +170,21 @@ export class Waves extends VantaBase {
     // @scene.add( @wireframe )
 
     if (this.wireframe) {
-      this.wireframe.geometry.fromGeometry(this.plane.geometry);
-      this.wireframe.geometry.computeFaceNormals();
+      this.wireframe.geometry.fromGeometry(this.plane.geometry)
+      this.wireframe.geometry.computeFaceNormals()
     }
   }
 
-  onMouseMove(x,y) {
-    const c = this.camera;
+  onMouseMove (x, y) {
+    const c = this.camera
     if (!c.oy) {
-      c.oy = c.position.y;
-      c.ox = c.position.x;
-      c.oz = c.position.z;
+      c.oy = c.position.y
+      c.ox = c.position.x
+      c.oz = c.position.z
     }
-    c.tx = c.ox + (((x-0.5) * 100) / this.options.zoom);
-    c.ty = c.oy + (((y-0.5) * -100) / this.options.zoom);
-    return c.tz = c.oz + (((x-0.5) * -50) / this.options.zoom);
+    c.tx = c.ox + (x-0.5) * 100 / this.options.zoom
+    c.ty = c.oy + (y-0.5) * -100 / this.options.zoom
+    return c.tz = c.oz + (x-0.5) * -50 / this.options.zoom
   }
 }
 

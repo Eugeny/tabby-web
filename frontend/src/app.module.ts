@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -15,38 +16,38 @@ import { CommonAppModule } from 'src/common'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const ROUTES = [
-    {
-        path: '',
-        loadChildren: () => import(/* webpackChunkName: "homepage" */'./homepage').then(m => m.HomepageModule),
-    },
-    {
-        path: 'app',
-        loadChildren: () => import(/* webpackChunkName: "app" */'./app').then(m => m.ApplicationModule),
-    },
-    {
-        path: 'login',
-        loadChildren: () => import(/* webpackChunkName: "login" */'./login').then(m => m.LoginModule),
-    },
+  {
+    path: '',
+    loadChildren: () => import(/* webpackChunkName: "homepage" */'./homepage').then(m => m.HomepageModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () => import(/* webpackChunkName: "app" */'./app').then(m => m.ApplicationModule),
+  },
+  {
+    path: 'login',
+    loadChildren: () => import(/* webpackChunkName: "login" */'./login').then(m => m.LoginModule),
+  },
 ]
 
 @NgModule({
-    imports: [
-        BrowserModule.withServerTransition({
-            appId: 'tabby',
-        }),
-        CommonAppModule.forRoot(),
-        TransferHttpCacheModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        ClipboardModule,
-        HttpClientModule,
-        RouterModule.forRoot(ROUTES),
-    ],
-    declarations: [
-        AppComponent,
-    ],
-    bootstrap: [AppComponent],
+  imports: [
+    BrowserModule.withServerTransition({
+      appId: 'tabby',
+    }),
+    CommonAppModule.forRoot(),
+    TransferHttpCacheModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    ClipboardModule,
+    HttpClientModule,
+    RouterModule.forRoot(ROUTES),
+  ],
+  declarations: [
+    AppComponent,
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

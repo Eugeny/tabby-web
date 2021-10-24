@@ -1,17 +1,18 @@
-import {extend, mobileCheck, q, color2Hex} from 'vanta/src/helpers.js'
+/* eslint-disable */
+import { extend, mobileCheck, q, color2Hex } from 'vanta/src/helpers.js'
 // const DEBUGMODE = window.location.toString().indexOf('VANTADEBUG') !== -1
 
 const win = typeof window == 'object'
-if (win && !window.VANTA) window.VANTA = {}
-const VANTA = (win && window.VANTA) || {}
+if (win && !window.VANTA) {window.VANTA = {}}
+const VANTA = win && window.VANTA || {}
 VANTA.register = (name, Effect) => {
   return VANTA[name] = (opts) => new Effect(opts)
 }
 VANTA.version = '0.5.21'
 
-export {VANTA}
+export { VANTA }
 
-import { AxisHelper, js, MOUSE, OrbitControls, Scene, WebGLRenderer } from 'three/src/Three'
+import { Scene, WebGLRenderer } from 'three/src/Three'
 // const ORBITCONTROLS = {
 //   enableZoom: false,
 //   userPanSpeed: 3,
@@ -33,14 +34,14 @@ import { AxisHelper, js, MOUSE, OrbitControls, Scene, WebGLRenderer } from 'thre
 // }
 
 // Namespace for errors
-const error = function() {
+const error = function () {
   Array.prototype.unshift.call(arguments, '[VANTA]')
   return console.error.apply(this, arguments)
 }
 
 VANTA.VantaBase = class VantaBase {
-  constructor(userOptions = {}) {
-    if (!win) return false
+  constructor (userOptions = {}) {
+    if (!win) {return false}
     VANTA.current = this
     this.windowMouseMoveWrapper = this.windowMouseMoveWrapper.bind(this)
     this.windowTouchWrapper = this.windowTouchWrapper.bind(this)
@@ -49,7 +50,7 @@ VANTA.VantaBase = class VantaBase {
     this.animationLoop = this.animationLoop.bind(this)
     this.restart = this.restart.bind(this)
 
-    const defaultOptions = (typeof this.getDefaultOptions === 'function') ? this.getDefaultOptions() : this.defaultOptions
+    const defaultOptions = typeof this.getDefaultOptions === 'function' ? this.getDefaultOptions() : this.defaultOptions
     this.options = extend({
       mouseControls: true,
       touchControls: true,
@@ -61,19 +62,19 @@ VANTA.VantaBase = class VantaBase {
     }, defaultOptions)
 
     if (userOptions instanceof HTMLElement || typeof userOptions === 'string') {
-      userOptions = {el: userOptions}
+      userOptions = { el: userOptions }
     }
     extend(this.options, userOptions)
 
     // Set element
     this.el = this.options.el
     if (this.el == null) {
-      error("Instance needs \"el\" param!")
+      error('Instance needs "el" param!')
     } else if (!(this.options.el instanceof HTMLElement)) {
       const selector = this.el
       this.el = q(selector)
       if (!this.el) {
-        error("Cannot find element", selector)
+        error('Cannot find element', selector)
         return
       }
     }
@@ -121,12 +122,12 @@ VANTA.VantaBase = class VantaBase {
     }
   }
 
-  setOptions(userOptions={}){
+  setOptions (userOptions={}){
     extend(this.options, userOptions)
     this.triggerMouseMove()
   }
 
-  prepareEl() {
+  prepareEl () {
     let i, child
     // wrapInner for text nodes, so text nodes can be put into foreground
     if (typeof Node !== 'undefined' && Node.TEXT_NODE) {
@@ -156,27 +157,27 @@ VANTA.VantaBase = class VantaBase {
     }
   }
 
-  applyCanvasStyles(canvasEl, opts={}){
+  applyCanvasStyles (canvasEl, opts={}){
     extend(canvasEl.style, {
       position: 'absolute',
       zIndex: 0,
       top: 0,
       left: 0,
-      background: ''
+      background: '',
     })
     extend(canvasEl.style, opts)
     canvasEl.classList.add('vanta-canvas')
   }
 
-  initThree() {
+  initThree () {
     if (!WebGLRenderer) {
-      console.warn("[VANTA] No THREE defined on window")
+      console.warn('[VANTA] No THREE defined on window')
       return
     }
     // Set renderer
     this.renderer = new WebGLRenderer({
       alpha: true,
-      antialias: true
+      antialias: true,
     })
     this.el.appendChild(this.renderer.domElement)
     this.applyCanvasStyles(this.renderer.domElement)
@@ -187,7 +188,7 @@ VANTA.VantaBase = class VantaBase {
     this.scene = new Scene()
   }
 
-  getCanvasElement() {
+  getCanvasElement () {
     if (this.renderer) {
       return this.renderer.domElement // js
     }
@@ -196,49 +197,49 @@ VANTA.VantaBase = class VantaBase {
     }
   }
 
-  getCanvasRect() {
+  getCanvasRect () {
     const canvas = this.getCanvasElement()
-    if (!canvas) return false
+    if (!canvas) {return false}
     return canvas.getBoundingClientRect()
   }
 
-  windowMouseMoveWrapper(e){
+  windowMouseMoveWrapper (e){
     const rect = this.getCanvasRect()
-    if (!rect) return false
+    if (!rect) {return false}
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
     if (x>=0 && y>=0 && x<=rect.width && y<=rect.height) {
       this.mouseX = x
       this.mouseY = y
-      if (!this.options.mouseEase) this.triggerMouseMove(x, y)
+      if (!this.options.mouseEase) {this.triggerMouseMove(x, y)}
     }
   }
-  windowTouchWrapper(e){
+  windowTouchWrapper (e){
     const rect = this.getCanvasRect()
-    if (!rect) return false
+    if (!rect) {return false}
     if (e.touches.length === 1) {
       const x = e.touches[0].clientX - rect.left
       const y = e.touches[0].clientY - rect.top
       if (x>=0 && y>=0 && x<=rect.width && y<=rect.height) {
         this.mouseX = x
         this.mouseY = y
-        if (!this.options.mouseEase) this.triggerMouseMove(x, y)
+        if (!this.options.mouseEase) {this.triggerMouseMove(x, y)}
       }
     }
   }
-  windowGyroWrapper(e){
+  windowGyroWrapper (e){
     const rect = this.getCanvasRect()
-    if (!rect) return false
+    if (!rect) {return false}
     const x = Math.round(e.alpha * 2) - rect.left
     const y = Math.round(e.beta * 2) - rect.top
     if (x>=0 && y>=0 && x<=rect.width && y<=rect.height) {
       this.mouseX = x
       this.mouseY = y
-      if (!this.options.mouseEase) this.triggerMouseMove(x, y)
+      if (!this.options.mouseEase) {this.triggerMouseMove(x, y)}
     }
   }
 
-  triggerMouseMove(x, y) {
+  triggerMouseMove (x, y) {
     if (x === undefined && y === undefined) { // trigger at current position
       if (this.options.mouseEase) {
         x = this.mouseEaseX
@@ -254,10 +255,10 @@ VANTA.VantaBase = class VantaBase {
     }
     const xNorm = x / this.width // 0 to 1
     const yNorm = y / this.height // 0 to 1
-    typeof this.onMouseMove === "function" ? this.onMouseMove(xNorm, yNorm) : void 0
+    typeof this.onMouseMove === 'function' ? this.onMouseMove(xNorm, yNorm) : void 0
   }
 
-  setSize() {
+  setSize () {
     this.scale || (this.scale = 1)
     if (mobileCheck() && this.options.scaleMobile) {
       this.scale = this.options.scaleMobile
@@ -267,21 +268,21 @@ VANTA.VantaBase = class VantaBase {
     this.width = Math.max(this.el.offsetWidth, this.options.minWidth)
     this.height = Math.max(this.el.offsetHeight, this.options.minHeight)
   }
-  initMouse() {
+  initMouse () {
     // Init mouseX and mouseY
-    if ((!this.mouseX && !this.mouseY) ||
-      (this.mouseX === this.options.minWidth/2 && this.mouseY === this.options.minHeight/2)) {
+    if (!this.mouseX && !this.mouseY ||
+      this.mouseX === this.options.minWidth/2 && this.mouseY === this.options.minHeight/2) {
       this.mouseX = this.width/2
       this.mouseY = this.height/2
       this.triggerMouseMove(this.mouseX, this.mouseY)
     }
   }
 
-  resize() {
+  resize () {
     this.setSize()
     if (this.camera) {
       this.camera.aspect = this.width / this.height
-      if (typeof this.camera.updateProjectionMatrix === "function") {
+      if (typeof this.camera.updateProjectionMatrix === 'function') {
         this.camera.updateProjectionMatrix()
       }
     }
@@ -289,28 +290,28 @@ VANTA.VantaBase = class VantaBase {
       this.renderer.setSize(this.width, this.height)
       this.renderer.setPixelRatio(window.devicePixelRatio / this.scale)
     }
-    typeof this.onResize === "function" ? this.onResize() : void 0
+    typeof this.onResize === 'function' ? this.onResize() : void 0
   }
 
-  isOnScreen() {
+  isOnScreen () {
     const elHeight = this.el.offsetHeight
     const elRect = this.el.getBoundingClientRect()
-    const scrollTop = (window.pageYOffset ||
+    const scrollTop = window.pageYOffset ||
       (document.documentElement || document.body.parentNode || document.body).scrollTop
-    )
+
     const offsetTop = elRect.top + scrollTop
     const minScrollTop = offsetTop - window.innerHeight
     const maxScrollTop = offsetTop + elHeight
     return minScrollTop <= scrollTop && scrollTop <= maxScrollTop
   }
 
-  animationLoop() {
+  animationLoop () {
     // Step time
     this.t || (this.t = 0)
     this.t += 1
     // Uniform time
     this.t2 || (this.t2 = 0)
-    this.t2 += (this.options.speed || 1)
+    this.t2 += this.options.speed || 1
     if (this.uniforms) {
       this.uniforms.iTime.value = this.t2 * 0.016667 // iTime is in seconds
     }
@@ -327,7 +328,7 @@ VANTA.VantaBase = class VantaBase {
 
     // Only animate if element is within view
     if (this.isOnScreen() || this.options.forceAnimate) {
-      if (typeof this.onUpdate === "function") {
+      if (typeof this.onUpdate === 'function') {
         this.onUpdate()
       }
       if (this.scene && this.camera) {
@@ -336,8 +337,8 @@ VANTA.VantaBase = class VantaBase {
       }
       // if (this.stats) this.stats.update()
       // if (this.renderStats) this.renderStats.update(this.renderer)
-      if (this.fps && this.fps.update) this.fps.update()
-      if (typeof this.afterRender === "function") this.afterRender()
+      if (this.fps && this.fps.update) {this.fps.update()}
+      if (typeof this.afterRender === 'function') {this.afterRender()}
     }
     return this.req = window.requestAnimationFrame(this.animationLoop)
   }
@@ -350,28 +351,28 @@ VANTA.VantaBase = class VantaBase {
   //   }
   // }
 
-  restart() {
+  restart () {
     // Restart the effect without destroying the renderer
     if (this.scene) {
       while (this.scene.children.length) {
         this.scene.remove(this.scene.children[0])
       }
     }
-    if (typeof this.onRestart === "function") {
+    if (typeof this.onRestart === 'function') {
       this.onRestart()
     }
     this.init()
   }
 
-  init() {
-    if (typeof this.onInit === "function") {
+  init () {
+    if (typeof this.onInit === 'function') {
       this.onInit()
     }
     // this.setupControls()
   }
 
-  destroy() {
-    if (typeof this.onDestroy === "function") {
+  destroy () {
+    if (typeof this.onDestroy === 'function') {
       this.onDestroy()
     }
     const rm = window.removeEventListener

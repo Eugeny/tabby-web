@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { NgModule } from '@angular/core'
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'
 import { CommonModule } from '@angular/common'
@@ -15,33 +16,33 @@ import { InstanceInfoResolver } from 'src/api'
 import { CommonAppModule } from 'src/common'
 
 const ROUTES = [
-    {
-        path: '',
-        component: MainComponent,
-        resolve: {
-            instanceInfo: InstanceInfoResolver,
-        },
+  {
+    path: '',
+    component: MainComponent,
+    resolve: {
+      instanceInfo: InstanceInfoResolver,
     },
+  },
 ]
 
 @NgModule({
-    imports: [
-        CommonAppModule,
-        CommonModule,
-        FormsModule,
-        NgbDropdownModule,
-        NgbModalModule,
-        NgbTooltipModule,
-        ClipboardModule,
-        FontAwesomeModule,
-        RouterModule.forChild(ROUTES),
-    ],
-    declarations: [
-        MainComponent,
-        ConfigModalComponent,
-        SettingsModalComponent,
-        ConnectionListComponent,
-        UpgradeModalComponent,
-    ],
+  imports: [
+    CommonAppModule,
+    CommonModule,
+    FormsModule,
+    NgbDropdownModule,
+    NgbModalModule,
+    NgbTooltipModule,
+    ClipboardModule,
+    FontAwesomeModule,
+    RouterModule.forChild(ROUTES),
+  ],
+  declarations: [
+    MainComponent,
+    ConfigModalComponent,
+    SettingsModalComponent,
+    ConnectionListComponent,
+    UpgradeModalComponent,
+  ],
 })
 export class ApplicationModule { }
