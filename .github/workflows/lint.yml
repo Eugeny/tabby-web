@@ -32,5 +32,5 @@ jobs:
         poetry install
 
     - name: Lint backend
-      working-directory: frontend
-      run: flake8 .
+      working-directory: backend
+      run: poetry run flake8 .

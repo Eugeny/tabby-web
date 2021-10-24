@@ -18,7 +18,7 @@
 
     p.mt-3 If you work in education, have already supported me on Ko-fi before, or your country isn't supported on GitHub Sponsors, just #[a(href='mailto:e@ajenti.org?subject=Help with Tabby Pro') let me know] and I'll hook you up.
 
-    .mb-3(*ngIf='!loginService.user.github_username')
+    .mb-3(*ngIf='!loginService.user?.github_username')
         a.btn.btn-info(href='{{commonService.backendURL}}/api/1/auth/social/login/github')
             fa-icon([icon]='_githubIcon', [fixedWidth]='true')
             span Connect your GitHub account to link your sponsorship
