@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Resolve } from '@angular/router'
-import { Observable } from 'rxjs'
 
 export interface User {
   id: number
@@ -41,10 +40,10 @@ export interface Gateway {
 }
 
 @Injectable({ providedIn: 'root' })
-export class InstanceInfoResolver implements Resolve<Observable<InstanceInfo>> {
+export class InstanceInfoResolver implements Resolve<Promise<InstanceInfo>> {
   constructor (private http: HttpClient) { }
 
-  resolve (): Observable<InstanceInfo> {
-    return this.http.get('/api/1/instance-info').toPromise()
+  resolve (): Promise<InstanceInfo> {
+    return this.http.get('/api/1/instance-info').toPromise() as Promise<InstanceInfo>
   }
 }

@@ -222,7 +222,7 @@ export class AppConnectorService {
 
   async chooseConnectionGateway (): Promise<Gateway> {
     try {
-      return this.http.post('/api/1/gateways/choose', {}).toPromise()
+      return await this.http.post('/api/1/gateways/choose', {}).toPromise() as Gateway
     } catch (err){
       if (err.status === 503) {
         throw new Error('All connections gateway are unavailable right now')

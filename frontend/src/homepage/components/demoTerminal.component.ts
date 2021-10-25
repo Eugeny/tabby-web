@@ -56,7 +56,7 @@ class DemoConnector {
 export class DemoSocketProxy {
   connect$ = new Subject<void>()
   data$ = new Subject<Buffer>()
-  error$ = new Subject<Buffer>()
+  error$ = new Subject<Error>()
   close$ = new Subject<Buffer>()
 
   async connect () {
@@ -90,9 +90,9 @@ export class DemoTerminalComponent {
   }
 
   async ngAfterViewInit (): Promise<void> {
-    const versions = await this.http.get('/api/1/versions').toPromise()
+    const versions = (await this.http.get('/api/1/versions').toPromise()) as Version[]
     versions.sort((a, b) => -semverCompare(a.version, b.version))
-    this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0])
+    this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0]!)
     this.iframe.nativeElement.src = '/terminal'
   }
 

@@ -27,7 +27,7 @@ const ROUTES = [
         component: HomeIndexComponent,
       },
       {
-        path: 'features',
+        path: 'about/features',
         component: HomeFeaturesComponent,
       },
     ],

@@ -27,7 +27,7 @@ export class HomeComponent {
     },
     {
       title: 'Features',
-      link: '/features',
+      link: '/about/features',
     },
   ]
 

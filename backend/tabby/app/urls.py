@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     *[
         path(p, views.IndexView.as_view())
-        for p in ['', 'login', 'app', 'about', 'features']
+        for p in ['', 'login', 'app', 'about', 'about/features']
     ],
 
     path('app-dist/<version>/<path:path>', views.AppDistView.as_view()),

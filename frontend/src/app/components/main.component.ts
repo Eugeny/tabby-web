@@ -85,7 +85,6 @@ export class MainComponent {
 
   reloadApp (config: Config, version: Version) {
     // TODO check config incompatibility
-    this.unloadApp()
     setTimeout(() => {
       this.appConnector.setState(config, version)
       this.loadApp(config, version)

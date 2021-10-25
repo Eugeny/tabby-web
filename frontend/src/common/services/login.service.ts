@@ -22,7 +22,7 @@ export class LoginService {
 
   private async init () {
     try {
-      this.user = await this.http.get('/api/1/user').toPromise()
+      this.user = (await this.http.get('/api/1/user').toPromise()) as User
     } catch {
       this.user = null
     }

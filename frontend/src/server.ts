@@ -42,7 +42,7 @@ function start () {
     maxAge: '1y',
   }))
 
-  app.get(['/', '/app', '/login', '/features'], (req, res) => {
+  app.get(['/', '/app', '/login', '/about', '/about/:_'], (req, res) => {
     res.render(
       'index',
       {
