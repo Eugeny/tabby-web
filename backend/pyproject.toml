@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "tabby-web"
+version = "1.0.0"
+description = ""
+authors = ["Eugeny <e@ajenti.org>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = "^3.2.3"
+django-rest-framework = "^0.1.0"
+djangorestframework-dataclasses = "^0.9"
+social-auth-app-django = "^4.0.0"
+python-dotenv = "^0.17.1"
+websockets = "^9.1"
+gql = "^2.0.0"
+dj-database-url = "^0.5.0"
+mysqlclient = "^2.0.3"
+gunicorn = "^20.1.0"
+Twisted = "20.3.0"
+semver = "^2.13.0"
+requests = "^2.25.1"
+pyga = "^2.6.2"
+django-cors-headers = "^3.7.0"
+cryptography = "3.0"
+fsspec = "^2021.7.0"
+whitenoise = "^5.3.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.9.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

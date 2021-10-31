@@ -1,0 +1,132 @@
+.container
+    .d-flex.m-auto.mb-5
+        a.btn.btn-lg.btn-success.ms-auto.me-3([href]='releaseURL', target='_blank')
+            fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
+            .me-2
+                span.d-block Download
+                small Latest app release
+
+        a.btn.btn-lg.btn-rare.me-3(href='/app', target='_blank')
+            fa-icon([icon]='_webIcon', [fixedWidth]='true')
+            div
+                span.d-block Web version
+                small Experimental
+
+        a.btn.btn-lg.btn-secondary.me-auto([href]='githubURL', target='_blank')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            .me-2
+                span.d-block Code
+                small Forever FOSS
+
+.section.section-a
+    .container
+        .row
+            .col-12.col-xl-6
+                lib-ngx-image-zoom(
+                    [fullImage]='screenshots.window',
+                    [thumbImage]='screenshots.window'
+                )
+            .col-12.col-xl-6
+                h1 The important stuff
+                ul
+                    li Runs on #[strong Windows, Mac and Linux]
+                    li Integrated #[strong SSH client] with a connection manager
+                    li Integrated #[strong serial terminal]
+                    li PowerShell, PS Core, WSL, Git-Bash, Cygwin, Cmder and CMD support
+                    li Full #[strong Unicode support] including double-width characters
+                    li File transfer from/to SSH sessions via #[strong SFTP and Zmodem]
+                    li Theming and color schemes
+                    li Fully #[strong configurable shortcuts] and multi-chord shortcuts
+                    li #[strong Remembers your tabs] and split panes
+                    li Proper shell experience on Windows including #[strong tab completion]
+                    li Integrated #[strong encrypted container] for SSH secrets and configuration
+
+.section.section-b
+    .container
+        .row
+            .col-12.col-xl-6
+                h1 Terminal features
+                ul
+                    li Multiple #[strong nested panes]
+                    li #[strong Progress bars] and activity notifications for tabs
+                    li Tabby remembers open tabs and panes where you left off
+                    li Tabs on #[strong any side of the window]
+                    li Optional #[strong quake mode] (terminal docked to a side of the screen)
+                    li Optional #[strong global hotkey] to focus/hide the terminal
+                    li Bracketed paste
+            .col-12.col-xl-6
+                lib-ngx-image-zoom(
+                    [fullImage]='screenshots.tabs',
+                    [thumbImage]='screenshots.tabs'
+                )
+
+.section.section-a
+    .container
+        .row
+            .col-12.col-xl-6
+                lib-ngx-image-zoom(
+                    [fullImage]='screenshots.ssh',
+                    [thumbImage]='screenshots.ssh'
+                )
+            .col-12.col-xl-6
+                h1 SSH Client
+                ul
+                    li SSH2 client with a connection manager
+                    li #[strong SFTP and Zmodem] file transfers
+                    li #[strong X11] and #[strong port forwarding]
+                    li Jump hosts
+                    li #[strong Agent forwarding] - including Pageant and Windows native OpenSSH Agent
+                    li Login scripts
+                    li Optional built-in #[strong password manager] with a master passphrase
+                    li #[strong Proxy command] support
+
+.section.section-b
+    .container
+        .row
+            .col-12.col-xl-6
+                h1 Windows, but nice
+                ul
+                    li Support for #[strong different shells] in the same window
+                    li Better tab completion #[strong cmd.exe] thanks to Clink.
+                    li Explorer menu integration
+                    li Optional #[strong portable mode]
+                    li Current directory detection that works
+            .col-12.col-xl-6
+                lib-ngx-image-zoom(
+                    [fullImage]='screenshots.win',
+                    [thumbImage]='screenshots.win'
+                )
+
+.section.section-a
+    .container
+        .row
+            .col-12.col-xl-6
+                lib-ngx-image-zoom(
+                    [fullImage]='screenshots.serial',
+                    [thumbImage]='screenshots.serial'
+                )
+            .col-12.col-xl-6
+                h1 Serial Terminal
+                ul
+                    li Multiple #[strong connection profiles]
+                    li Newline conversion
+                    li Text, #[strong readline] and #[strong byte-by-byte] input modes
+                    li Text and #[strong hexdump] output modes
+                    li Zmodem
+                    li Non-standard baud rates
+
+.section.section-a
+    .container
+        h1 And just too much stuff to mention here:
+        ul
+            li Themes #[strong customizable with CSS]
+            li Extensible via #[strong plugins] (in JS)
+            li A bunch of color schemes already included
+            li Telnet client
+            li #[strong Font ligatures] and font fallback
+            li #[strong Clickable URLs], IPs and paths
+            li #[strong WinSCP] integration
+            li Shell #[strong profiles]
+            li Simultaneous #[strong multi-pane input]
+            li Optional PuTTY style #[strong right-click paste] and #[strong copy on select]
+            li macOS vibrancy and Win 10 fluent background support

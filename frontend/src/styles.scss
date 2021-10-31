@@ -1,0 +1,16 @@
+$font-family-sans-serif: "Source Sans Pro";
+$border-radius-lg: 0;
+$btn-border-width: 3px;
+
+body {
+    overscroll-behavior: none;
+}
+
+@import "~source-code-pro/source-code-pro.css";
+@import "~source-sans-pro/source-sans-pro.css";
+
+@import "theme/index";
+
+.btn-lg {
+    border-radius: 100px;
+}

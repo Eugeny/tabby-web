@@ -1,0 +1,8 @@
+.list-group.list-group-light
+    .list-group-item.d-flex(*ngFor='let socket of appConnector.sockets')
+        fa-icon.text-success.me-2([icon]='_circleIcon', [fixedWidth]='true')
+        .me-auto
+            div {{socket.options.host}}:{{socket.options.port}}
+            .text-muted via {{socket.url}}
+        button.btn.btn-link((click)='closeSocket(socket)')
+            fa-icon([icon]='_closeIcon', [fixedWidth]='true')

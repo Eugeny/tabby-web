@@ -1,0 +1,34 @@
+.top-half
+    .container.overflow-hidden
+        .navbar
+            img.brand(src='{{_logo}}')
+            .me-auto
+            a.btn.btn-primary([href]='releaseURL', target='_blank')
+                fa-icon([icon]='_downloadIcon', [fixedWidth]='true')
+                span Download
+            a.btn.btn-secondary([href]='donationURL', target='_blank')
+                fa-icon([icon]='_donateIcon', [fixedWidth]='true')
+                span Donate
+            a.btn.btn-secondary(routerLink='/app', *ngIf='instanceInfo.login_enabled')
+                fa-icon([icon]='_loginIcon', [fixedWidth]='true')
+                span Web app
+
+        ul.nav-pills.mb-4(ngbNav, [activeId]='router.url')
+            li([ngbNavItem]='link.link', *ngFor='let link of navLinks')
+                a(ngbNavLink, routerLink='.', [routerLink]='link.link') {{ link.title }}
+            li.nav-item
+                a.nav-link(href='https://github.com/eugeny/tabby', target='_blank') GitHub
+
+    .container
+        div(*ngIf='router.url == "/"')
+            .intro
+                h1 A terminal for the modern age
+                    .cursor █
+                div Tabby is an infinitely customizable cross-platform terminal app for local shells, serial, SSH and Telnet connections.
+                div Here's a demo 👇
+
+            demo-terminal
+
+.bottom-half
+    .demo-offset(*ngIf='router.url == "/"')
+    router-outlet

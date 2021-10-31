@@ -1,0 +1,72 @@
+.modal-header
+    h3.modal-title Settings
+
+.modal-body
+    .mb-3
+        h5 GitHub account
+        a.btn.btn-info(href='{{commonService.backendURL}}/api/1/auth/social/login/github', *ngIf='!user.github_username')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            span Connect a GitHub account
+        .alert.alert-success.d-flex(*ngIf='user.github_username')
+            fa-icon.me-2([icon]='_okIcon', [fixedWidth]='true')
+            div
+                div Connected as #[strong {{user.github_username}}]
+                div(*ngIf='user.is_sponsor') Thank you for supporting Tabby on GitHub!
+
+    .mb-3.mt-4
+        h5 Config sync
+        .d-flex.aling-items-stretch.mb-3
+            .form-floating.w-100
+                input.form-control(
+                    type='text',
+                    readonly,
+                    [ngModel]='user.config_sync_token'
+                )
+                label Sync token for the Tabby app
+            button.btn.btn-dark([cdkCopyToClipboard]='user.config_sync_token')
+                fa-icon([icon]='_copyIcon', [fixedWidth]='true')
+
+    .mb-3.mt-4
+        h5 Connection gateway
+        .form-check.form-switch
+            input.form-check-input(
+                type='checkbox',
+                [(ngModel)]='customGatewayEnabled'
+            )
+            label(class='form-check-label') Use custom connection gateway
+
+        small.text-muted This allows you to securely route connections through your own hosted gateway. See #[a(href='https://github.com/Eugeny/tabby-connection-gateway#readme', target='_blank') tabby-connection-gateway] for setup instructions.
+
+    form
+        input.d-none(type='text', name='fakeusername')
+        input.d-none(type='password', name='fakepassword')
+
+        .mb-3(*ngIf='customGatewayEnabled')
+            .form-floating
+                input.form-control(
+                    type='text',
+                    [(ngModel)]='user.custom_connection_gateway',
+                    placeholder='wss://1.2.3.4',
+                    autocomplete='off'
+                )
+                label Gateway address
+
+        .mb-3(*ngIf='customGatewayEnabled')
+            .form-floating
+                input.form-control(
+                    type='password',
+                    [(ngModel)]='user.custom_connection_gateway_token',
+                    placeholder='123',
+                    autocomplete='new-password'
+                )
+                label Gateway authentication token
+
+    .mb-3.mt-4(*ngIf='appConnector.sockets.length')
+        h5 Active connections
+        connection-list
+
+.modal-footer
+    .text-muted Account ID: {{user.id}}
+    .ms-auto
+    button.btn.btn-primary((click)='apply()') Apply
+    button.btn.btn-secondary((click)='cancel()') Cancel

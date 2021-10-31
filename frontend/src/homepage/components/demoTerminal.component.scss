@@ -1,0 +1,16 @@
+@import "~theme/vars";
+
+:host {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 5px;
+    background: $body-bg;
+    box-shadow: 0 0 2px black, 0 0 50px #6ef2ff05, 0 0 150px #6854ff14;
+}
+
+iframe {
+    flex: auto;
+    display: block;
+    overflow: hidden;
+}

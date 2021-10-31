@@ -1,0 +1,66 @@
+@import "~theme/vars";
+
+:host {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.sidebar {
+    width: 64px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    .logo {
+        width: 32px;
+        height: 32px;
+        align-self: center;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    >.btn {
+        width: 64px;
+        height: 64px;
+        background: transparent;
+        box-shadow: none;
+
+        &::after {
+            display: none;
+        }
+
+        &:hover {
+            color: white;
+        }
+    }
+}
+
+.terminal {
+    flex: 1 1 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    > * {
+        flex: none;
+    }
+
+    > iframe {
+        background: $body-bg;
+        border: none;
+        flex: 1 1 0;
+    }
+}
+
+.config-menu {
+    .header {
+        border-bottom: 1px solid black;
+    }
+}

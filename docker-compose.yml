@@ -1,0 +1,21 @@
+services:
+    frontend:
+        build: frontend
+        ports:
+        - 9090:80
+        environment:
+        - PORT=80
+        - BACKEND_URL=http://localhost:9091
+    backend:
+        build: backend
+        ports:
+        - 9091:80
+        volumes:
+        - ./app-dist:/app-dist
+        environment:
+        - DATABASE_URL
+        - PORT=80
+        - FRONTEND_URL=http://localhost:9090
+        - ENABLE_HOMEPAGE=False
+        - DEBUG=False
+        - APP_DIST_STORAGE=file:///app-dist

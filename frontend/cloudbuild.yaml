@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'frontend'
+  args:
+  - build
+  - '-t'
+  - '${_DOCKER_TAG}'
+  - '--cache-from'
+  - '${_DOCKER_TAG}'
+  - '.'
+
+images: ['${_DOCKER_TAG}']

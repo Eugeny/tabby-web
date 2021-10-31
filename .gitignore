@@ -1,0 +1,4 @@
+.vscode
+.env
+app-dist
+.mypy_cache
