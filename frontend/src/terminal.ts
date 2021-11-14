@@ -55,7 +55,7 @@ async function start () {
   })
 
   const config = connector.loadConfig()
-  tabby.bootstrap({
+  await tabby.bootstrap({
     packageModules: pluginModules,
     bootstrapData: {
       config,
@@ -69,4 +69,8 @@ async function start () {
     connector,
   })
 }
-start()
+
+const spinner = document.body.querySelector('.pre-bootstrap-spinner')
+start().finally(() => {
+  spinner?.remove()
+})

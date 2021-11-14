@@ -1,0 +1,44 @@
+.pre-bootstrap-spinner {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    width: 50px;
+    height: 20px;
+    margin-left: -25px;
+
+    .spinner {
+        display: inline-block;
+        position: relative;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fff;
+        animation: spinner ease infinite 1s;
+        opacity: 0.7;
+
+        &.n2 {
+            animation-delay: -0.33s;
+        }
+
+        &.n3 {
+            animation-delay: -0.66s;
+        }
+    }
+}
+
+@keyframes spinner {
+    0% {
+        left: -20px;
+        top: 0;
+    }
+
+    50% {
+        left: 20px;
+        top: 0;
+    }
+
+    100% {
+        left: -20px;
+        top: 0;
+    }
+}

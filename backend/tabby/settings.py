@@ -211,7 +211,7 @@ for key in [
     'ENABLE_LOGIN',
     'ENABLE_HOMEPAGE',
 ]:
-    globals()[key] = bool(globals()[key]) if globals()[key] else None
+    globals()[key] = globals()[key] == 'True'
 
 
 for key in [
