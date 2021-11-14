@@ -33,7 +33,7 @@
                 type='checkbox',
                 [(ngModel)]='customGatewayEnabled'
             )
-            label(class='form-check-label') Use custom connection gateway
+            label(class='form-check-label') Use a custom connection gateway
 
         small.text-muted This allows you to securely route connections through your own hosted gateway. See #[a(href='https://github.com/Eugeny/tabby-connection-gateway#readme', target='_blank') tabby-connection-gateway] for setup instructions.
 
@@ -64,6 +64,15 @@
     .mb-3.mt-4(*ngIf='appConnector.sockets.length')
         h5 Active connections
         connection-list
+
+    .mb-3.mt-4
+        h5 About
+        a.btn.btn-secondary.me-2(href='https://github.com/eugeny/tabby-web', target='_blank')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            span eugeny/tabby-web
+        a.btn.btn-secondary.me-2(href='https://github.com/eugeny/tabby', target='_blank')
+            fa-icon([icon]='_githubIcon', [fixedWidth]='true')
+            span eugeny/tabby
 
 .modal-footer
     .text-muted Account ID: {{user.id}}
