@@ -10,5 +10,6 @@ steps:
   - '--build-arg'
   - 'EXTRA_DEPS=${_EXTRA_DEPS}'
   - '.'
+timeout: 1200s
 
 images: ['${_DOCKER_TAG}']
