@@ -1,0 +1,14 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: '.'
+  args:
+  - build
+  - '-t'
+  - '${_DOCKER_TAG}'
+  - '--cache-from'
+  - '${_DOCKER_TAG}'
+  - '--build-arg'
+  - 'EXTRA_DEPS=${_EXTRA_DEPS}'
+  - '.'
+
+images: ['${_DOCKER_TAG}']
