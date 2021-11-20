@@ -16,27 +16,30 @@ Tabby Web serves the [Tabby Terminal](https://github.com/Eugeny/tabby) as a web 
 * A database server supported by Django (MariaDB, Postgres, SQLite, etc.)
 * Storage for distribution files - local, S3, GCS or others supported by `fsspec`
 
-# Using Docker images
+# Quickstart (using `docker-compose`)
 
-Tabby Web consists of two Docker images - `backend` and `frontend`. See an example set up in `docker-compose.yml`
+You'll need:
+
+* OAuth credentials from GitHub, GitLab, Google or Microsoft for authentication.
+* For SSH and Telnet: a [`tabby-connection-gateway`](https://github.com/Eugeny/tabby-connection-gateway) to forward traffic.
+
+```bash
+    docker-compose up -e SOCIAL_AUTH_GITHUB_KEY=xxx -e SOCIAL_AUTH_GITHUB_SECRET=yyy
+```
+
+will start Tabby Web on port 9090 with MariaDB as a storage backend.
+
+For SSH and Telnet, once logged in, enter your connection gateway address and auth token in the settings.
 
 ## Environment variables
 
-### Frontend
-
-* `BACKEND_URL` (required if running the backend in a separate Docker container).
-* `WEB_CONCURRENCY`
-
-### Backend
-
 * `DATABASE_URL` (required).
-* `FRONTEND_URL`
 * `APP_DIST_STORAGE`: a `file://`, `s3://`, or `gcs://` URL to store app distros in.
 * `SOCIAL_AUTH_*_KEY` & `SOCIAL_AUTH_*_SECRET`: social login credentials, supported providers are `GITHUB`, `GITLAB`, `MICROSOFT_GRAPH` and `GOOGLE_OAUTH2`.
 
 ## Adding Tabby app versions
 
-* `docker-compose run backend ./manage.py add_version 1.0.156-nightly.2`
+* `docker-compose run tabby /manage.sh add_version 1.0.163`
 
 # Development setup
 

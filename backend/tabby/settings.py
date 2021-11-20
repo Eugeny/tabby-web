@@ -9,8 +9,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-FRONTEND_BUILD_DIR = BASE_DIR / '../frontend/build'
-
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure')
 DEBUG = bool(os.getenv('DEBUG', False))
 
@@ -135,11 +133,6 @@ LOGGING = {
     },
 }
 
-STATIC_URL = '/static/'
-if FRONTEND_BUILD_DIR.exists():
-    STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
-STATIC_ROOT = BASE_DIR / 'public'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_USE_SESSIONS = False
@@ -172,6 +165,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 APP_DIST_STORAGE = os.getenv('APP_DIST_STORAGE', 'file://' + str(BASE_DIR / 'app-dist'))
 NPM_REGISTRY = os.getenv('NPM_REGISTRY', 'https://registry.npmjs.org').rstrip('/')
+FRONTEND_BUILD_DIR = Path(os.getenv('FRONTEND_BUILD_DIR', BASE_DIR / '../frontend/build'))
 
 FRONTEND_URL = None
 BACKEND_URL = None
@@ -227,6 +221,12 @@ if GITHUB_ELIGIBLE_SPONSORSHIPS:
     GITHUB_ELIGIBLE_SPONSORSHIPS = GITHUB_ELIGIBLE_SPONSORSHIPS.split(',')
 else:
     GITHUB_ELIGIBLE_SPONSORSHIPS = []
+
+
+STATIC_URL = '/static/'
+if FRONTEND_BUILD_DIR.exists():
+    STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
+STATIC_ROOT = BASE_DIR / 'public'
 
 
 if FRONTEND_URL:

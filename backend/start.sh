@@ -1,4 +1,5 @@
 #!/bin/sh
+/wait
 cd /app
-./manage.py migrate
-gunicorn
+/venv/*/bin/python ./manage.py migrate
+/venv/*/bin/gunicorn

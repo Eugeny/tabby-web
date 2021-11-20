@@ -12,12 +12,12 @@ class IndexView(APIView):
     def get(self, request, format=None):
         if settings.FRONTEND_URL:
             return HttpResponseRedirect(settings.FRONTEND_URL)
-        return static.serve(request, 'index.html', document_root=str(settings.FRONTEND_BUILD_DIR))
+        return static.serve(request, 'index.html', document_root=str(settings.STATIC_ROOT))
 
 
 class TerminalView(APIView):
     def get(self, request, format=None):
-        response = static.serve(request, 'terminal.html', document_root=str(settings.FRONTEND_BUILD_DIR))
+        response = static.serve(request, 'terminal.html', document_root=str(settings.STATIC_ROOT))
         response['X-Frame-Options'] = 'SAMEORIGIN'
         return response
 

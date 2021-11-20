@@ -1,21 +1,26 @@
 services:
-    frontend:
-        build: frontend
+    tabby:
+        build: .
+        restart: always
+        depends_on:
+        - db
         ports:
         - 9090:80
-        environment:
-        - PORT=80
-        - BACKEND_URL=http://localhost:9091
-    backend:
-        build: backend
-        ports:
-        - 9091:80
         volumes:
         - ./app-dist:/app-dist
         environment:
-        - DATABASE_URL
+        - DATABASE_URL=mysql://root:123@db/tabby
         - PORT=80
-        - FRONTEND_URL=http://localhost:9090
         - ENABLE_HOMEPAGE=False
         - DEBUG=False
         - APP_DIST_STORAGE=file:///app-dist
+        - WAIT_HOSTS=db:3306
+
+    db:
+        image: mariadb:10.7.1
+        restart: always
+        environment:
+            MARIADB_DATABASE: tabby
+            MARIADB_USER: user
+            MARIADB_PASSWORD: 123
+            MYSQL_ROOT_PASSWORD: 123

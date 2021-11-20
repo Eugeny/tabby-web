@@ -42,7 +42,7 @@ class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):
         gateways = list(self.queryset)
         random.shuffle(gateways)
         if not len(gateways):
-            raise NotFound()
+            raise NoGatewaysError()
 
         loop = asyncio.new_event_loop()
         try:
