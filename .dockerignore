@@ -1,0 +1,5 @@
+backend/__pycache__
+backend/public
+frontend/build
+frontend/build-server
+frontend/node_modules
