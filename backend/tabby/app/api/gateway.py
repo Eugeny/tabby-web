@@ -1,7 +1,7 @@
 import asyncio
 import random
 from rest_framework import fields, status
-from rest_framework.exceptions import APIException, NotFound
+from rest_framework.exceptions import APIException
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.serializers import ModelSerializer
