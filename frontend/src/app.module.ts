@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
@@ -35,6 +35,7 @@ const ROUTES = [
     BrowserModule.withServerTransition({
       appId: 'tabby',
     }),
+    BrowserTransferStateModule,
     CommonAppModule.forRoot(),
     TransferHttpCacheModule,
     BrowserAnimationsModule,
