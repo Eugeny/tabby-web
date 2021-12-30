@@ -187,9 +187,9 @@ for key in [
     'CONNECTION_GATEWAY_AUTH_KEY',
     'GITHUB_ELIGIBLE_SPONSORSHIPS',
     'GITHUB_SPONSORS_MIN_PAYMENT',
-    'ENABLE_LOGIN',
     'GA_ID',
     'GA_DOMAIN',
+    'ENABLE_LOGIN',
     'ENABLE_HOMEPAGE',
 ]:
     globals()[key] = os.getenv(key)

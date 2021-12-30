@@ -62,8 +62,5 @@ module.exports  = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new webpack.DefinePlugin({
-        BACKEND_URL: JSON.stringify(process.env.BACKEND_URL || ''),
-    }),
   ],
 }
