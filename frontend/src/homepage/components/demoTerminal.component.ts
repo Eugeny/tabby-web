@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs'
 import * as semverCompare from 'semver/functions/compare-loose'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { HttpClient } from '@angular/common/http'
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { Version } from 'src/api'
@@ -19,6 +20,9 @@ class DemoConnector {
             recoverTabs: false,
             web: {
                 preventAccidentalTabClosure: false,
+            },
+            terminal: {
+              fontSize: 11,
             },
         }`
   }
@@ -66,13 +70,16 @@ export class DemoSocketProxy {
 
 @Component({
   selector: 'demo-terminal',
-  template: '<iframe #iframe></iframe>',
+  templateUrl: './demoTerminal.component.pug',
   styleUrls: ['./demoTerminal.component.scss'],
 })
 export class DemoTerminalComponent {
   @ViewChild('iframe') iframe: ElementRef
   connector: DemoConnector
+  running = false
 
+  _demoScreenshot = require('../../../assets/demo.jpeg')
+  _playIcon = faPlay
 
   constructor (
     private http: HttpClient,
@@ -89,7 +96,8 @@ export class DemoTerminalComponent {
     }
   }
 
-  async ngAfterViewInit (): Promise<void> {
+  async start (): Promise<void> {
+    this.running = true
     const versions = (await this.http.get('/api/1/versions').toPromise()) as Version[]
     versions.sort((a, b) => -semverCompare(a.version, b.version))
     this.connector = new DemoConnector(this.iframe.nativeElement.contentWindow, this.commonService, versions[0]!)
