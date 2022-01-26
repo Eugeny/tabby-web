@@ -2,7 +2,7 @@
 FROM node:12-alpine AS frontend-build
 WORKDIR /app
 COPY frontend/package.json frontend/yarn.lock ./
-RUN yarn
+RUN yarn install --frozen-lockfile --network-timeout 1000000
 COPY frontend/webpack* frontend/tsconfig.json ./
 COPY frontend/assets assets
 COPY frontend/src src
