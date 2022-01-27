@@ -4,4 +4,4 @@ if [[ -n "$DOCKERIZE_ARGS" ]]; then
 fi
 cd /app
 /venv/*/bin/python ./manage.py migrate
-/venv/*/bin/gunicorn
+exec /venv/*/bin/gunicorn
