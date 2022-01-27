@@ -43,8 +43,15 @@ RUN FRONTEND_BUILD_DIR=/frontend /venv/*/bin/python ./manage.py add_version ${BU
 
 FROM python:3.7-alpine AS backend
 
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
-RUN chmod +x /wait
+ENV DOCKERIZE_VERSION v0.6.1
+ARG TARGETPLATFORM
+RUN if [ "$TARGETPLATFORM" = "arm64" ]; \
+    then export DOCKERIZE_ARCH=armhf; \
+    else export DOCKERIZE_ARCH=amd64; \
+    fi
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz
 
 RUN apk add mariadb-connector-c
 

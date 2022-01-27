@@ -14,7 +14,7 @@ services:
         - ENABLE_HOMEPAGE=False
         - DEBUG=False
         - APP_DIST_STORAGE=file:///app-dist
-        - WAIT_HOSTS=db:3306
+        - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
 
     db:
         image: mariadb:10.7.1
