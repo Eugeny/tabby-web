@@ -44,8 +44,9 @@ RUN FRONTEND_BUILD_DIR=/frontend /venv/*/bin/python ./manage.py add_version ${BU
 FROM python:3.7-alpine AS backend
 
 ENV DOCKERIZE_VERSION v0.6.1
+ENV DOCKERIZE_ARCH amd64
 ARG TARGETPLATFORM
-RUN if [ "$TARGETPLATFORM" = "arm64" ]; \
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; \
     then export DOCKERIZE_ARCH=armhf; \
     else export DOCKERIZE_ARCH=amd64; \
     fi
