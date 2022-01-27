@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ -z "$var" ]; then
+if [[ -n "$DOCKERIZE_ARGS" ]]; then
     dockerize $DOCKERIZE_ARGS
 fi
 cd /app
