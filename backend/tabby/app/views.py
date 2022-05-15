@@ -22,6 +22,13 @@ class TerminalView(APIView):
         return response
 
 
+class DemoView(APIView):
+    def get(self, request, format=None):
+        response = static.serve(request, 'demo.html', document_root=str(settings.STATIC_ROOT))
+        response['X-Frame-Options'] = 'ALLOW-FROM https://tabby.sh'
+        return response
+
+
 class AppDistView(APIView):
     def get(self, request, version=None, path=None, format=None):
         fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)

@@ -19,6 +19,7 @@ module.exports = {
   entry: {
     index: path.resolve(__dirname, 'src/index.ts'),
     terminal: path.resolve(__dirname, 'src/terminal.ts'),
+    demo: path.resolve(__dirname, 'src/demo.ts'),
   },
   plugins: [
     ...baseConfig.plugins,
@@ -39,7 +40,13 @@ module.exports = {
       chunks: ['terminal'],
       ...htmlPluginOptions,
     }),
-  ],
+    new HtmlWebpackPlugin({
+      template: './src/demo.html',
+      filename: 'demo.html',
+        chunks: ['demo'],
+        ...htmlPluginOptions,
+      }),
+    ],
   output: {
     path: outputPath,
     pathinfo: true,

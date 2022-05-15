@@ -67,6 +67,10 @@ function start () {
     res.sendFile(join(DIST_FOLDER, 'terminal.html'))
   })
 
+  app.get(['/demo'], (req, res) => {
+    res.sendFile(join(DIST_FOLDER, 'demo.html'))
+  })
+
   for (const [key, value] of Object.entries(hardlinks)) {
     app.get(`/go/${key}`, (req, res) => res.redirect(value))
   }
