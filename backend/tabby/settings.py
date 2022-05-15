@@ -222,7 +222,7 @@ STATIC_ROOT = BASE_DIR / 'public'
 
 
 if FRONTEND_URL:
-    CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+    CORS_ALLOWED_ORIGINS = [FRONTEND_URL, 'https://tabby.sh']
     CORS_ALLOW_CREDENTIALS = True
     CORS_ALLOW_HEADERS = [
         'accept',
