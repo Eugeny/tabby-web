@@ -1,7 +1,3 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Resolve } from '@angular/router'
-
 export interface User {
   id: number
   active_config: number
@@ -27,23 +23,9 @@ export interface Version {
   plugins: string[]
 }
 
-export interface InstanceInfo {
-  login_enabled: boolean
-  homepage_enabled: boolean
-}
-
 export interface Gateway {
   host: string
   port: number
   url: string
   auth_token: string
-}
-
-@Injectable({ providedIn: 'root' })
-export class InstanceInfoResolver implements Resolve<Promise<InstanceInfo>> {
-  constructor (private http: HttpClient) { }
-
-  resolve (): Promise<InstanceInfo> {
-    return this.http.get('/api/1/instance-info').toPromise() as Promise<InstanceInfo>
-  }
 }

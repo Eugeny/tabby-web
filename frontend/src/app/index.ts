@@ -12,16 +12,12 @@ import { ConfigModalComponent } from './components/configModal.component'
 import { SettingsModalComponent } from './components/settingsModal.component'
 import { ConnectionListComponent } from './components/connectionList.component'
 import { UpgradeModalComponent } from './components/upgradeModal.component'
-import { InstanceInfoResolver } from 'src/api'
 import { CommonAppModule } from 'src/common'
 
 const ROUTES = [
   {
     path: '',
     component: MainComponent,
-    resolve: {
-      instanceInfo: InstanceInfoResolver,
-    },
   },
 ]
 

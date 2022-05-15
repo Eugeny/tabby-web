@@ -190,7 +190,6 @@ for key in [
     'GA_ID',
     'GA_DOMAIN',
     'ENABLE_LOGIN',
-    'ENABLE_HOMEPAGE',
 ]:
     globals()[key] = os.getenv(key)
 
@@ -199,13 +198,6 @@ for key in [
     'GITHUB_SPONSORS_MIN_PAYMENT',
 ]:
     globals()[key] = int(globals()[key]) if globals()[key] else None
-
-
-for key in [
-    'ENABLE_LOGIN',
-    'ENABLE_HOMEPAGE',
-]:
-    globals()[key] = globals()[key] == 'True'
 
 
 for key in [

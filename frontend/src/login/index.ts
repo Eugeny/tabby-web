@@ -8,16 +8,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { NgxImageZoomModule } from 'ngx-image-zoom'
 
 import { LoginComponent } from './components/login.component'
-import { InstanceInfoResolver } from 'src/api'
 import { CommonAppModule } from 'src/common'
 
 const ROUTES = [
   {
     path: '',
     component: LoginComponent,
-    resolve: {
-      instanceInfo: InstanceInfoResolver,
-    },
   },
 ]
 

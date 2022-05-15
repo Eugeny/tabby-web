@@ -18,11 +18,11 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 const ROUTES = [
   {
     path: '',
-    loadChildren: () => import(/* webpackChunkName: "homepage" */'./homepage').then(m => m.HomepageModule),
+    loadChildren: () => import(/* webpackChunkName: "app" */'./app').then(m => m.ApplicationModule),
   },
   {
     path: 'app',
-    loadChildren: () => import(/* webpackChunkName: "app" */'./app').then(m => m.ApplicationModule),
+    redirectTo: '/',
   },
   {
     path: 'login',

@@ -11,7 +11,6 @@ services:
         environment:
         - DATABASE_URL=mysql://root:123@db/tabby
         - PORT=80
-        - ENABLE_HOMEPAGE=False
         - DEBUG=False
         - APP_DIST_STORAGE=file:///app-dist
         - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
