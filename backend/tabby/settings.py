@@ -240,6 +240,7 @@ if FRONTEND_URL:
     if BACKEND_URL:
         CSRF_TRUSTED_ORIGINS.append(urlparse(BACKEND_URL).hostname)
     SESSION_COOKIE_DOMAIN = frontend_domain
+    SESSION_COOKIE_SAMESITE = None
     CSRF_COOKIE_DOMAIN = frontend_domain
 
     FRONTEND_URL = FRONTEND_URL.rstrip('/')
