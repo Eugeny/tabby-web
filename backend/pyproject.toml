@@ -6,7 +6,7 @@ authors = ["Eugeny <e@ajenti.org>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Django = "^3.2.12"
+Django = "^3.2.15"
 django-rest-framework = "^0.1.0"
 djangorestframework-dataclasses = "^0.9"
 social-auth-app-django = "^4.0.0"
