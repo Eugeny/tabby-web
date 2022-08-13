@@ -22,6 +22,7 @@ You'll need:
 
 * OAuth credentials from GitHub, GitLab, Google or Microsoft for authentication.
 * For SSH and Telnet: a [`tabby-connection-gateway`](https://github.com/Eugeny/tabby-connection-gateway) to forward traffic.
+* Docker BuildKit: `export DOCKER_BUILDKIT=1`
 
 ```bash
     docker-compose up -e SOCIAL_AUTH_GITHUB_KEY=xxx -e SOCIAL_AUTH_GITHUB_SECRET=yyy
