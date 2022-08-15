@@ -66,7 +66,7 @@ RUN <<EOF
         else export DOCKERIZE_ARCH=amd64;
     fi
     
-    wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz -O - | tar -xzv -C /usr/local/bin
+    wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-$DOCKERIZE_ARCH-$DOCKERIZE_VERSION.tar.gz -O - | tar -xzv -C /usr/local/bin
     
     chown root:root /usr/local/bin/dockerize
 
