@@ -25,7 +25,7 @@ class TerminalView(APIView):
 class DemoView(APIView):
     def get(self, request, format=None):
         response = static.serve(request, 'demo.html', document_root=str(settings.STATIC_ROOT))
-        response['X-Frame-Options'] = 'ALLOW-FROM https://tabby.sh'
+        response['Content-Security-Policy'] = 'frame-ancestors https://tabby.sh'
         return response
 
 
