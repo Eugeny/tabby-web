@@ -6,14 +6,12 @@ services:
         - db
         ports:
         - 9090:80
-        volumes:
-        - ./app-dist:/app-dist
         environment:
         - DATABASE_URL=mysql://root:123@db/tabby
         - PORT=80
         - DEBUG=False
-        - APP_DIST_STORAGE=file:///app-dist
         - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
+        # - APP_DIST_STORAGE="file:///app-dist"
 
     db:
         image: mariadb:10.7.1

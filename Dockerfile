@@ -39,10 +39,11 @@ COPY --from=frontend /app/build /frontend
 ARG BUNDLED_TABBY=1.0.187-nightly.1
 
 RUN FRONTEND_BUILD_DIR=/frontend /venv/*/bin/python ./manage.py collectstatic --noinput
-RUN FRONTEND_BUILD_DIR=/frontend /venv/*/bin/python ./manage.py add_version ${BUNDLED_TABBY}
+RUN APP_DIST_STORAGE=file:///app-dist /venv/*/bin/python ./manage.py add_version ${BUNDLED_TABBY}
 
 FROM python:3.7-alpine AS backend
 
+ENV APP_DIST_STORAGE file:///app-dist
 ENV DOCKERIZE_VERSION v0.6.1
 ENV DOCKERIZE_ARCH amd64
 ARG TARGETPLATFORM
@@ -57,6 +58,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 RUN apk add mariadb-connector-c
 
 COPY --from=build-backend /app /app
+COPY --from=build-backend /app-dist /app-dist
 COPY --from=build-backend /venv /venv
 
 COPY backend/start.sh backend/manage.sh /
