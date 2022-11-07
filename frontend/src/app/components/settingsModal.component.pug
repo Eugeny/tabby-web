@@ -45,6 +45,7 @@
             .form-floating
                 input.form-control(
                     type='text',
+                    name='custom_connection_gateway',
                     [(ngModel)]='user.custom_connection_gateway',
                     placeholder='wss://1.2.3.4',
                     autocomplete='off'
@@ -55,6 +56,7 @@
             .form-floating
                 input.form-control(
                     type='password',
+                    name='custom_connection_gateway_token',
                     [(ngModel)]='user.custom_connection_gateway_token',
                     placeholder='123',
                     autocomplete='new-password'
