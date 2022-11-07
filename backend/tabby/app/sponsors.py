@@ -7,13 +7,13 @@ from social_django.models import UserSocialAuth
 from .models import User
 
 
-GQL_ENDPOINT = 'https://api.github.com/graphql'
-CACHE_KEY = 'cached-sponsors:%s'
+GQL_ENDPOINT = "https://api.github.com/graphql"
+CACHE_KEY = "cached-sponsors:%s"
 
 
 def check_is_sponsor(user: User) -> bool:
     try:
-        token = user.social_auth.get(provider='github').extra_data.get('access_token')
+        token = user.social_auth.get(provider="github").extra_data.get("access_token")
     except UserSocialAuth.DoesNotExist:
         return False
 
@@ -25,19 +25,19 @@ def check_is_sponsor(user: User) -> bool:
             url=GQL_ENDPOINT,
             use_json=True,
             headers={
-                'Authorization': f'Bearer {token}',
-            }
+                "Authorization": f"Bearer {token}",
+            },
         )
     )
 
     after = None
 
     while True:
-        params = 'first: 1'
+        params = "first: 1"
         if after:
             params += f', after:"{after}"'
 
-        query = '''
+        query = """
             query {
                 viewer {
                     sponsorshipsAsSponsor(%s) {
@@ -56,18 +56,26 @@ def check_is_sponsor(user: User) -> bool:
                     }
                 }
             }
-        ''' % (params,)
+        """ % (
+            params,
+        )
 
         response = client.execute(gql(query))
-        info = response['viewer']['sponsorshipsAsSponsor']
-        after = info['pageInfo']['endCursor']
-        nodes = info['nodes']
+        info = response["viewer"]["sponsorshipsAsSponsor"]
+        after = info["pageInfo"]["endCursor"]
+        nodes = info["nodes"]
         if not len(nodes):
             break
         for node in nodes:
-            if node['sponsorable']['login'].lower() not in settings.GITHUB_ELIGIBLE_SPONSORSHIPS:
+            if (
+                node["sponsorable"]["login"].lower()
+                not in settings.GITHUB_ELIGIBLE_SPONSORSHIPS
+            ):
                 continue
-            if info['totalRecurringMonthlyPriceInDollars'] >= settings.GITHUB_SPONSORS_MIN_PAYMENT:
+            if (
+                info["totalRecurringMonthlyPriceInDollars"]
+                >= settings.GITHUB_SPONSORS_MIN_PAYMENT
+            ):
                 return True
 
     return False

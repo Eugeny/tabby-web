@@ -7,18 +7,23 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_gateway'),
+        ("app", "0002_gateway"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='gateway',
-            name='admin_port',
+            model_name="gateway",
+            name="admin_port",
             field=models.IntegerField(default=1235),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='active_config',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='app.config'),
+            model_name="user",
+            name="active_config",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="app.config",
+            ),
         ),
     ]

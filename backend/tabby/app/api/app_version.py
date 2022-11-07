@@ -25,27 +25,28 @@ class AppVersionSerializer(DataclassSerializer):
 
 class AppVersionViewSet(ListModelMixin, GenericViewSet):
     serializer_class = AppVersionSerializer
-    lookup_field = 'id'
-    lookup_value_regex = r'[\w\d.-]+'
-    queryset = ''
+    lookup_field = "id"
+    lookup_value_regex = r"[\w\d.-]+"
+    queryset = ""
 
     def _get_versions(self):
         fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
         return [
-            self._get_version(x['name'])
+            self._get_version(x["name"])
             for x in fs.listdir(settings.APP_DIST_STORAGE)
-            if x['type'] == 'directory'
+            if x["type"] == "directory"
         ]
 
     def _get_version(self, dir):
         fs = fsspec.filesystem(urlparse(settings.APP_DIST_STORAGE).scheme)
         plugins = [
-            os.path.basename(x['name'])
+            os.path.basename(x["name"])
             for x in fs.listdir(dir)
-            if x['type'] == 'directory' and os.path.basename(x['name'])
+            if x["type"] == "directory"
+            and os.path.basename(x["name"])
             not in [
-                'tabby-web-container',
-                'tabby-web-demo',
+                "tabby-web-container",
+                "tabby-web-demo",
             ]
         ]
 

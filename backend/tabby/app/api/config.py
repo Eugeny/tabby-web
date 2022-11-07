@@ -10,8 +10,8 @@ class ConfigSerializer(ModelSerializer):
 
     class Meta:
         model = Config
-        read_only_fields = ('user', 'created_at', 'modified_at')
-        fields = '__all__'
+        read_only_fields = ("user", "created_at", "modified_at")
+        fields = "__all__"
 
 
 class ConfigViewSet(ModelViewSet):

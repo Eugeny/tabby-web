@@ -5,24 +5,30 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Config(models.Model):
-    user = models.ForeignKey('app.User', related_name='configs', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "app.User", related_name="configs", on_delete=models.CASCADE
+    )
     name = models.CharField(max_length=255)
-    content = models.TextField(default='{}')
+    content = models.TextField(default="{}")
     last_used_with_version = models.CharField(max_length=32, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.name:
-            self.name = f'Unnamed config ({date.today()})'
+            self.name = f"Unnamed config ({date.today()})"
         super().save(*args, **kwargs)
 
 
 class User(AbstractUser):
-    active_config = models.ForeignKey(Config, null=True, on_delete=models.SET_NULL, related_name='+')
+    active_config = models.ForeignKey(
+        Config, null=True, on_delete=models.SET_NULL, related_name="+"
+    )
     active_version = models.CharField(max_length=32, null=True)
     custom_connection_gateway = models.CharField(max_length=255, null=True, blank=True)
-    custom_connection_gateway_token = models.CharField(max_length=255, null=True, blank=True)
+    custom_connection_gateway_token = models.CharField(
+        max_length=255, null=True, blank=True
+    )
     config_sync_token = models.CharField(max_length=255)
     force_pro = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,4 +48,4 @@ class Gateway(models.Model):
     secure = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'{self.host}:{self.port}'
+        return f"{self.host}:{self.port}"

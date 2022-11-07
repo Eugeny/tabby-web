@@ -6,18 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Gateway',
+            name="Gateway",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('host', models.CharField(max_length=255)),
-                ('port', models.IntegerField(default=1234)),
-                ('enabled', models.BooleanField(default=True)),
-                ('secure', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("host", models.CharField(max_length=255)),
+                ("port", models.IntegerField(default=1234)),
+                ("enabled", models.BooleanField(default=True)),
+                ("secure", models.BooleanField(default=True)),
             ],
         ),
     ]

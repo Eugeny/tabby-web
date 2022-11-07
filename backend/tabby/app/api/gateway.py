@@ -14,7 +14,7 @@ class GatewaySerializer(ModelSerializer):
     auth_token = fields.CharField()
 
     class Meta:
-        fields = '__all__'
+        fields = "__all__"
         model = Gateway
 
     def get_url(self, gw):
@@ -23,8 +23,8 @@ class GatewaySerializer(ModelSerializer):
 
 class NoGatewaysError(APIException):
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-    default_detail = 'No connection gateways available.'
-    default_code = 'no_gateways'
+    default_detail = "No connection gateways available."
+    default_code = "no_gateways"
 
 
 class ChooseGatewayViewSet(RetrieveModelMixin, GenericViewSet):

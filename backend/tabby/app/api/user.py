@@ -19,30 +19,34 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id',
-            'username',
-            'active_config',
-            'custom_connection_gateway',
-            'custom_connection_gateway_token',
-            'config_sync_token',
-            'is_pro',
-            'is_sponsor',
-            'github_username',
+            "id",
+            "username",
+            "active_config",
+            "custom_connection_gateway",
+            "custom_connection_gateway_token",
+            "config_sync_token",
+            "is_pro",
+            "is_sponsor",
+            "github_username",
         )
-        read_only_fields = ('id', 'username')
+        read_only_fields = ("id", "username")
 
     def get_is_pro(self, obj):
-        return obj.force_pro or not settings.GITHUB_ELIGIBLE_SPONSORSHIPS or check_is_sponsor_cached(obj)
+        return (
+            obj.force_pro
+            or not settings.GITHUB_ELIGIBLE_SPONSORSHIPS
+            or check_is_sponsor_cached(obj)
+        )
 
     def get_is_sponsor(self, obj):
         return check_is_sponsor_cached(obj)
 
     def get_github_username(self, obj):
-        social_auth = UserSocialAuth.objects.filter(user=obj, provider='github').first()
+        social_auth = UserSocialAuth.objects.filter(user=obj, provider="github").first()
         if not social_auth:
             return None
 
-        return social_auth.extra_data.get('login')
+        return social_auth.extra_data.get("login")
 
 
 class UserViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):

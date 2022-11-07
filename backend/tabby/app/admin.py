@@ -5,7 +5,15 @@ from .models import Gateway, User, Config
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('custom_connection_gateway', 'custom_connection_gateway_token')}),
+        (
+            None,
+            {
+                "fields": (
+                    "custom_connection_gateway",
+                    "custom_connection_gateway_token",
+                )
+            },
+        ),
     )
 
 

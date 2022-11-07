@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0004_sync_token'),
+        ("app", "0004_sync_token"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='force_pro',
+            model_name="user",
+            name="force_pro",
             field=models.BooleanField(default=False),
         ),
     ]

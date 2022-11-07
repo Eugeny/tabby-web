@@ -27,8 +27,8 @@ class GatewayConnection:
                 ctx.verify_mode = ssl.CERT_REQUIRED
             GatewayConnection._ssl_context = ctx
 
-        proto = 'wss' if GatewayConnection._ssl_context else 'ws'
-        self.url = f'{proto}://localhost:9000/connect/{quote(host)}:{quote(str(port))}'
+        proto = "wss" if GatewayConnection._ssl_context else "ws"
+        self.url = f"{proto}://localhost:9000/connect/{quote(host)}:{quote(str(port))}"
 
     async def connect(self):
         self.context = websockets.connect(self.url, ssl=GatewayConnection._ssl_context)
@@ -53,7 +53,9 @@ class GatewayAdminConnection:
 
     def __init__(self, gateway: Gateway):
         if not settings.CONNECTION_GATEWAY_AUTH_KEY:
-            raise RuntimeError('CONNECTION_GATEWAY_AUTH_KEY is required to manage connection gateways')
+            raise RuntimeError(
+                "CONNECTION_GATEWAY_AUTH_KEY is required to manage connection gateways"
+            )
         if not GatewayAdminConnection._ssl_context:
             ctx = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
             ctx.load_cert_chain(
@@ -67,10 +69,12 @@ class GatewayAdminConnection:
                 ctx.verify_mode = ssl.CERT_REQUIRED
             GatewayAdminConnection._ssl_context = ctx
 
-        self.url = f'wss://{gateway.host}:{gateway.admin_port}'
+        self.url = f"wss://{gateway.host}:{gateway.admin_port}"
 
     async def connect(self):
-        self.context = websockets.connect(self.url, ssl=GatewayAdminConnection._ssl_context)
+        self.context = websockets.connect(
+            self.url, ssl=GatewayAdminConnection._ssl_context
+        )
         try:
             self.socket = await self.context.__aenter__()
         except OSError:
@@ -78,10 +82,14 @@ class GatewayAdminConnection:
 
     async def authorize_client(self) -> str:
         token = secrets.token_hex(32)
-        await self.send(json.dumps({
-            '_': 'authorize-client',
-            'token': token,
-        }))
+        await self.send(
+            json.dumps(
+                {
+                    "_": "authorize-client",
+                    "token": token,
+                }
+            )
+        )
         return token
 
     async def send(self, data):

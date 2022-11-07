@@ -7,12 +7,10 @@ from . import views
 urlpatterns = [
     *[
         path(p, views.IndexView.as_view())
-        for p in ['', 'login', 'app', 'about', 'about/features']
+        for p in ["", "login", "app", "about", "about/features"]
     ],
-
-    path('app-dist/<version>/<path:path>', views.AppDistView.as_view()),
-    path('terminal', views.TerminalView.as_view()),
-    path('demo', views.DemoView.as_view()),
-
-    path('', include(api.urlpatterns)),
+    path("app-dist/<version>/<path:path>", views.AppDistView.as_view()),
+    path("terminal", views.TerminalView.as_view()),
+    path("demo", views.DemoView.as_view()),
+    path("", include(api.urlpatterns)),
 ]
