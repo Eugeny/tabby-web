@@ -42,6 +42,8 @@ For SSH and Telnet, once logged in, enter your connection gateway address and au
 
 * `docker-compose run tabby /manage.sh add_version 1.0.163`
 
+You can find the available version numbers [here](https://www.npmjs.com/package/tabby-web-container).
+
 # Development setup
 
 Put your environment vars (`DATABASE_URL`, etc.) in the `.env` file in the root of the repo.

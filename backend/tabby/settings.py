@@ -189,7 +189,6 @@ for key in [
     'GITHUB_SPONSORS_MIN_PAYMENT',
     'GA_ID',
     'GA_DOMAIN',
-    'ENABLE_LOGIN',
 ]:
     globals()[key] = os.getenv(key)
 

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Title } from '@angular/platform-browser'
 import { AppConnectorService } from '../services/appConnector.service'
 
-import { faCog, faFile, faPlus, faSave, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faExclamationTriangle, faFile, faPlus, faSave, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { SettingsModalComponent } from './settingsModal.component'
 import { ConfigModalComponent } from './configModal.component'
@@ -24,8 +24,11 @@ export class MainComponent {
   _addIcon = faPlus
   _configIcon = faFile
   _saveIcon = faSave
+  _warningIcon = faExclamationTriangle
 
   showApp = false
+  noVersionsAdded = false
+  missingVersion: string|undefined
 
   @ViewChild('iframe') iframe: ElementRef
 
@@ -39,6 +42,9 @@ export class MainComponent {
   ) {
     titleService.setTitle('Tabby')
     window.addEventListener('message', this.connectorRequestHandler)
+    config.ready$.subscribe(() => {
+      this.noVersionsAdded = config.configs.length === 0
+    })
   }
 
   connectorRequestHandler = event => {
@@ -81,11 +87,19 @@ export class MainComponent {
     }
   }
 
-  reloadApp (config: Config, version: Version) {
+  reloadApp (config: Config, version?: Version) {
+    if (!version) {
+      this.missingVersion = config.last_used_with_version
+      version = this.config.getLatestStableVersion()
+      if (!version) {
+        return
+      }
+    }
+    this.missingVersion = undefined
     // TODO check config incompatibility
     setTimeout(() => {
-      this.appConnector.setState(config, version)
-      this.loadApp(config, version)
+      this.appConnector.setState(config, version!)
+      this.loadApp(config, version!)
     })
   }
 

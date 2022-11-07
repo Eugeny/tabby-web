@@ -39,7 +39,7 @@ export class ConfigService {
   async createNewConfig (): Promise<Config> {
     const configData = {
       content: '{}',
-      last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion().version,
+      last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion()?.version,
     }
     if (!this.loginService.user) {
       const config = {
@@ -112,7 +112,7 @@ export class ConfigService {
     this.versions = (await this.http.get('/api/1/versions').toPromise()) as Version[]
     this.versions.sort((a, b) => -semverCompare(a.version, b.version))
 
-    if (!this.configs.length) {
+    if (!this.configs.length && this.versions.length) {
       await this.createNewConfig()
     }
 

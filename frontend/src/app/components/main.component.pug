@@ -30,6 +30,14 @@
 
 .terminal
     iframe(#iframe, [hidden]='!showApp')
+    .alert.alert-warning.d-flex.border-0.m-0(*ngIf='noVersionsAdded')
+        fa-icon.me-2([icon]='_warningIcon', [fixedWidth]='true')
+        div
+            div You haven't added any Tabby versions, see here #[a(href='https://github.com/Eugeny/tabby-web#adding-tabby-app-versions', target='_blank') for instructions].
+    .alert.alert-warning.d-flex.border-0.m-0(*ngIf='missingVersion')
+        fa-icon.me-2([icon]='_warningIcon', [fixedWidth]='true')
+        div
+            div You've last used this config with Tabby v{{missingVersion}}, which is no longer available on this server.
     .alert.alert-warning.d-flex.border-0.m-0(*ngIf='showApp && !loginService.user')
         fa-icon.me-2([icon]='_saveIcon', [fixedWidth]='true')
         div
