@@ -26,6 +26,7 @@ class TerminalView(APIView):
         response = static.serve(
             request, "terminal.html", document_root=str(settings.STATIC_ROOT)
         )
+        response["Content-Security-Policy"] = "frame-ancestors 'self' https://tabby.sh;"
         response["X-Frame-Options"] = "SAMEORIGIN"
         return response
 
@@ -35,7 +36,8 @@ class DemoView(APIView):
         response = static.serve(
             request, "demo.html", document_root=str(settings.STATIC_ROOT)
         )
-        response["Content-Security-Policy"] = "frame-ancestors https://tabby.sh"
+        response["Content-Security-Policy"] = "frame-ancestors 'self' https://tabby.sh;"
+        response['X-Frame-Options'] = 'ALLOW-FROM https://tabby.sh'
         return response
 
 
