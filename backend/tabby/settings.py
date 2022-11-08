@@ -164,10 +164,12 @@ FRONTEND_BUILD_DIR = Path(
 )
 
 FRONTEND_URL = None
+CORS_EXTRA_URL = None
 BACKEND_URL = None
 GITHUB_ELIGIBLE_SPONSORSHIPS = None
 
 for key in [
+    "CORS_EXTRA_URL",
     "FRONTEND_URL",
     "BACKEND_URL",
     "SOCIAL_AUTH_GITHUB_KEY",
@@ -216,8 +218,9 @@ if FRONTEND_BUILD_DIR.exists():
 STATIC_ROOT = BASE_DIR / "public"
 
 
-if FRONTEND_URL:
-    CORS_ALLOWED_ORIGINS = [FRONTEND_URL, "https://tabby.sh"]
+if FRONTEND_URL or CORS_EXTRA_URL:
+    cors_url = CORS_EXTRA_URL or FRONTEND_URL
+    CORS_ALLOWED_ORIGINS = [cors_url, "https://tabby.sh"]
     CORS_ALLOW_CREDENTIALS = True
     CORS_ALLOW_HEADERS = [
         "accept",
@@ -230,20 +233,26 @@ if FRONTEND_URL:
         "x-xsrf-token",
         "x-requested-with",
     ]
-    frontend_domain = urlparse(FRONTEND_URL).hostname
-    CSRF_TRUSTED_ORIGINS = [frontend_domain]
+    cors_domain = urlparse(cors_url).hostname
+    CSRF_TRUSTED_ORIGINS = [cors_domain]
     if BACKEND_URL:
         CSRF_TRUSTED_ORIGINS.append(urlparse(BACKEND_URL).hostname)
-    SESSION_COOKIE_DOMAIN = os.getenv("SESSION_COOKIE_DOMAIN", frontend_domain)
-    SESSION_COOKIE_SAMESITE = None
-    CSRF_COOKIE_DOMAIN = frontend_domain
 
-    FRONTEND_URL = FRONTEND_URL.rstrip("/")
+    cors_url = cors_url.rstrip("/")
 
-    if FRONTEND_URL.startswith("https://"):
+    if cors_url.startswith("https://"):
         CSRF_COOKIE_SECURE = True
         SESSION_COOKIE_SECURE = True
 else:
     FRONTEND_URL = ""
 
-LOGIN_REDIRECT_URL = FRONTEND_URL + "/app"
+if FRONTEND_URL:
+    LOGIN_REDIRECT_URL = FRONTEND_URL
+    frontend_domain = urlparse(FRONTEND_URL).hostname
+    SESSION_COOKIE_DOMAIN = os.getenv("SESSION_COOKIE_DOMAIN", cors_domain)
+    SESSION_COOKIE_SAMESITE = None
+    CSRF_COOKIE_DOMAIN = cors_domain
+    if FRONTEND_URL.startswith("https://"):
+        CSRF_COOKIE_SECURE = True
+else:
+    LOGIN_REDIRECT_URL = '/'
