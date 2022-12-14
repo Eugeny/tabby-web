@@ -45,7 +45,7 @@
     "domino": "^2.1.6",
     "dotenv": "^10.0.0",
     "eslint": "^7.31.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.5.0",
     "js-yaml": "^4.1.0",
