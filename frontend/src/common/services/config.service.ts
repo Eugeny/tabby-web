@@ -39,7 +39,7 @@ export class ConfigService {
   async createNewConfig (): Promise<Config> {
     const configData = {
       content: '{}',
-      last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion()?.version,
+      last_used_with_version: this._activeVersion?.version ?? this.getLatestStableVersion()?.version ?? '0.0.0',
     }
     if (!this.loginService.user) {
       const config = {
