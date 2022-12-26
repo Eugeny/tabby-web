@@ -57,7 +57,7 @@ export class ConfigService {
     return config
   }
 
-  getLatestStableVersion (): Version {
+  getLatestStableVersion (): Version|undefined {
     return this.versions[0]
   }
 
