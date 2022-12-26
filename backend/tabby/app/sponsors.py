@@ -73,8 +73,7 @@ def check_is_sponsor(user: User) -> bool:
             ):
                 continue
             if (
-                info["totalRecurringMonthlyPriceInDollars"]
-                >= settings.GITHUB_SPONSORS_MIN_PAYMENT
+                info["totalRecurringMonthlyPriceInDollars"] >= settings.GITHUB_SPONSORS_MIN_PAYMENT
             ):
                 return True
 

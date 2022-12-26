@@ -33,9 +33,7 @@ class UserSerializer(ModelSerializer):
 
     def get_is_pro(self, obj):
         return (
-            obj.force_pro
-            or not settings.GITHUB_ELIGIBLE_SPONSORSHIPS
-            or check_is_sponsor_cached(obj)
+            obj.force_pro or not settings.GITHUB_ELIGIBLE_SPONSORSHIPS or check_is_sponsor_cached(obj)
         )
 
     def get_is_sponsor(self, obj):

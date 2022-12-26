@@ -42,8 +42,7 @@ class AppVersionViewSet(ListModelMixin, GenericViewSet):
         plugins = [
             os.path.basename(x["name"])
             for x in fs.listdir(dir)
-            if x["type"] == "directory"
-            and os.path.basename(x["name"])
+            if x["type"] == "directory" and os.path.basename(x["name"])
             not in [
                 "tabby-web-container",
                 "tabby-web-demo",
