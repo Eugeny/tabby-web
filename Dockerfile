@@ -23,10 +23,15 @@ CMD ["npm", "start"]
 FROM python:3.7-alpine AS build-backend
 ARG EXTRA_DEPS
 
-RUN apk add build-base musl-dev libffi-dev openssl-dev mariadb-dev
+RUN apk add build-base musl-dev libffi-dev openssl-dev mariadb-dev bash curl
 
 WORKDIR /app
-RUN pip install -U setuptools 'cryptography>=3.0,<3.1' poetry==1.1.7
+
+# Rust (for python-cryptography)
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+ENV PATH /root/.cargo/bin:$PATH
+
+RUN pip install -U setuptools cryptography==37.0.4 poetry==1.1.7
 COPY backend/pyproject.toml backend/poetry.lock ./
 RUN poetry config virtualenvs.path /venv
 RUN poetry install --no-dev --no-ansi --no-interaction
