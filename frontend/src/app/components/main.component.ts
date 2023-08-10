@@ -29,6 +29,7 @@ export class MainComponent {
   showApp = false
   noVersionsAdded = false
   missingVersion: string|undefined
+  showDiscontinuationWarning = location.hostname === 'localhost'
 
   @ViewChild('iframe') iframe: ElementRef
 

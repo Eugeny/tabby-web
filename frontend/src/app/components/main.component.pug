@@ -42,3 +42,7 @@
         fa-icon.me-2([icon]='_saveIcon', [fixedWidth]='true')
         div
             div To save profiles and settings, #[a(href='/login') log in].
+    .alert.alert-warning.d-flex.border-0.m-0(*ngIf='showDiscontinuationWarning')
+        fa-icon.me-2([icon]='_warningIcon', [fixedWidth]='true')
+        div
+            div app.tabby.sh will be shut down in September due to lack of funding, but you can run your own instance - check out the #[a(href='https://github.com/eugeny/tabby-web', target='_blank') tabby-web repo]. Make sure to copy your configuration as it won't be available later.
