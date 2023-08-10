@@ -29,7 +29,7 @@ export class MainComponent {
   showApp = false
   noVersionsAdded = false
   missingVersion: string|undefined
-  showDiscontinuationWarning = location.hostname === 'localhost'
+  showDiscontinuationWarning = location.hostname === 'app.tabby.sh'
 
   @ViewChild('iframe') iframe: ElementRef
 
