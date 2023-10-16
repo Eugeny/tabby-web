@@ -4,8 +4,6 @@
 
 This is the Tabby terminal, served as a web app. It also provides the config sync service for the Tabby app.
 
-You can use this to deploy your own copy or to make improvements - pull requests are welcome!
-
 # How it works
 
 Tabby Web serves the [Tabby Terminal](https://github.com/Eugeny/tabby) as a web application while managing multiple config files, authentication, and providing TCP connections via a [separate gateway service](https://github.com/Eugeny/tabby-connection-gateway).
