@@ -1,10 +1,8 @@
 # Tabby Web
 
-> 👋 Tabby Web is looking for sponsors. As I can't afford to host it myself any longer, I'm looking for a sponsor to cover the hosting costs. If you're interested, please [get in touch](https://twitter.com/eugeeeeny)!
-
 ![](docs/screenshot.png)
 
-This is the exact code that runs at https://tabby.sh. In fact, it's being deployed straight out of this repository.
+This is the Tabby terminal, served as a web app. It also provides the config sync service for the Tabby app.
 
 You can use this to deploy your own copy or to make improvements - pull requests are welcome!
 
