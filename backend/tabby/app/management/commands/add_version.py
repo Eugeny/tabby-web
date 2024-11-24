@@ -49,6 +49,7 @@ class Command(BaseCommand):
 
                 with tempfile.NamedTemporaryFile("wb") as f:
                     f.write(response.content)
+                    f.flush()
                     plugin_final_target = Path(tempdir) / plugin
 
                     with tempfile.TemporaryDirectory() as extraction_tmp:
