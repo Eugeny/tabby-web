@@ -62,4 +62,9 @@ class Command(BaseCommand):
             if fs.exists(target):
                 fs.rm(target, recursive=True)
             fs.mkdir(target)
-            fs.put(str(tempdir), target, recursive=True)
+            # Copy each item from the temporary directory to the target
+            for item in tempdir.iterdir():
+                if item.is_dir():
+                    fs.put(str(item), target, recursive=True)
+                else:
+                    fs.put(str(item), target)
