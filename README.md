@@ -1,5 +1,11 @@
 # Tabby Web
 
+## Note on project status
+
+> [!IMPORTANT]  
+> At this time I don't have the time to work on `tabby-web` and won't be able to provide help or support for it. I'm still happy to merge any fixes/improvement PRs. :v:
+
+
 ![](docs/screenshot.png)
 
 This is the Tabby terminal, served as a web app. It also provides the config sync service for the Tabby app.
