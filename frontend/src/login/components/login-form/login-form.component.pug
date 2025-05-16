@@ -1,0 +1,10 @@
+form((ngSubmit)='login()', #loginForm='ngForm')
+  div
+    label(for='username') Username
+    input(type='text', id='username', name='username', [(ngModel)]='username', required)
+  div
+    label(for='password') Password
+    input(type='password', id='password', name='password', [(ngModel)]='password', required)
+  button.buttons.text-center.btn.btn-primary(type='submit', [disabled]='!loginForm.form.valid') Login
+  div(*ngIf='errorMessage', class='error-message')
+    | {{ errorMessage }}
