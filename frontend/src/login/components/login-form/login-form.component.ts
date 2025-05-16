@@ -17,8 +17,7 @@ export class LoginFormComponent {
   login(): void {
     this.loginService.login(this.username, this.password).then(
       (response) => {
-        // Handle successful login, e.g., navigate to a dashboard
-        this.router.navigate(['/app']); // Or your desired route
+        this.router.navigate(['/app']);
       }
     ).catch(
         (error) => {

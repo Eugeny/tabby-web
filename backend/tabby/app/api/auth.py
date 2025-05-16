@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ..models import User  # Assuming your User model is here
-from .user import UserSerializer  # Assuming you have a UserSerializer
+from ..models import User
+from .user import UserSerializer
 
 
 class LoginView(APIView):
