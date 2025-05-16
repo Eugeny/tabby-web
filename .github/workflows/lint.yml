@@ -39,7 +39,7 @@ jobs:
       working-directory: backend
       run: |
         pip3 install poetry
-        poetry install
+        poetry install --no-root
 
     - name: Lint backend
       working-directory: backend
