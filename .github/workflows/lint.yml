@@ -25,6 +25,11 @@ jobs:
       working-directory: frontend
       run: yarn lint
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
     - name: Install backend deps
       working-directory: backend
       run: |
