@@ -1,4 +1,8 @@
 .login-view(*ngIf='ready')
+    div.text-center
+        h2 Login
+        app-login-form
+        hr
     .buttons
         a.btn(
             *ngFor='let provider of providers',
