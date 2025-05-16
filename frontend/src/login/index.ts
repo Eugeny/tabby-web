@@ -30,10 +30,10 @@ const ROUTES = [
   ],
   declarations: [
     LoginComponent,
-    LoginFormComponent
+    LoginFormComponent,
   ],
   providers: [
-    LoginService
-  ]
+    LoginService,
+  ],
 })
 export class LoginModule { }

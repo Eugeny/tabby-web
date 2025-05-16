@@ -31,7 +31,7 @@ export class LoginService {
     this.ready$.complete()
   }
 
-  async login(username: string, password: string): Promise<User> {
-      return (await this.http.post<any>('/api/1/auth/login', { username, password }).toPromise()) as User;
-    }
+  async login (username: string, password: string): Promise<User> {
+    return (await this.http.post<any>('/api/1/auth/login', { username, password }).toPromise()) as User
+  }
 }

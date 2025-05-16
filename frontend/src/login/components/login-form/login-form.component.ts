@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginService } from 'src/common';
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
+import { LoginService } from 'src/common'
 
 @Component({
   selector: 'app-login-form',
@@ -8,22 +8,22 @@ import { LoginService } from 'src/common';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
-  username = '';
-  password = '';
-  errorMessage = '';
+  username = ''
+  password = ''
+  errorMessage = ''
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor (private loginService: LoginService, private router: Router) {}
 
-  login(): void {
+  login (): void {
     this.loginService.login(this.username, this.password).then(
-      (response) => {
-        this.router.navigate(['/app']);
+      (_) => {
+        this.router.navigate(['/app'])
       }
     ).catch(
-        (error) => {
-            this.errorMessage = error.error?.error || 'Login failed. Please check your credentials.';
-            console.error('Login error:', error);
-        }
-    );
+      (error) => {
+        this.errorMessage = error.error?.error || 'Login failed. Please check your credentials.'
+        console.error('Login error:', error)
+      }
+    )
   }
 }
