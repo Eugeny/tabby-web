@@ -30,6 +30,11 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Install system packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3.11-dev build-essential
+
     - name: Install backend deps
       working-directory: backend
       run: |
