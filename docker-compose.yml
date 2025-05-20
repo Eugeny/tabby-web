@@ -3,15 +3,17 @@ services:
         build: .
         restart: always
         depends_on:
-        - db
+            - db
         ports:
-        - 9090:80
+            - 9090:80
         environment:
-        - DATABASE_URL=mysql://root:123@db/tabby
-        - PORT=80
-        - DEBUG=False
-        - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
-        # - APP_DIST_STORAGE="file:///app-dist"
+            - DATABASE_URL=mysql://root:123@db/tabby
+            - PORT=80
+            - DEBUG=False
+            - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
+            # - APP_DIST_STORAGE="file:///app-dist"
+            # - SOCIAL_AUTH_GITHUB_KEY=xxx #optional
+            # - SOCIAL_AUTH_GITHUB_SECRET=yyy #optional
 
     db:
         image: mariadb:10.7.1
