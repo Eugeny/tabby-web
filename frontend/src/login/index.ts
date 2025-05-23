@@ -8,7 +8,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { NgxImageZoomModule } from 'ngx-image-zoom'
 
 import { LoginComponent } from './components/login.component'
-import { CommonAppModule } from 'src/common'
+import { LoginFormComponent } from './components/login-form/login-form.component'
+import { CommonAppModule, LoginService } from 'src/common'
 
 const ROUTES = [
   {
@@ -29,6 +30,10 @@ const ROUTES = [
   ],
   declarations: [
     LoginComponent,
+    LoginFormComponent,
+  ],
+  providers: [
+    LoginService,
   ],
 })
 export class LoginModule { }

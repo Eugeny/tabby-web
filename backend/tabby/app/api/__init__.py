@@ -10,6 +10,7 @@ router.register(
 )
 
 urlpatterns = [
+    path("api/1/auth/login", auth.LoginView.as_view()),
     path("api/1/auth/logout", auth.LogoutView.as_view()),
     path("api/1/user", user.UserViewSet.as_view({"get": "retrieve", "put": "update"})),
     path(
