@@ -29,7 +29,9 @@ You'll need:
 * Docker BuildKit: `export DOCKER_BUILDKIT=1`
 
 ```bash
-    docker-compose up -e SOCIAL_AUTH_GITHUB_KEY=xxx -e SOCIAL_AUTH_GITHUB_SECRET=yyy
+    docker-compose up
+    or if using compose v2
+    docker compose up 
 ```
 
 will start Tabby Web on port 9090 with MariaDB as a storage backend.
