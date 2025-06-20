@@ -63,7 +63,7 @@
     "source-map-support": "^0.5.19",
     "source-sans-pro": "^2.45.0",
     "style-loader": "^3.3.1",
-    "three": "^0.119.0",
+    "three": "^0.137.0",
     "throng": "^5.0.0",
     "typescript": "~4.3.2",
     "vanta": "^0.5.21",
