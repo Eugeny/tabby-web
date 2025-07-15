@@ -2,3 +2,4 @@
 .env
 app-dist
 .mypy_cache
+.idea
