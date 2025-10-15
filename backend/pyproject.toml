@@ -26,7 +26,7 @@ cryptography = "^42.0.0"
 fsspec = "^2021.7.0"
 whitenoise = "^5.3.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 flake8 = "^3.9.2"
 
 [build-system]
