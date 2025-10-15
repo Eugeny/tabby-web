@@ -7,7 +7,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^3.2.19"
+Django = "4.2.24"
 django-rest-framework = "^0.1.0"
 djangorestframework-dataclasses = "^0.9"
 social-auth-app-django = "^4.0.0"
