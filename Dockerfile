@@ -20,7 +20,7 @@ CMD ["npm", "start"]
 
 # ----
 
-FROM python:3.7-alpine AS build-backend
+FROM python:3.8-alpine AS build-backend
 ARG EXTRA_DEPS
 
 RUN apk add build-base musl-dev libffi-dev openssl-dev mariadb-dev bash curl
@@ -48,7 +48,7 @@ RUN APP_DIST_STORAGE=file:///app-dist /venv/*/bin/python ./manage.py add_version
 
 # ----
 
-FROM python:3.7-alpine AS backend
+FROM python:3.8-alpine AS backend
 
 ENV APP_DIST_STORAGE file:///app-dist
 ENV DOCKERIZE_VERSION v0.6.1

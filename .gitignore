@@ -3,3 +3,4 @@
 app-dist
 .mypy_cache
 .idea
+node_modules
