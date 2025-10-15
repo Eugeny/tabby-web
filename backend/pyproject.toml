@@ -3,7 +3,6 @@ name = "tabby-web"
 version = "1.0.0"
 description = ""
 authors = ["Eugeny <e@ajenti.org>"]
-packages = [{include = "tabby"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
