@@ -34,7 +34,7 @@ ENV PATH /root/.cargo/bin:$PATH
 RUN pip install -U setuptools cryptography==42.0.0 poetry==1.8.5
 COPY backend/pyproject.toml backend/poetry.lock ./
 RUN poetry config virtualenvs.path /venv
-RUN poetry install --no-dev --no-ansi --no-interaction
+RUN poetry install --only main --no-ansi --no-interaction
 RUN poetry run pip install -U setuptools psycopg2-binary $EXTRA_DEPS
 
 COPY backend/manage.py backend/gunicorn.conf.py ./
