@@ -1,7 +1,25 @@
 import { Component } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
 import { LoginService, CommonService } from 'src/common'
 
-import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faGitlab, faGoogle, faMicrosoft, IconDefinition } from '@fortawesome/free-brands-svg-icons'
+import { faKey } from '@fortawesome/free-solid-svg-icons'
+
+interface Provider {
+  id: string
+  name: string
+  icon: string
+  cls: string
+}
+
+// Map icon names from backend to FontAwesome icons
+const iconMap: Record<string, IconDefinition> = {
+  github: faGithub,
+  gitlab: faGitlab,
+  google: faGoogle,
+  microsoft: faMicrosoft,
+  key: faKey,  // Used for Auth0 and other providers without brand icons
+}
 
 @Component({
   selector: 'login',
@@ -11,20 +29,27 @@ import { faGithub, faGitlab, faGoogle, faMicrosoft } from '@fortawesome/free-bra
 export class LoginComponent {
   loggedIn: any
   ready = false
-
-  providers = [
-    { name: 'GitHub', icon: faGithub, cls: 'btn-primary', id: 'github' },
-    { name: 'GitLab', icon: faGitlab, cls: 'btn-warning', id: 'gitlab' },
-    { name: 'Google', icon: faGoogle, cls: 'btn-secondary', id: 'google-oauth2' },
-    { name: 'Microsoft', icon: faMicrosoft, cls: 'btn-light', id: 'microsoft-graph' },
-  ]
+  providers: Array<Provider & { faIcon: IconDefinition }> = []
 
   constructor (
+    private http: HttpClient,
     private loginService: LoginService,
     public commonService: CommonService,
   ) { }
 
   async ngOnInit () {
+    // Fetch available providers from backend
+    try {
+      const providers = await this.http.get<Provider[]>('/api/1/auth/providers').toPromise()
+      this.providers = (providers || []).map(p => ({
+        ...p,
+        faIcon: iconMap[p.icon] || faKey,
+      }))
+    } catch {
+      // Fallback to empty list if API fails
+      this.providers = []
+    }
+
     await this.loginService.ready$.toPromise()
     this.loggedIn = !!this.loginService.user
     this.ready = true

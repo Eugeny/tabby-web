@@ -35,7 +35,7 @@ RUN pip install -U setuptools cryptography==37.0.4 poetry==1.1.7
 COPY backend/pyproject.toml backend/poetry.lock ./
 RUN poetry config virtualenvs.path /venv
 RUN poetry install --no-dev --no-ansi --no-interaction
-RUN poetry run pip install -U setuptools psycopg2-binary $EXTRA_DEPS
+RUN poetry run pip install -U setuptools psycopg2-binary python-jose[cryptography] $EXTRA_DEPS
 
 COPY backend/manage.py backend/gunicorn.conf.py ./
 COPY backend/tabby tabby

@@ -40,7 +40,20 @@ For SSH and Telnet, once logged in, enter your connection gateway address and au
 
 * `DATABASE_URL` (required).
 * `APP_DIST_STORAGE`: a `file://`, `s3://`, or `gcs://` URL to store app distros in.
-* `SOCIAL_AUTH_*_KEY` & `SOCIAL_AUTH_*_SECRET`: social login credentials, supported providers are `GITHUB`, `GITLAB`, `MICROSOFT_GRAPH` and `GOOGLE_OAUTH2`.
+
+### Authentication Providers
+
+Only providers with credentials configured will appear as login options. Set the following environment variables for each provider you want to enable:
+
+| Provider | Environment Variables |
+|----------|----------------------|
+| GitHub | `SOCIAL_AUTH_GITHUB_KEY`, `SOCIAL_AUTH_GITHUB_SECRET` |
+| GitLab | `SOCIAL_AUTH_GITLAB_KEY`, `SOCIAL_AUTH_GITLAB_SECRET` |
+| Google | `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |
+| Microsoft | `SOCIAL_AUTH_MICROSOFT_GRAPH_KEY`, `SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET` |
+| Auth0 | `SOCIAL_AUTH_AUTH0_DOMAIN`, `SOCIAL_AUTH_AUTH0_KEY`, `SOCIAL_AUTH_AUTH0_SECRET` |
+
+For Auth0, set the callback URL to: `https://your-domain/api/1/auth/social/complete/auth0/`
 
 ## Adding Tabby app versions
 
