@@ -31,6 +31,12 @@ PROVIDER_CONFIG = {
         'cls': 'btn-light',
         'env_prefix': 'SOCIAL_AUTH_MICROSOFT_GRAPH',
     },
+    'azuread-tenant-oauth2': {
+        'name': 'Azure AD',
+        'icon': 'microsoft',
+        'cls': 'btn-light',
+        'env_prefix': 'SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2',
+    },
     'auth0': {
         'name': 'Auth0',
         'icon': 'key',  # Using key icon as Auth0 doesn't have a FA brand icon
@@ -58,6 +64,10 @@ def is_provider_configured(env_prefix: str) -> bool:
     if env_prefix == 'SOCIAL_AUTH_OIDC':
         endpoint = getattr(settings, f'{env_prefix}_OIDC_ENDPOINT', None)
         return bool(key and secret and endpoint)
+    # For Azure AD Tenant (single-tenant), also need TENANT_ID
+    if env_prefix == 'SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2':
+        tenant_id = getattr(settings, f'{env_prefix}_TENANT_ID', None)
+        return bool(key and secret and tenant_id)
     return bool(key and secret)
 
 
