@@ -37,6 +37,12 @@ PROVIDER_CONFIG = {
         'cls': 'btn-dark',
         'env_prefix': 'SOCIAL_AUTH_AUTH0',
     },
+    'oidc': {
+        'name': 'SSO',  # Generic name, can be overridden via SOCIAL_AUTH_OIDC_NAME
+        'icon': 'openid',  # OpenID icon
+        'cls': 'btn-info',
+        'env_prefix': 'SOCIAL_AUTH_OIDC',
+    },
 }
 
 
@@ -48,7 +54,17 @@ def is_provider_configured(env_prefix: str) -> bool:
     if env_prefix == 'SOCIAL_AUTH_AUTH0':
         domain = getattr(settings, f'{env_prefix}_DOMAIN', None)
         return bool(key and secret and domain)
+    # For generic OIDC, also need OIDC_ENDPOINT
+    if env_prefix == 'SOCIAL_AUTH_OIDC':
+        endpoint = getattr(settings, f'{env_prefix}_OIDC_ENDPOINT', None)
+        return bool(key and secret and endpoint)
     return bool(key and secret)
+
+
+def get_provider_display_name(env_prefix: str, default_name: str) -> str:
+    """Get custom display name for a provider, if configured."""
+    custom_name = getattr(settings, f'{env_prefix}_NAME', None)
+    return custom_name if custom_name else default_name
 
 
 class LogoutView(APIView):
@@ -66,7 +82,9 @@ class ProvidersView(APIView):
             if is_provider_configured(config['env_prefix']):
                 providers.append({
                     'id': provider_id,
-                    'name': config['name'],
+                    'name': get_provider_display_name(
+                        config['env_prefix'], config['name']
+                    ),
                     'icon': config['icon'],
                     'cls': config['cls'],
                 })

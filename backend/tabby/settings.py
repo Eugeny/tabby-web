@@ -141,6 +141,7 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.microsoft.MicrosoftOAuth2",
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.auth0.Auth0OAuth2",
+    "social_core.backends.open_id_connect.OpenIdConnectAuth",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -188,6 +189,10 @@ for key in [
     "SOCIAL_AUTH_AUTH0_DOMAIN",
     "SOCIAL_AUTH_AUTH0_KEY",
     "SOCIAL_AUTH_AUTH0_SECRET",
+    "SOCIAL_AUTH_OIDC_OIDC_ENDPOINT",
+    "SOCIAL_AUTH_OIDC_KEY",
+    "SOCIAL_AUTH_OIDC_SECRET",
+    "SOCIAL_AUTH_OIDC_NAME",
     "CONNECTION_GATEWAY_AUTH_CA",
     "CONNECTION_GATEWAY_AUTH_CERTIFICATE",
     "CONNECTION_GATEWAY_AUTH_KEY",

@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { LoginService, CommonService } from 'src/common'
 
-import { faGithub, faGitlab, faGoogle, faMicrosoft, IconDefinition } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faGitlab, faGoogle, faMicrosoft, faOpenid, IconDefinition } from '@fortawesome/free-brands-svg-icons'
 import { faKey } from '@fortawesome/free-solid-svg-icons'
 
 interface Provider {
@@ -18,6 +18,7 @@ const iconMap: Record<string, IconDefinition> = {
   gitlab: faGitlab,
   google: faGoogle,
   microsoft: faMicrosoft,
+  openid: faOpenid,  // Used for generic OIDC providers (Authentik, Authelia, Keycloak, etc.)
   key: faKey,  // Used for Auth0 and other providers without brand icons
 }
 

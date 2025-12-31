@@ -52,8 +52,28 @@ Only providers with credentials configured will appear as login options. Set the
 | Google | `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |
 | Microsoft | `SOCIAL_AUTH_MICROSOFT_GRAPH_KEY`, `SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET` |
 | Auth0 | `SOCIAL_AUTH_AUTH0_DOMAIN`, `SOCIAL_AUTH_AUTH0_KEY`, `SOCIAL_AUTH_AUTH0_SECRET` |
+| Generic OIDC | `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`, `SOCIAL_AUTH_OIDC_KEY`, `SOCIAL_AUTH_OIDC_SECRET` |
 
 For Auth0, set the callback URL to: `https://your-domain/api/1/auth/social/complete/auth0/`
+
+### Generic OIDC Provider
+
+The generic OIDC provider works with any OpenID Connect compliant identity provider, including:
+- **Authentik** - Self-hosted identity provider
+- **Authelia** - Self-hosted authentication server
+- **Keycloak** - Open source identity management
+- **Okta** - Enterprise identity platform
+- And any other OIDC-compliant provider
+
+Configuration:
+- `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`: The OIDC discovery endpoint (e.g., `https://authentik.example.com/application/o/<app-slug>/`)
+- `SOCIAL_AUTH_OIDC_KEY`: Client ID from your identity provider
+- `SOCIAL_AUTH_OIDC_SECRET`: Client secret from your identity provider
+- `SOCIAL_AUTH_OIDC_NAME` (optional): Custom button text (default: "SSO")
+
+Set the callback URL to: `https://your-domain/api/1/auth/social/complete/oidc/`
+
+**Note on MFA:** Multi-factor authentication is handled by your identity provider. Enable MFA in Authentik, Authelia, or your chosen provider to require 2FA for Tabby Web logins.
 
 ## Adding Tabby app versions
 
