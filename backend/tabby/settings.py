@@ -39,12 +39,17 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "tabby.middleware.ProxyAuthMiddleware",  # Must come after AuthenticationMiddleware
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "tabby.middleware.TokenMiddleware",
     "tabby.middleware.GAMiddleware",
 ]
+
+# Proxy authentication - enable when running behind an authenticating proxy
+# (Authentik, Authelia, etc.) that sets X-Auth-User-Email headers
+PROXY_AUTH_ENABLED = os.getenv("PROXY_AUTH_ENABLED", "").lower() in ("true", "1", "yes")
 
 ROOT_URLCONF = "tabby.urls"
 
