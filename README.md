@@ -14,13 +14,48 @@ This is the Tabby terminal, served as a web app. It also provides the config syn
 
 Tabby Web serves the [Tabby Terminal](https://github.com/Eugeny/tabby) as a web application while managing multiple config files, authentication, and providing TCP connections via a [separate gateway service](https://github.com/Eugeny/tabby-connection-gateway).
 
+# Documentation
+
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Complete guide for production deployment
+- **[Connection Gateway](https://github.com/Eugeny/tabby-connection-gateway)** - For SSH/Telnet connections
+
 # Requirements
 
-## Runtime Requirements
+## Software Requirements
 
-* Python 3.7+
+* Python 3.10+ (3.12 recommended)
+* Node.js 18+ (for frontend build)
 * A database server supported by Django (MariaDB, Postgres, SQLite, etc.)
 * Storage for distribution files - local, S3, GCS or others supported by `fsspec`
+* Docker and Docker Compose (for containerized deployment)
+
+## System Requirements
+
+### Minimum (Build & Run)
+
+| Resource | Requirement |
+|----------|-------------|
+| CPU | 2 cores |
+| RAM | 2GB (4GB recommended for building) |
+| Disk | 5GB |
+
+> **Note:** Building the Docker image requires significant memory for the frontend compilation step. If you're running on a memory-constrained system (like Oracle Cloud Free Tier), consider using a pre-built image or building on a machine with more RAM.
+
+### Runtime Only (Pre-built Image)
+
+| Resource | Requirement |
+|----------|-------------|
+| CPU | 1 core |
+| RAM | 512MB |
+| Disk | 1GB + app distributions |
+
+### Recommended (Production)
+
+| Resource | Requirement |
+|----------|-------------|
+| CPU | 2+ cores |
+| RAM | 2GB |
+| Disk | 10GB |
 
 ## Docker Build Requirements
 
@@ -43,13 +78,29 @@ You'll need:
 
 * OAuth credentials from GitHub, GitLab, Google or Microsoft for authentication.
 * For SSH and Telnet: a [`tabby-connection-gateway`](https://github.com/Eugeny/tabby-connection-gateway) to forward traffic.
-* Docker BuildKit: `export DOCKER_BUILDKIT=1`
+
+## Option 1: Pre-built Image (Recommended)
+
+Use the pre-built image from GitHub Container Registry - no build required:
 
 ```bash
-    docker-compose up -e SOCIAL_AUTH_GITHUB_KEY=xxx -e SOCIAL_AUTH_GITHUB_SECRET=yyy
+docker-compose -f docker-compose.prebuilt.yml up -d
 ```
 
-will start Tabby Web on port 9090 with MariaDB as a storage backend.
+The image is available at `ghcr.io/eugeny/tabby-web:latest`.
+
+## Option 2: Build from Source
+
+If you need to customize the build:
+
+```bash
+export DOCKER_BUILDKIT=1
+docker-compose up -d
+```
+
+---
+
+Both options will start Tabby Web on port 9090 with MariaDB as a storage backend.
 
 For SSH and Telnet, once logged in, enter your connection gateway address and auth token in the settings.
 
