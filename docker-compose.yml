@@ -11,6 +11,24 @@ services:
         - PORT=80
         - DEBUG=False
         - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
+        #
+        # OAuth Providers - uncomment and configure:
+        # - SOCIAL_AUTH_GITHUB_KEY=your_github_client_id
+        # - SOCIAL_AUTH_GITHUB_SECRET=your_github_client_secret
+        # - SOCIAL_AUTH_GITLAB_KEY=your_gitlab_client_id
+        # - SOCIAL_AUTH_GITLAB_SECRET=your_gitlab_client_secret
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=your_google_client_id
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=your_google_client_secret
+        #
+        # Microsoft/Azure AD (multi-tenant - allows any Microsoft account):
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_KEY=your_microsoft_client_id
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET=your_microsoft_client_secret
+        #
+        # Azure AD Single-Tenant (restricts to specific organization):
+        # - SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY=your_azure_client_id
+        # - SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET=your_azure_client_secret
+        # - SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID=your_tenant_id
+        #
         # - APP_DIST_STORAGE="file:///app-dist"
 
     db:
