@@ -26,13 +26,29 @@ You'll need:
 
 * OAuth credentials from GitHub, GitLab, Google or Microsoft for authentication.
 * For SSH and Telnet: a [`tabby-connection-gateway`](https://github.com/Eugeny/tabby-connection-gateway) to forward traffic.
-* Docker BuildKit: `export DOCKER_BUILDKIT=1`
+
+## Option 1: Pre-built Image (Recommended)
+
+Use the pre-built image from GitHub Container Registry - no build required:
 
 ```bash
-    docker-compose up -e SOCIAL_AUTH_GITHUB_KEY=xxx -e SOCIAL_AUTH_GITHUB_SECRET=yyy
+docker-compose -f docker-compose.prebuilt.yml up -d
 ```
 
-will start Tabby Web on port 9090 with MariaDB as a storage backend.
+The image is available at `ghcr.io/eugeny/tabby-web:latest`.
+
+## Option 2: Build from Source
+
+If you need to customize the build:
+
+```bash
+export DOCKER_BUILDKIT=1
+docker-compose up -d
+```
+
+---
+
+Both options will start Tabby Web on port 9090 with MariaDB as a storage backend.
 
 For SSH and Telnet, once logged in, enter your connection gateway address and auth token in the settings.
 

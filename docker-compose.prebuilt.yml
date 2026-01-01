@@ -1,0 +1,40 @@
+# Use this file for quick deployment with pre-built images (no build required)
+# Usage: docker-compose -f docker-compose.prebuilt.yml up -d
+
+services:
+    tabby:
+        image: ghcr.io/eugeny/tabby-web:latest
+        restart: always
+        depends_on:
+        - db
+        ports:
+        - 9090:80
+        environment:
+        - DATABASE_URL=mysql://root:123@db/tabby
+        - PORT=80
+        - DEBUG=False
+        - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
+        #
+        # OAuth Providers - uncomment and configure at least one:
+        # - SOCIAL_AUTH_GITHUB_KEY=your_github_client_id
+        # - SOCIAL_AUTH_GITHUB_SECRET=your_github_client_secret
+        # - SOCIAL_AUTH_GITLAB_KEY=your_gitlab_client_id
+        # - SOCIAL_AUTH_GITLAB_SECRET=your_gitlab_client_secret
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=your_google_client_id
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=your_google_client_secret
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_KEY=your_microsoft_client_id
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET=your_microsoft_client_secret
+
+    db:
+        image: mariadb:10.7.1
+        restart: always
+        environment:
+            MARIADB_DATABASE: tabby
+            MARIADB_USER: user
+            MARIADB_PASSWORD: 123
+            MYSQL_ROOT_PASSWORD: 123
+        volumes:
+        - db-data:/var/lib/mysql
+
+volumes:
+    db-data:
