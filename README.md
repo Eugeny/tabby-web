@@ -56,7 +56,20 @@ For SSH and Telnet, once logged in, enter your connection gateway address and au
 
 * `DATABASE_URL` (required).
 * `APP_DIST_STORAGE`: a `file://`, `s3://`, or `gcs://` URL to store app distros in.
-* `SOCIAL_AUTH_*_KEY` & `SOCIAL_AUTH_*_SECRET`: social login credentials, supported providers are `GITHUB`, `GITLAB`, `MICROSOFT_GRAPH` and `GOOGLE_OAUTH2`.
+
+### OAuth Providers
+
+Configure one or more OAuth providers for authentication:
+
+| Provider | Variables |
+|----------|-----------|
+| GitHub | `SOCIAL_AUTH_GITHUB_KEY`, `SOCIAL_AUTH_GITHUB_SECRET` |
+| GitLab | `SOCIAL_AUTH_GITLAB_KEY`, `SOCIAL_AUTH_GITLAB_SECRET` |
+| Google | `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |
+| Microsoft (multi-tenant) | `SOCIAL_AUTH_MICROSOFT_GRAPH_KEY`, `SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET` |
+| Azure AD (single-tenant) | `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY`, `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET`, `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID` |
+
+**Azure AD Single-Tenant:** Use this instead of Microsoft Graph if you want to restrict login to users from a specific Azure AD tenant (organization). Set `TENANT_ID` to your Azure AD Directory (tenant) ID.
 
 ## Adding Tabby app versions
 

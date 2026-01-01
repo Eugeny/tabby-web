@@ -138,6 +138,7 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.github.GithubOAuth2",
     "social_core.backends.gitlab.GitLabOAuth2",
     "social_core.backends.azuread.AzureADOAuth2",
+    "social_core.backends.azuread_tenant.AzureADTenantOAuth2",  # Single-tenant Azure AD
     "social_core.backends.microsoft.MicrosoftOAuth2",
     "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.ModelBackend",
@@ -180,6 +181,10 @@ for key in [
     "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET",
     "SOCIAL_AUTH_MICROSOFT_GRAPH_KEY",
     "SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET",
+    # Azure AD single-tenant (use instead of multi-tenant for org-only access)
+    "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY",
+    "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET",
+    "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID",
     "CONNECTION_GATEWAY_AUTH_CA",
     "CONNECTION_GATEWAY_AUTH_CERTIFICATE",
     "CONNECTION_GATEWAY_AUTH_KEY",
