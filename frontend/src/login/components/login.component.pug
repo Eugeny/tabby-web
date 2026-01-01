@@ -1,9 +1,12 @@
 .login-view(*ngIf='ready')
-    .buttons
+    .buttons(*ngIf='providers.length')
         a.btn(
             *ngFor='let provider of providers',
             [class]='provider.cls',
             href='{{commonService.backendURL}}/api/1/auth/social/login/{{provider.id}}'
         )
-            fa-icon([icon]='provider.icon', [fixedWidth]='true')
+            fa-icon([icon]='provider.faIcon', [fixedWidth]='true')
             span Log in with {{provider.name}}
+    .no-providers(*ngIf='!providers.length')
+        p No authentication providers configured.
+        p.text-muted Contact your administrator.

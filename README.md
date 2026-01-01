@@ -57,6 +57,21 @@ Tabby Web serves the [Tabby Terminal](https://github.com/Eugeny/tabby) as a web 
 | RAM | 2GB |
 | Disk | 10GB |
 
+## Docker Build Requirements
+
+Building the Docker image requires significant resources due to the frontend compilation:
+
+| Resource | Minimum | Recommended |
+|----------|---------|-------------|
+| RAM | 2 GB | 4 GB |
+| CPU | 2 cores | 4 cores |
+| Disk | 5 GB | 10 GB |
+
+**Note:** The frontend build (webpack/Angular) is memory-intensive. If building on constrained systems (like Oracle Cloud Always Free tier with 1GB RAM), consider:
+- Using pre-built images from a CI/CD pipeline
+- Building on a larger machine and pushing to a registry
+- Adding swap space (not recommended for production)
+
 # Quickstart (using `docker-compose`)
 
 You'll need:
@@ -94,19 +109,52 @@ For SSH and Telnet, once logged in, enter your connection gateway address and au
 * `DATABASE_URL` (required).
 * `APP_DIST_STORAGE`: a `file://`, `s3://`, or `gcs://` URL to store app distros in.
 
-### OAuth Providers
+### Authentication Providers
 
-Configure one or more OAuth providers for authentication:
+Only providers with credentials configured will appear as login options. Set the following environment variables for each provider you want to enable:
 
-| Provider | Variables |
-|----------|-----------|
+| Provider | Environment Variables |
+|----------|----------------------|
 | GitHub | `SOCIAL_AUTH_GITHUB_KEY`, `SOCIAL_AUTH_GITHUB_SECRET` |
 | GitLab | `SOCIAL_AUTH_GITLAB_KEY`, `SOCIAL_AUTH_GITLAB_SECRET` |
 | Google | `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`, `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |
 | Microsoft (multi-tenant) | `SOCIAL_AUTH_MICROSOFT_GRAPH_KEY`, `SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET` |
 | Azure AD (single-tenant) | `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY`, `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET`, `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID` |
+| Auth0 | `SOCIAL_AUTH_AUTH0_DOMAIN`, `SOCIAL_AUTH_AUTH0_KEY`, `SOCIAL_AUTH_AUTH0_SECRET` |
+| Generic OIDC | `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`, `SOCIAL_AUTH_OIDC_KEY`, `SOCIAL_AUTH_OIDC_SECRET` |
 
-**Azure AD Single-Tenant:** Use this instead of Microsoft Graph if you want to restrict login to users from a specific Azure AD tenant (organization). Set `TENANT_ID` to your Azure AD Directory (tenant) ID.
+For Auth0, set the callback URL to: `https://your-domain/api/1/auth/social/complete/auth0/`
+
+### Generic OIDC Provider
+
+The generic OIDC provider works with any OpenID Connect compliant identity provider, including:
+- **Authentik** - Self-hosted identity provider
+- **Authelia** - Self-hosted authentication server
+- **Keycloak** - Open source identity management
+- **Okta** - Enterprise identity platform
+- And any other OIDC-compliant provider
+
+Configuration:
+- `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`: The OIDC discovery endpoint (e.g., `https://authentik.example.com/application/o/<app-slug>/`)
+- `SOCIAL_AUTH_OIDC_KEY`: Client ID from your identity provider
+- `SOCIAL_AUTH_OIDC_SECRET`: Client secret from your identity provider
+- `SOCIAL_AUTH_OIDC_NAME` (optional): Custom button text (default: "SSO")
+
+Set the callback URL to: `https://your-domain/api/1/auth/social/complete/oidc/`
+
+**Note on MFA:** Multi-factor authentication is handled by your identity provider. Enable MFA in Authentik, Authelia, or your chosen provider to require 2FA for Tabby Web logins.
+
+### Azure AD Single-Tenant
+
+For organizations that want to restrict login to a specific Azure AD/Entra ID tenant (instead of allowing any Microsoft account), use the Azure AD single-tenant provider:
+
+- `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY`: Application (client) ID from Azure portal
+- `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET`: Client secret
+- `SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID`: Directory (tenant) ID
+
+Set the callback URL to: `https://your-domain/api/1/auth/social/complete/azuread-tenant-oauth2/`
+
+When registering your app in Azure portal, select "Accounts in this organizational directory only" for supported account types.
 
 ## Adding Tabby app versions
 

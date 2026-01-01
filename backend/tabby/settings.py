@@ -138,13 +138,19 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.github.GithubOAuth2",
     "social_core.backends.gitlab.GitLabOAuth2",
     "social_core.backends.azuread.AzureADOAuth2",
-    "social_core.backends.azuread_tenant.AzureADTenantOAuth2",  # Single-tenant Azure AD
+    "social_core.backends.azuread_tenant.AzureADTenantOAuth2",
     "social_core.backends.microsoft.MicrosoftOAuth2",
     "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.auth0.Auth0OAuth2",
+    "social_core.backends.open_id_connect.OpenIdConnectAuth",
     "django.contrib.auth.backends.ModelBackend",
 )
 
 SOCIAL_AUTH_GITHUB_SCOPE = ["read:user", "user:email"]
+SOCIAL_AUTH_AUTH0_SCOPE = ["openid", "profile", "email"]
+SOCIAL_AUTH_AUTH0_EXTRA_DATA = ["id_token"]
+# Auth0 uses RS256 for ID tokens
+SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = ["*"]
 SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.social_details",
     "social_core.pipeline.social_auth.social_uid",
@@ -181,7 +187,13 @@ for key in [
     "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET",
     "SOCIAL_AUTH_MICROSOFT_GRAPH_KEY",
     "SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET",
-    # Azure AD single-tenant (use instead of multi-tenant for org-only access)
+    "SOCIAL_AUTH_AUTH0_DOMAIN",
+    "SOCIAL_AUTH_AUTH0_KEY",
+    "SOCIAL_AUTH_AUTH0_SECRET",
+    "SOCIAL_AUTH_OIDC_OIDC_ENDPOINT",
+    "SOCIAL_AUTH_OIDC_KEY",
+    "SOCIAL_AUTH_OIDC_SECRET",
+    "SOCIAL_AUTH_OIDC_NAME",
     "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY",
     "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET",
     "SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID",
