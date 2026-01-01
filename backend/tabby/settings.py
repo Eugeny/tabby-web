@@ -10,11 +10,34 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure")
-DEBUG = bool(os.getenv("DEBUG", False))
+DEBUG = os.getenv("DEBUG", "").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS configuration
+# Set ALLOWED_HOSTS env var to a comma-separated list of hostnames
+# Example: ALLOWED_HOSTS=tabby.example.com,localhost
+# If not set, defaults to ["*"] which allows all hosts (not recommended for production)
+_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
+if _allowed_hosts:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts.split(",") if h.strip()]
+else:
+    ALLOWED_HOSTS = ["*"]
+
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# ============================================================================
+# Local Authentication Settings
+# ============================================================================
+# Enable username/password authentication (for self-hosted instances without OAuth)
+LOCAL_AUTH_ENABLED = os.getenv("LOCAL_AUTH_ENABLED", "").lower() in ("true", "1", "yes")
+
+# Allow self-registration (only works if LOCAL_AUTH_ENABLED is true)
+LOCAL_AUTH_REGISTRATION_ENABLED = os.getenv("LOCAL_AUTH_REGISTRATION_ENABLED", "").lower() in ("true", "1", "yes")
+
+# ============================================================================
+# Proxy Authentication Settings (for Authentik, Authelia, etc.)
+# ============================================================================
+PROXY_AUTH_ENABLED = os.getenv("PROXY_AUTH_ENABLED", "").lower() in ("true", "1", "yes")
 
 
 # Application definition
@@ -39,6 +62,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "tabby.middleware.ProxyAuthMiddleware",  # Must come after AuthenticationMiddleware
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
