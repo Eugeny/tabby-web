@@ -14,6 +14,11 @@ This is the Tabby terminal, served as a web app. It also provides the config syn
 
 Tabby Web serves the [Tabby Terminal](https://github.com/Eugeny/tabby) as a web application while managing multiple config files, authentication, and providing TCP connections via a [separate gateway service](https://github.com/Eugeny/tabby-connection-gateway).
 
+# Documentation
+
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Complete guide for production deployment
+- **[Connection Gateway](https://github.com/Eugeny/tabby-connection-gateway)** - For SSH/Telnet connections
+
 # Requirements
 
 * Python 3.7+
