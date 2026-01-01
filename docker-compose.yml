@@ -11,6 +11,24 @@ services:
         - PORT=80
         - DEBUG=False
         - DOCKERIZE_ARGS="-wait tcp://db:3306 -timeout 60s"
+        #
+        # Authentication Options (choose one):
+        #
+        # Option 1: Proxy Authentication (Authentik, Authelia, etc.)
+        # Enable when running behind a reverse proxy that sets X-Auth-User-Email headers
+        # - PROXY_AUTH_ENABLED=true
+        #
+        # Option 2: OAuth Providers (GitHub, GitLab, Google, Microsoft)
+        # Uncomment and set credentials for providers you want to enable:
+        # - SOCIAL_AUTH_GITHUB_KEY=your_github_client_id
+        # - SOCIAL_AUTH_GITHUB_SECRET=your_github_client_secret
+        # - SOCIAL_AUTH_GITLAB_KEY=your_gitlab_client_id
+        # - SOCIAL_AUTH_GITLAB_SECRET=your_gitlab_client_secret
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=your_google_client_id
+        # - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=your_google_client_secret
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_KEY=your_microsoft_client_id
+        # - SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET=your_microsoft_client_secret
+        #
         # - APP_DIST_STORAGE="file:///app-dist"
 
     db:
