@@ -162,6 +162,32 @@ When registering your app in Azure portal, select "Accounts in this organization
 
 You can find the available version numbers [here](https://www.npmjs.com/package/tabby-web-container).
 
+# SSH public-key authentication fix (web build)
+
+Upstream Tabby Web (and the hosted `app.tabby.sh`) cannot authenticate SSH
+sessions with a private key from the browser — the connection fails with
+`Error signing data with key: wrong private key type`, so only password auth
+works. See [Eugeny/tabby#8069](https://github.com/Eugeny/tabby/issues/8069) and
+[Eugeny/tabby-connection-gateway#11](https://github.com/Eugeny/tabby-connection-gateway/issues/11).
+
+**Root cause:** Tabby runs `ssh2` in the browser, where Node's `crypto` is
+polyfilled by `browserify-sign`. When signing the public-key challenge for an
+RSA key, `ssh2` requests the bare digest name (`sha256` / `sha512`), but
+`browserify-sign` maps those names to an **ECDSA** algorithm entry whose PKCS#1
+`DigestInfo` prefix is empty. The RSA signing path therefore either throws
+`wrong private key type` or emits a signature with no `DigestInfo`, which the
+server rejects. The desktop app is unaffected because it uses native `crypto`.
+
+**Fix:** this fork rewrites the requested algorithm to the proper
+`RSA-SHA512` / `RSA-SHA256` names (which carry the correct `DigestInfo`) when an
+app version is downloaded, so it produces valid `rsa-sha2-*` signatures. The
+rewrite lives in `add_version` (`backend/tabby/app/management/commands/add_version.py`)
+and is applied automatically to every downloaded version — no manual step needed.
+
+> Note: this is a post-build patch of the published bundles. The underlying bug
+> lives in the `ssh2` / `browserify-sign` chain used by the Tabby app build, so
+> the proper long-term fix belongs upstream.
+
 # Development setup
 
 Put your environment vars (`DATABASE_URL`, etc.) in the `.env` file in the root of the repo.
