@@ -135,7 +135,7 @@ The generic OIDC provider works with any OpenID Connect compliant identity provi
 - And any other OIDC-compliant provider
 
 Configuration:
-- `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`: The OIDC discovery endpoint (e.g., `https://authentik.example.com/application/o/<app-slug>/`)
+- `SOCIAL_AUTH_OIDC_OIDC_ENDPOINT`: The OIDC discovery endpoint (e.g., `https://authentik.example.com/application/o/<app-slug>/`, `https://keycloak.example.com/realms/myrealm`)
 - `SOCIAL_AUTH_OIDC_KEY`: Client ID from your identity provider
 - `SOCIAL_AUTH_OIDC_SECRET`: Client secret from your identity provider
 - `SOCIAL_AUTH_OIDC_NAME` (optional): Custom button text (default: "SSO")

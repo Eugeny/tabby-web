@@ -142,7 +142,7 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.microsoft.MicrosoftOAuth2",
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.auth0.Auth0OAuth2",
-    "social_core.backends.open_id_connect.OpenIdConnectAuth",
+    "social_core.backends.open_id_connect.tabby.oidc_auth.OIDCAuth",
     "django.contrib.auth.backends.ModelBackend",
 )
 
