@@ -249,6 +249,7 @@ if FRONTEND_URL or CORS_EXTRA_URL:
         "user-agent",
         "x-xsrf-token",
         "x-requested-with",
+        "x-tabby-expected-revision",
     ]
     cors_domain = urlparse(cors_url).hostname
     CSRF_TRUSTED_ORIGINS = [cors_domain]
